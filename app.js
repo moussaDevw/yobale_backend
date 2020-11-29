@@ -22,15 +22,21 @@ const sign = require('./routes/auth')
 
 /****************     MODELS      *****************/
 
-
-const User = require('./models/user');
-// const Post = require('./models/post');
-const Shop = require('./models/shop');
-const Category = require('./models/category');
-const SousCategory = require('./models/sousCategory');
-const Type = require('./models/type');
+const Adress = require(('./models/adress'));
 const Authorisation = require('./models/authorisation');
+const Category = require('./models/category');
+const Delivery = require('./models/delivery');
+const DeliveryMan = require('./models/deliveryMan');
+const MenuShope = require('./models/menuShop');
+const Order = require('./models/order');
+const OrderProduct = require('./models/orderProduct');
+const product = require('./models/product');
 
+const Shop = require('./models/shop');
+const SousCategory = require('./models/sousCategory');
+const Status = require('./models/status');
+const Type = require('./models/type');
+const User = require('./models/user');
 
 /****************     INIT APP      *****************/
 

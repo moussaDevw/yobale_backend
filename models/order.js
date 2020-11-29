@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const connection = require('./../config/database');
 
-const menu_shop = connection.define('menu_shop', {
+const order = connection.define('order', {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -9,16 +9,16 @@ const menu_shop = connection.define('menu_shop', {
     },
     name: {
         type: Sequelize.STRING,
+        allowNull: true,
+    },
+    totalAmount: {
+        type: Sequelize.Number,
         allowNull: false,
     },
-    active: {
+    payed:{
         type: Sequelize.BOOLEAN,
-        allowNull: true,
-    },
-    content: {
-        type: Sequelize.STRING,
-        allowNull: true,
-    },
+        allowNull: false,
+    }
 });
 
-module.exports = menu_shop;
+module.exports = order;

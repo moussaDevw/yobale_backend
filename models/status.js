@@ -1,25 +1,21 @@
 const Sequelize = require('sequelize');
 const connection = require('./../config/database');
 
-const post = connection.define('post', {
+const status = connection.define('status', {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
     },
-    content: {
+    name: {
         type: Sequelize.STRING,
-        allowNull: false
-    },
-    image: {
-        type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true,
     },
     active: {
         type: Sequelize.BOOLEAN,
-        allowNull: true
+        allowNull: true,
     }
-
 });
 
-module.exports = post;
+module.exports = status;

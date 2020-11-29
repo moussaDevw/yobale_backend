@@ -5,16 +5,16 @@ const shop = connection.define('shop', {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
     },
     content: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
     },
     active: {
         type: Sequelize.BOOLEAN,
-        allowNull: true
-    }
+        allowNull: true,
+    },
 
 });
 

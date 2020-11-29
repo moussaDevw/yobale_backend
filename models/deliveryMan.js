@@ -1,24 +1,25 @@
 const Sequelize = require('sequelize');
 const connection = require('./../config/database');
 
-const menu_shop = connection.define('menu_shop', {
+const delevery_man = connection.define('delevery_man', {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
     },
-    name: {
+    weeklyColaboration: {
+        type: Sequelize.STRING,
+        allowNull: false,
+    },
+    dailyColaboration: {
         type: Sequelize.STRING,
         allowNull: false,
     },
     active: {
         type: Sequelize.BOOLEAN,
         allowNull: true,
-    },
-    content: {
-        type: Sequelize.STRING,
-        allowNull: true,
-    },
+    }
+
 });
 
-module.exports = menu_shop;
+module.exports = delevery_man;
