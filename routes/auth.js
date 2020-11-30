@@ -7,21 +7,26 @@ const router = express.Router();
 router.post('/signup',[
     body('email')
     .isEmail()
-    .custom((value) => {
-        return User.findOne({where:{email: value }}).then(user => {
-            if(user){
-                return Promise.reject('E-mail already in use');
-            }else{
-
-            }
-        })
+    .custom( async (value) => {
+        const existingPhone = await User.findOne({where:{email: value }})
+        if(existingPhone){
+            throw new Error('existe');
+        }
     })
     .trim(),
-    body('password').isLength({ min: 8}),
-    body('firstName').isString().isLength({ min: 2}),
-    body('lastName').isString(),
+    body('password').isLength({ min: 4}),
+    body('fullName').isString().optional(),
+    body('image').isString().optional(),
+    body('phone')
+    .optional()
+    .isLength({ min: 10})
+    .custom(async (value) => {
+        const existingPhone = await User.findOne({where:{phone: value }})
+        if(existingPhone){
+            throw new Error('existe');
+        }
+    }),
     body('typeId').isInt(),
-
 ], AuthController.sginIn);
 
   router.post('/signin',[

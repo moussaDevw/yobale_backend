@@ -24,9 +24,9 @@ router.post('', [
     .trim(),
     body('active').isBoolean(),
 
-], verifAuth, haveAuthorisation, TypeController.storeType);
+], verifAuth, haveAuthorisation.general, TypeController.storeType);
 
-router.post('/force', [
+router.put('/:id', [
     body('name')
     .isString()
     .custom( async (value) => {
@@ -39,12 +39,6 @@ router.post('/force', [
     .trim(),
     body('active').isBoolean(),
 
-], TypeController.storeType);
-
-router.put('/:id', verifAuth, TypeController.updateType);
-
-router.delete('/:id', verifAuth, TypeController.deleteType);
-
-router.patch('/:id', verifAuth, TypeController.patchType);
+], verifAuth, haveAuthorisation.general, TypeController.updateType);
 
 module.exports = router;

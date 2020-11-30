@@ -11,14 +11,6 @@ const dotenv = require('dotenv');
 
 const db = require('./config/database')
 
-/****************     ROUTES      *****************/
-
-
-const categories = require('./routes/category');
-const types = require('./routes/types');
-const authorisations = require('./routes/authorisation');
-const sign = require('./routes/auth')
-
 
 /****************     MODELS      *****************/
 
@@ -30,23 +22,37 @@ const DeliveryMan = require('./models/deliveryMan');
 const MenuShope = require('./models/menuShop');
 const Order = require('./models/order');
 const OrderProduct = require('./models/orderProduct');
-const product = require('./models/product');
+const Product = require('./models/product');
 
 const Shop = require('./models/shop');
 const SousCategory = require('./models/sousCategory');
+const Spice = require('./models/spice');
 const Status = require('./models/status');
 const Type = require('./models/type');
 const User = require('./models/user');
 
+/****************     ROUTES      *****************/
+
+
+const adress = require('./routes/adress');
+const categories = require('./routes/category');
+const types = require('./routes/types');
+const authorisations = require('./routes/authorisation');
+const sign = require('./routes/auth')
+const deliveryMan = require('./routes/deliveryMan')
+const shop = require('./routes/shop')
+
+
+
 /****************     INIT APP      *****************/
 
-const app = express();
+    const app = express();
 
-app.use(cors())
-// app.use(express.static(path.join(__dirname, 'public')))
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
-dotenv.config()
+    app.use(cors())
+    // app.use(express.static(path.join(__dirname, 'public')))
+    app.use(bodyParser.json())
+    app.use(bodyParser.urlencoded({ extended: true }))
+    dotenv.config()
 
 
     initialize();
@@ -61,64 +67,132 @@ dotenv.config()
 /****************     USE ROUTES      *****************/
 
 
-app.use('/category',categories)
-app.use('/type', types)
-app.use('/authorisation', authorisations)
-app.use(sign)
+    app.use('/adress', adress)
+    app.use('/category', categories)
+    app.use('/type', types)
+    app.use('/authorisation', authorisations)
+    app.use('/delevery-man', deliveryMan)
+    app.use('/shop', shop)
+    app.use(sign)
 
 
 /****************     ASSOCIATIONS      *****************/
 
 
-User.belongsTo(Type, {
-    foreignKey: {
-        allowNull: false,
-    },
-    onDelete: 'CASCADE'
-});
-
-Authorisation.belongsTo(Type, {
-    foreignKey: {
-        allowNull: false,
-    },
-    onDelete: 'CASCADE'
-});
-
-Shop.belongsTo(User, {
-    foreignKey: {
-        allowNull: false,
-    },
-    onDelete: 'CASCADE',
-});
-
-SousCategory.belongsTo(Category, {
-    foreignKey: {
-        allowNull: false,
-    }, 
-    onDelete: 'CASCADE',
-});
-
-Shop.belongsTo(Category, {
-    foreignKey: {
-        allowNull: false,
-    }, 
-    onDelete: 'CASCADE',
-});
-
-Shop.belongsTo(Category, {
-    foreignKey: {
-        allowNull: false,
-    }, 
-    onDelete: 'CASCADE',
-});
-
-Shop.belongsTo(SousCategory, {
-    foreignKey: {
-        allowNull: true,
-    },
-});
+    User.belongsTo(Type, {
+        foreignKey: {
+            allowNull: false,
+        },
+    });
 
 
+    // User.belongsTo(Shop, {
+    //     foreignKey: {
+    //         allowNull: false,
+    //     },
+    // });
+
+        // User.belongsTo(DeliveryMan, {
+    //     foreignKey: {
+    //         allowNull: false,
+    //     },
+    // });
+
+    Authorisation.belongsTo(Type, {
+        foreignKey: {
+            allowNull: false,
+        },
+    });
+
+
+    SousCategory.belongsTo(Category, {
+        foreignKey: {
+            allowNull: false,
+        }, 
+    });
+
+    Shop.belongsTo(Category, {
+        foreignKey: {
+            allowNull: false,
+        }, 
+    });
+
+    Shop.belongsTo(Category, {
+        foreignKey: {
+            allowNull: false,
+        }, 
+    });
+
+    Shop.belongsTo(SousCategory, {
+        foreignKey: {
+            allowNull: true,
+        },
+    });
+
+    Adress.belongsTo(User, {
+        foreignKey: {
+            allowNull: false,
+        },
+    });
+
+
+    MenuShope.belongsTo(Shop, {
+        foreignKey: {
+            allowNull: false,
+        },
+    });
+
+    Product.belongsTo(MenuShope, {
+        foreignKey: {
+            allowNull: false,
+        },
+    });
+    Spice.belongsTo(Product, {
+        foreignKey: {
+            allowNull: false,
+        },
+    });
+
+    Order.belongsTo(User, {
+        foreignKey: {
+            allowNull: false,
+        },
+    });
+
+    OrderProduct.belongsTo(Order, {
+        foreignKey: {
+            allowNull: false,
+        },
+    });
+
+    OrderProduct.belongsTo(Product, {
+        foreignKey: {
+            allowNull: false,
+        },
+    });
+
+    Delivery.belongsTo(Order, {
+        foreignKey: {
+            allowNull: false,
+        },
+    });
+
+    Delivery.belongsTo(DeliveryMan, {
+        foreignKey: {
+            allowNull: false,
+        },
+    });
+
+    Delivery.belongsTo(Status, {
+        foreignKey: {
+            allowNull: false,
+        },
+    });
+    Delivery.belongsTo(Adress, {
+        foreignKey: {
+            allowNull: false,
+        },
+    });
 
 /****************     LISTENNG TO PORT       *****************/
 
@@ -132,9 +206,9 @@ app.listen(5000, () => console.log('Server ON'))
 //                 active: true,
 //             })
 //             .then((Type) => {
-    // console.log("admin type created")
+//     console.log("admin type created")
 // Authorisation.create({
-// name: "shop",
+// name: "authorisation",
 // canGet: true,
 // canPost: true,
 // canPut: true,
@@ -142,7 +216,7 @@ app.listen(5000, () => console.log('Server ON'))
 // canDelete: true,
 // typeId: Type.id
 // })
-//})
+// })
 //             .catch((err) => {console.log("admin type created")})
 
 //           })

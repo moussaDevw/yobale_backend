@@ -7,10 +7,6 @@ const category = connection.define('category', {
         primaryKey: true,
         autoIncrement: true,
     },
-    haveSoucategory:{
-        type: Sequelize.BOOLEAN,
-        allowNull: true,
-    },
     name: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -22,6 +18,7 @@ const category = connection.define('category', {
     active: {
         type: Sequelize.BOOLEAN,
         allowNull: true,
+        defaultValue: false,
     },
 });
 

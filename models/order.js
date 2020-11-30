@@ -12,7 +12,15 @@ const order = connection.define('order', {
         allowNull: true,
     },
     totalAmount: {
-        type: Sequelize.Number,
+        type: Sequelize.FLOAT,
+        allowNull: false,
+    },
+    amountWay:{
+        type: Sequelize.STRING,
+        allowNull: false,
+    },
+    deliveryAmount:{
+        type: Sequelize.FLOAT,
         allowNull: false,
     },
     payed:{

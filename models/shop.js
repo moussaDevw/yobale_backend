@@ -7,13 +7,40 @@ const shop = connection.define('shop', {
         primaryKey: true,
         autoIncrement: true,
     },
-    content: {
+    email: {
         type: Sequelize.STRING,
         allowNull: false,
+        unique:true,
+    },
+    phone: {
+        type: Sequelize.STRING,
+        allowNull: true,
+        unique:true,
+    },
+    name:{
+        type: Sequelize.STRING,
+        allowNull: false,
+    },
+    tag:{
+        type: Sequelize.STRING,
+        allowNull: false,
+    },
+    tag2:{
+        type: Sequelize.STRING,
+        allowNull: false,
+    },
+    bgImage:{
+        type: Sequelize.TEXT,
+        allowNull: false,
+    },
+    description: {
+        type: Sequelize.TEXT,
+        allowNull: true,
     },
     active: {
         type: Sequelize.BOOLEAN,
         allowNull: true,
+        defaultValue: false,
     },
 
 });

@@ -1,15 +1,11 @@
 const Sequelize = require('sequelize');
 const connection = require('./../config/database');
 
-const status = connection.define('status', {
+const adress = connection.define('adress', {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
-    },
-    sector: {
-        type: Sequelize.STRING,
-        allowNull: true,
     },
     streetName: {
         type: Sequelize.STRING,
@@ -19,16 +15,20 @@ const status = connection.define('status', {
         type: Sequelize.INTEGER,
         allowNull: false,
     },
+    sector: {
+        type: Sequelize.STRING,
+        allowNull: true,
+    },
     nameCompany: {
         type: Sequelize.STRING,
         allowNull: true,
     },
     floor: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         allowNull: true,
     },
     housseNumber: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         allowNull: true,
     },
     codePostal: {
@@ -38,10 +38,12 @@ const status = connection.define('status', {
     latitude: {
         type: Sequelize.FLOAT,
         allowNull: false,
+        validate: { min: -90, max: 90 },
     },
     longitude: {
         type: Sequelize.FLOAT,
         allowNull: false,
+        validate: { min: -180, max: 180 },
     },
     latitudeDelta: {
         type: Sequelize.FLOAT,
@@ -54,7 +56,8 @@ const status = connection.define('status', {
     active: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
+        defaultValue:false,
     }
 });
 
-module.exports = status;
+module.exports = adress;

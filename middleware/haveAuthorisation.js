@@ -1,7 +1,8 @@
 const User = require('../models/user')
 const Type = require('../models/type')
 const Authorisation = require('./../models/authorisation')
-module.exports = async (req, res, next) => {
+
+exports.general = async (req, res, next) => {
     try{
         let typeUser = await Authorisation.findAll( { 
             include: Type,
@@ -21,6 +22,29 @@ module.exports = async (req, res, next) => {
             return res.status(401).json({error: true, error: "your permission are insufficient"});
         }
          
+    }
+    catch (err){
+        console.log(err)
+        return res.status(400).json({error: true, error: err})
+    }
+    
+};
+
+exports.activateAccount = async (req, res, next) => {
+    try{
+        console.log(req.user)
+        const typeUser = await Type.findOne( { 
+          where: {
+              id: req.user.typeId
+          }
+        });
+       
+        if(!typeUser) return res.status(401).json({error: true, message: "on a pas pus récupérer votre type"});
+        if(typeUser.dataValues.name === "admin"){
+            next();
+        }else {
+            return res.status(401).json({error: true, error: "your permission are insufficient"});
+        }
     }
     catch (err){
         console.log(err)

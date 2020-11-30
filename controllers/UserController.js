@@ -36,7 +36,5 @@ exports.deleteUser = () =>{
     res.status(200).json({error: true, data: "you can not delete this user" })
 }
 exports.editUser =(req, res) =>{
-    User.update(req.body, { where: { id: req.params.id } })
-    .then(result => res.status(200).json({ error: false, data: result }))
-    .catch(err => res.status(400).json({ error: true, message: 'bad request!' }))
+   
 }

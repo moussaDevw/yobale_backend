@@ -14,9 +14,10 @@ const menu_shop = connection.define('menu_shop', {
     active: {
         type: Sequelize.BOOLEAN,
         allowNull: true,
+        defaultValue: false,
     },
     content: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
     },
 });

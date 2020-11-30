@@ -11,7 +11,7 @@ const verifAuth = require('./../middleware/auth')
 
 router.get('', CategoryController.getAllCategories);
 
-  router.post('',[
+  router.post('', [
     body('name')
     .isString()
     .isLength({ min: 2})
@@ -22,18 +22,25 @@ router.get('', CategoryController.getAllCategories);
           }
       });
   }),
-    body('sousCategory').isArray(),
+    body('sousCategory').isArray().optional(),
     body('icon').isString().isLength({ min: 2}),
-    body('active').isBoolean(),
-    body('haveSoucategory').isBoolean(),
-  ], verifAuth, haveAuthorisation, CategoryController.storeCategory);
+    body('active').isBoolean().optional(),
+  ], verifAuth, haveAuthorisation.general, CategoryController.storeCategory);
 
-router.put('/:id', CategoryController.updateCategory);
+router.put('/:id', [
+  body('name')
+  .isString()
+  .isLength({ min: 2}),
+  body('sousCategory').isArray().optional(),
+  body('icon').isString().isLength({ min: 2}),
+  body('active').isBoolean().optional(),
+], CategoryController.updateCategory);
 
 router.get('/:id', CategoryController.showOneCategory);
 
-router.patch('/:id', CategoryController.patchCategory);
 
-router.delete('/:id', CategoryController.deleteCategory);
+router.patch('/activate/:id', CategoryController.activateCategory);
+
+router.patch('/inactivate/:id', CategoryController.inactivateCategory);
 
 module.exports = router;

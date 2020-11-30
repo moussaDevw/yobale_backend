@@ -7,21 +7,14 @@ const user = connection.define('user', {
         autoIncrement: true,
         type: Sequelize.INTEGER,
     },
-    firstName: {
+    fullName: {
         type: Sequelize.STRING,
-        allowNull: false,
-    },
-    lastName: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
     },
     email: {
         type: Sequelize.STRING,
         allowNull: false,
-    },
-    phone: {
-        type: Sequelize.STRING,
-        allowNull: true,
+        unique:true,
     },
     image: {
         type: Sequelize.STRING,
@@ -33,7 +26,8 @@ const user = connection.define('user', {
     },
     phone: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
+        unique:true,
     },
     active: {
         type: Sequelize.BOOLEAN,

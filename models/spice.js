@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const connection = require('./../config/database');
 
-const product = connection.define('product', {
+const spice = connection.define('spice', {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -15,16 +15,20 @@ const product = connection.define('product', {
         type: Sequelize.TEXT,
         allowNull: true,
     },
-    price: {
+    haveAdditionalPrice: {
         type: Sequelize.FLOAT,
         allowNull: false,
+        defaultValue: false,
+    },
+    additionalPrice: {
+        type: Sequelize.FLOAT,
+        allowNull: true,
     },
     active: {
         type: Sequelize.BOOLEAN,
         allowNull: true,
-        defaultValue: false,
+        defaultValue:false,
     },
-   
 });
 
-module.exports = product;
+module.exports = spice;

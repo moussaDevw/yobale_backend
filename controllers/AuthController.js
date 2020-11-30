@@ -8,29 +8,50 @@ const {  validationResult} = require('express-validator');
 
 
 exports.sginIn = async (req, res) => {
-    let resultError= validationResult(req).array()
+    try {
+        let resultError= validationResult(req).array()
 
-    if(resultError.length > 0){  
-        return res.status(400).json({ error: true, message: resultError });
+        if(resultError.length > 0){  
+            return res.status(400).json({ error: true, message: resultError });
+        }
+        let {
+            firstName,
+            lastName, 
+            email, 
+            password, 
+            phone, 
+            typeId,
+        } = req.body;
+        const salt = await bcrypt.genSalt(10);
+        let hashedPassword = await bcrypt.hash(password, salt);
+        if(!hashedPassword) {
+            return res.status(300).json({error: true, data: "on peut pa hacher le mot de passe" });
+        }
+        User.create({ 
+            firstName, 
+            lastName, 
+            email, 
+            phone, 
+            password: hashedPassword, 
+            active: 1, 
+            typeId 
+        })
+        .then(user => {
+            res.status(200).json({error: false, user });
+        })
+        .catch(err => {
+            res.status(400).json({error: true, data: err });
+        }) 
+    } catch (error) {
+        res.status(500).json({ error: true, message: "server problem" });
     }
-    let {firstName,lastName, email, password, phone, typeId} = req.body;
-    const salt = await bcrypt.genSalt(10);
-    let hashedPassword = await bcrypt.hash(password, salt);
-    if(!hashedPassword) {
-        return res.status(300).json({error: true, data: "on peut pa hacher le mot de passe" });
-    }
-    User.create({ firstName, lastName, email, phone, password: hashedPassword, active: 1, typeId })
-    .then(user => {
-        res.status(200).json({error: false, user });
-    })
-    .catch(err => {
-        res.status(400).json({error: true, data: err });
-    })  
+     
 };
 
 
 exports.signUp = async (req, res) => {
-    let {password, email}= req.body;
+    try {
+        let {password, email}= req.body;
     var user = await User.findOne({where:{email: email }});
 
     if(!user){
@@ -45,7 +66,7 @@ exports.signUp = async (req, res) => {
         { 
         id: user.id, 
         typeId: user.typeId 
-        }, 
+        },
         process.env.TOKEN_SECRET,
         {expiresIn: '24h'},
     );
@@ -53,5 +74,7 @@ exports.signUp = async (req, res) => {
     delete user._previousDataValues.password;
 
     res.status(200).header('auth-token', token).json({ error: false, token, user }) 
-
+    } catch (error) {
+        res.status(500).json({ error: true, message: "server problem" });
+    }
 }

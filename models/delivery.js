@@ -8,7 +8,7 @@ const delevery = connection.define('delevery', {
         autoIncrement: true,
     },
     date: {
-        type: Sequelize.STRING,
+        type: Sequelize.DATE,
         allowNull: true,
     },
     time: {
@@ -18,8 +18,9 @@ const delevery = connection.define('delevery', {
     active: {
         type: Sequelize.BOOLEAN,
         allowNull: true,
+        defaultValue:false,
     }
 
 });
 
-module.exports = deleverys;
+module.exports = delevery;

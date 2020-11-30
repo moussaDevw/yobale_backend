@@ -7,17 +7,36 @@ const delevery_man = connection.define('delevery_man', {
         primaryKey: true,
         autoIncrement: true,
     },
-    weeklyColaboration: {
+    email: {
         type: Sequelize.STRING,
         allowNull: false,
+        unique:true,
     },
-    dailyColaboration: {
+    phone: {
+        type: Sequelize.STRING,
+        allowNull: true,
+        unique:true,
+    },
+    fullName: {
+        type: Sequelize.STRING,
+        allowNull: true,
+    },
+    allWeek: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+    },
+    allDay: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+    },
+    vehicule:{
         type: Sequelize.STRING,
         allowNull: false,
     },
     active: {
         type: Sequelize.BOOLEAN,
-        allowNull: true,
+        allowNull: false,
+        defaultValue:false,
     }
 
 });

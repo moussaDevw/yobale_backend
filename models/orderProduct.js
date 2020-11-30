@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const connection = require('./../config/database');
 
-const order = connection.define('order_product', {
+const order_product = connection.define('order_product', {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -12,10 +12,10 @@ const order = connection.define('order_product', {
         allowNull: true,
     },
     quantity: {
-        type: Sequelize.Number,
+        type: Sequelize.INTEGER,
         allowNull: false,
     },
     
 });
 
-module.exports = order;
+module.exports = order_product;
