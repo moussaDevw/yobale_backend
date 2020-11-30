@@ -41,6 +41,8 @@ const authorisations = require('./routes/authorisation');
 const sign = require('./routes/auth')
 const deliveryMan = require('./routes/deliveryMan')
 const shop = require('./routes/shop')
+const menu = require('./routes/menu')
+const product = require('./routes/product')
 
 
 
@@ -70,6 +72,8 @@ const shop = require('./routes/shop')
     app.use('/adress', adress)
     app.use('/category', categories)
     app.use('/type', types)
+    app.use('/menu-shop', menu)
+    app.use('/product', product)
     app.use('/authorisation', authorisations)
     app.use('/delevery-man', deliveryMan)
     app.use('/shop', shop)
@@ -207,7 +211,7 @@ app.listen(5000, () => console.log('Server ON'))
 //             })
 //             .then((Type) => {
 //     console.log("admin type created")
-// Authorisation.create({
+// Authorisation.bulkCreate([{
 // name: "authorisation",
 // canGet: true,
 // canPost: true,
@@ -215,7 +219,26 @@ app.listen(5000, () => console.log('Server ON'))
 // canPatch: true,
 // canDelete: true,
 // typeId: Type.id
-// })
+// },
+// {
+//     name: "category",
+//     canGet: true,
+//     canPost: true,
+//     canPut: true,
+//     canPatch: true,
+//     canDelete: true,
+//     typeId: Type.id
+//     },
+//     {
+//     name: "type",
+//     canGet: true,
+//     canPost: true,
+//     canPut: true,
+//     canPatch: true,
+//     canDelete: true,
+//     typeId: Type.id
+//     },
+// ]);
 // })
 //             .catch((err) => {console.log("admin type created")})
 

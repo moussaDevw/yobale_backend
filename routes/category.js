@@ -34,13 +34,13 @@ router.put('/:id', [
   body('sousCategory').isArray().optional(),
   body('icon').isString().isLength({ min: 2}),
   body('active').isBoolean().optional(),
-], CategoryController.updateCategory);
+], verifAuth, haveAuthorisation.general, CategoryController.updateCategory);
 
 router.get('/:id', CategoryController.showOneCategory);
 
 
-router.patch('/activate/:id', CategoryController.activateCategory);
+router.patch('/activate/:id', verifAuth, haveAuthorisation.general, CategoryController.activateCategory);
 
-router.patch('/inactivate/:id', CategoryController.inactivateCategory);
+router.patch('/inactivate/:id', verifAuth, haveAuthorisation.general, CategoryController.inactivateCategory);
 
 module.exports = router;
