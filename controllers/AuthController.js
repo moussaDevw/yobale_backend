@@ -14,12 +14,13 @@ exports.sginIn = async (req, res) => {
         if(resultError.length > 0){  
             return res.status(400).json({ error: true, message: resultError });
         }
+
         let {
-            firstName,
-            lastName, 
+            fullName, 
             email, 
             password, 
             phone, 
+            image,
             typeId,
         } = req.body;
         const salt = await bcrypt.genSalt(10);
@@ -28,10 +29,10 @@ exports.sginIn = async (req, res) => {
             return res.status(300).json({error: true, data: "on peut pa hacher le mot de passe" });
         }
         User.create({ 
-            firstName, 
-            lastName, 
+            fullName, 
             email, 
             phone, 
+            image,
             password: hashedPassword, 
             active: 1, 
             typeId 
