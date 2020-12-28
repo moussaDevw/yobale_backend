@@ -14,6 +14,7 @@ const sous_category = connection.define('sous_category', {
     active: {
         type: Sequelize.BOOLEAN,
         allowNull: true,
+        defaultValue: false,
     },
 });
 

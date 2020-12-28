@@ -12,24 +12,33 @@ const dotenv = require('dotenv');
 const db = require('./config/database')
 
 
+const fileUpload = require('express-fileupload');
+
+
+const http = require('http');
+const socketio = require('socket.io');
+
+
 /****************     MODELS      *****************/
 
 const Adress = require(('./models/adress'));
 const Authorisation = require('./models/authorisation');
 const Category = require('./models/category');
 const Delivery = require('./models/delivery');
-const DeliveryMan = require('./models/deliveryMan');
+
 const MenuShope = require('./models/menuShop');
 const Order = require('./models/order');
 const OrderProduct = require('./models/orderProduct');
 const Product = require('./models/product');
 
 const Shop = require('./models/shop');
+const Deliveryman = require('./models/deliveryman');
 const SousCategory = require('./models/sousCategory');
 const Spice = require('./models/spice');
 const Status = require('./models/status');
 const Type = require('./models/type');
 const User = require('./models/user');
+const City = require('./models/city');
 
 /****************     ROUTES      *****************/
 
@@ -37,6 +46,7 @@ const User = require('./models/user');
 const adress = require('./routes/adress');
 const categories = require('./routes/category');
 const types = require('./routes/types');
+const cities = require('./routes/city');
 const authorisations = require('./routes/authorisation');
 const sign = require('./routes/auth')
 const deliveryMan = require('./routes/deliveryMan')
@@ -50,11 +60,30 @@ const product = require('./routes/product')
 
     const app = express();
 
+    const server = http.createServer(app);
+
     app.use(cors())
-    // app.use(express.static(path.join(__dirname, 'public')))
-    app.use(bodyParser.json())
+    app.use(express.static(path.join(__dirname, 'public')))
+
+    // express.static(root, [options])
+
+    app.use(bodyParser.raw({
+        type: 'application/vnd.custom-type',
+        limit: '10mb',
+        extended: true
+    }))
+    app.use(bodyParser.text({
+        type: 'text/html',
+        limit: '10mb',
+        extended: true
+    }))
+
+    app.use(express.json({ limit: '50mb' }));
+    app.use(express.urlencoded({ limit: '50mb', extended: true }));
+
     app.use(bodyParser.urlencoded({ extended: true }))
     dotenv.config()
+    app.use(fileUpload());
 
 
     initialize();
@@ -65,17 +94,17 @@ const product = require('./routes/product')
         await connection.query(`CREATE DATABASE IF NOT EXISTS \`${database}\`;`);
     }
 
-
 /****************     USE ROUTES      *****************/
 
 
     app.use('/adress', adress)
     app.use('/category', categories)
     app.use('/type', types)
+    app.use('/city', cities)
     app.use('/menu-shop', menu)
     app.use('/product', product)
     app.use('/authorisation', authorisations)
-    app.use('/delevery-man', deliveryMan)
+    app.use('/delivery-man', deliveryMan)
     app.use('/shop', shop)
     app.use(sign)
 
@@ -89,6 +118,11 @@ const product = require('./routes/product')
         },
     });
 
+    Adress.belongsTo(User, {
+        foreignKey: {
+            allowNull: false,
+        },
+    });
 
     // User.belongsTo(Shop, {
     //     foreignKey: {
@@ -111,31 +145,38 @@ const product = require('./routes/product')
 
     SousCategory.belongsTo(Category, {
         foreignKey: {
-            allowNull: false,
-        }, 
-    });
-
-    Shop.belongsTo(Category, {
-        foreignKey: {
-            allowNull: false,
-        }, 
-    });
-
-    Shop.belongsTo(Category, {
-        foreignKey: {
-            allowNull: false,
-        }, 
-    });
-
-    Shop.belongsTo(SousCategory, {
-        foreignKey: {
             allowNull: true,
         },
     });
 
-    Adress.belongsTo(User, {
+    Category.hasMany(SousCategory, {
+        foreignKey: {
+            allowNull: true,
+        }, 
+    });
+
+    Shop.belongsTo(Category, {
         foreignKey: {
             allowNull: false,
+        }, 
+    });
+
+    Deliveryman.belongsTo(City, {
+        foreignKey: {
+            allowNull: false,
+        }, 
+    });
+
+    Shop.belongsTo(City, {
+        foreignKey: {
+            allowNull: false,
+        }, 
+    });
+
+
+    Shop.belongsTo(SousCategory, {
+        foreignKey: {
+            allowNull: true,
         },
     });
 
@@ -151,6 +192,13 @@ const product = require('./routes/product')
             allowNull: false,
         },
     });
+
+    MenuShope.hasMany(Product, {
+        foreignKey: {
+            allowNull: false,
+        },
+    });
+
     Spice.belongsTo(Product, {
         foreignKey: {
             allowNull: false,
@@ -181,7 +229,7 @@ const product = require('./routes/product')
         },
     });
 
-    Delivery.belongsTo(DeliveryMan, {
+    Delivery.belongsTo(Deliveryman, {
         foreignKey: {
             allowNull: false,
         },
@@ -192,57 +240,68 @@ const product = require('./routes/product')
             allowNull: false,
         },
     });
+
     Delivery.belongsTo(Adress, {
         foreignKey: {
             allowNull: false,
         },
     });
 
+
+
+
 /****************     LISTENNG TO PORT       *****************/
 
 
-app.listen(5000, () => console.log('Server ON'))
-// db.sync()
-// db.sync({force: true})
-//           .then(result => {
-//             Type.create({
-//                 name: "admin",
-//                 active: true,
-//             })
-//             .then((Type) => {
-//     console.log("admin type created")
-// Authorisation.bulkCreate([{
-// name: "authorisation",
-// canGet: true,
-// canPost: true,
-// canPut: true,
-// canPatch: true,
-// canDelete: true,
-// typeId: Type.id
-// },
-// {
-//     name: "category",
-//     canGet: true,
-//     canPost: true,
-//     canPut: true,
-//     canPatch: true,
-//     canDelete: true,
-//     typeId: Type.id
-//     },
-//     {
-//     name: "type",
-//     canGet: true,
-//     canPost: true,
-//     canPut: true,
-//     canPatch: true,
-//     canDelete: true,
-//     typeId: Type.id
-//     },
-// ]);
-// })
-//             .catch((err) => {console.log("admin type created")})
+const io = socketio(server);
 
-//           })
-//           .catch((err) => {
-//               console.log('error: ', err)
-//           })
+io.on('connect', socket => {
+   console.log('connected', socket.id)
+
+});
+
+  server.listen(5000, () => console.log('Server ON ' + 5000))
+// db.sync()
+db.sync({force: true})
+          .then(result => {
+            Type.create({
+                name: "superAdmin",
+                active: true,
+            })
+            .then((Type) => {
+    console.log("admin type created")
+Authorisation.bulkCreate([{
+name: "authorisation",
+canGet: true,
+canPost: true,
+canPut: true,
+canPatch: true,
+canDelete: true,
+typeId: Type.id
+},
+{
+    name: "category",
+    canGet: true,
+    canPost: true,
+    canPut: true,
+    canPatch: true,
+    canDelete: true,
+    typeId: Type.id
+    },
+    {
+    name: "type",
+    canGet: true,
+    canPost: true,
+    canPut: true,
+    canPatch: true,
+    canDelete: true,
+    typeId: Type.id
+    },
+]);
+})
+            .catch((err) => {console.log("admin type created")})
+
+          })
+          .catch((err) => {
+              console.log('error: ', err)
+          })

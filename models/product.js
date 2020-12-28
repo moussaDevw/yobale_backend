@@ -19,6 +19,10 @@ const product = connection.define('product', {
         type: Sequelize.FLOAT,
         allowNull: false,
     },
+    bgImage:{
+        type: Sequelize.TEXT,
+        allowNull: false,
+    },
     active: {
         type: Sequelize.BOOLEAN,
         allowNull: true,

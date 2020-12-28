@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
-const connection = require('./../config/database');
+const connection = require('../config/database');
 
-const delevery_man = connection.define('delevery_man', {
+const deliveryman = connection.define('delivery_man', {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -21,6 +21,14 @@ const delevery_man = connection.define('delevery_man', {
         type: Sequelize.STRING,
         allowNull: true,
     },
+    image:{
+        type: Sequelize.STRING,
+        allowNull: true,
+    },
+    description:{
+        type: Sequelize.TEXT,
+        allowNull: true,
+    },
     allWeek: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
@@ -35,10 +43,10 @@ const delevery_man = connection.define('delevery_man', {
     },
     active: {
         type: Sequelize.BOOLEAN,
-        allowNull: false,
-        defaultValue:false,
-    }
+        allowNull: true,
+        defaultValue: false,
+    },
 
 });
 
-module.exports = delevery_man;
+module.exports = deliveryman;

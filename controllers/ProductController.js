@@ -27,6 +27,7 @@ exports.store = async (req, res) => {
             name, 
             active, 
             content,
+            bgImage,
             price,
             menuShopId,
         } = req.body;
@@ -34,6 +35,7 @@ exports.store = async (req, res) => {
         Product.create({
             name,
             active,
+            bgImage,
             content,
             price,
             menuShopId,

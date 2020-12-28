@@ -3,7 +3,7 @@ const DeliveryManController = require('./../controllers/DeliveryManController');
 const {  body } = require('express-validator');
 
 const router = express.Router();
-const DeliveryMan = require('./../models/deliveryMan')
+const DeliveryMan = require('../models/deliveryman')
 const verifAuth = require('./../middleware/auth')
 const haveAuthorisation = require('./../middleware/haveAuthorisation')
 
@@ -13,9 +13,10 @@ const haveAuthorisation = require('./../middleware/haveAuthorisation')
     router.get('/invalidated', DeliveryManController.getAllInvalidateDeliveryMan);
 
     router.post('',[
-        body('fullName').isString().optional(),
+        body('fullName').isString().isLength({ min: 3}),
         body('allWeek').isBoolean(),
         body('allDay').isBoolean(),
+        body('cityId').isInt(),
         body('vehicule').isString().isLength({ min: 1}),
         body('email')
         .isEmail()
@@ -40,6 +41,7 @@ const haveAuthorisation = require('./../middleware/haveAuthorisation')
         body('fullName').isString().optional(),
         body('allWeek').isBoolean(),
         body('allDay').isBoolean(),
+        body('cityId').isInt(),
         body('vehicule').isString().isLength({ min: 1}),
         body('email')
         .isEmail()

@@ -1,15 +1,29 @@
 
 const MenuShop = require('./../models/menuShop');
+const Product = require('./../models/product');
 const {  validationResult} = require('express-validator');
 
 
-exports.getAll = (req, res) => {
+exports.getAllForShop = (req, res) => {
     try {
-        MenuShop.findAll()
+        MenuShop.findAll({
+            where:{
+                shopId: req.params.id
+            },
+            include:[
+            {
+                model: Product,
+            },
+        ]
+        })
         .then((menuShop) => {
             res.status(200).json({error: false, menuShop })
         })
-        .catch(err => res.status(404).json({ error: true, message: 'menu not found !' }))
+        .catch(err => {
+            console.log(err)
+            res.status(404).json({ 
+            error: true, err, message: 'menu not found !' 
+        })})
     } catch (error) {
         res.status(500).json({ error: true, message: 'server problem' })
     }

@@ -8,7 +8,7 @@ const haveAuthorisation = require('./../middleware/haveAuthorisation')
 const verifAuth = require('./../middleware/auth')
 
 
-router.get('', MenuShopController.getAll);
+router.get('/shop/:id', MenuShopController.getAllForShop);
 
   router.post('', [
     body('name')

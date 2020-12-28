@@ -22,20 +22,13 @@ router.post('', [
         });
     })
     .trim(),
-    body('active').isBoolean(),
+    body('active').isBoolean().optional(),
 
 ], verifAuth, haveAuthorisation.general, TypeController.storeType);
 
 router.put('/:id', [
     body('name')
-    .isString()
-    .custom( async (value) => {
-        return Type.findOne({where:{name: value }}).then(isExiste =>{
-            if(isExiste){
-                return Promise.reject('name is already existe');
-            }
-        });
-    })
+    .isString().optional()
     .trim(),
     body('active').isBoolean(),
 

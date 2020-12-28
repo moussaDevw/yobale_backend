@@ -33,6 +33,10 @@ const shop = connection.define('shop', {
         type: Sequelize.TEXT,
         allowNull: false,
     },
+    logo:{
+        type: Sequelize.TEXT,
+        allowNull: false,
+    },
     description: {
         type: Sequelize.TEXT,
         allowNull: true,

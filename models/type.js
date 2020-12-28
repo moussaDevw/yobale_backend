@@ -15,6 +15,7 @@ const type = connection.define('type', {
     active: {
         type: Sequelize.BOOLEAN,
         allowNull: true,
+        defaultValue: false,
     },
 
 });

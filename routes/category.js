@@ -36,7 +36,16 @@ router.put('/:id', [
   body('active').isBoolean().optional(),
 ], verifAuth, haveAuthorisation.general, CategoryController.updateCategory);
 
+router.put('/sous-category/:id', [
+  body('name')
+  .isString()
+  .isLength({ min: 2}),
+  body('icon').isString().isLength({ min: 2}),
+  body('active').isBoolean().optional(),
+], verifAuth, haveAuthorisation.general, CategoryController.updateSousCategory);
+
 router.get('/:id', CategoryController.showOneCategory);
+router.get('/sous-category/:id', CategoryController.showOneSousCategory);
 
 
 router.patch('/activate/:id', verifAuth, haveAuthorisation.general, CategoryController.activateCategory);

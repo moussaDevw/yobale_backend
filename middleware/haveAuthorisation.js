@@ -4,19 +4,27 @@ const Authorisation = require('./../models/authorisation')
 
 exports.general = async (req, res, next) => {
     try{
+        if(req.user.typeId === 1){
+            return next()
+        }
         let typeUser = await Authorisation.findAll( { 
-            include: Type,
+            include: {
+                model: Type,
+                where: {
+                    id: req.user.typeId
+                }
+            },
             attributes: ['id','name', ['canGet', 'get'], ['canPost', 'post'], [ 'canPut', 'put'], ['canDelete', 'delete']] //id, first AS firstName
 
         });
         if(!typeUser) return res.status(401).json({error: true, message: "on a pas pus récupérer votre type"});
 
         var authorisationUser = await typeUser.map(function(sensor){ return sensor.toJSON() });
-        
+
         let thisRoot = authorisationUser.find(a => a.name === req.originalUrl.split('/')[1])
         if(!thisRoot)  return res.status(401).json({error: true, error: "your permission are insufficient"});
         if(thisRoot[req.method.toLowerCase()]){
-            next()
+            return next()
         }
         else {
             return res.status(401).json({error: true, error: "your permission are insufficient"});
@@ -32,8 +40,12 @@ exports.general = async (req, res, next) => {
 
 exports.activateAccount = async (req, res, next) => {
     try{
-        console.log(req.user)
-        const typeUser = await Type.findOne( { 
+
+        if(req.user.typeId === 1){
+            return next()
+        }
+
+        const typeUser = await Type.findOne( {
           where: {
               id: req.user.typeId
           }
@@ -41,7 +53,7 @@ exports.activateAccount = async (req, res, next) => {
        
         if(!typeUser) return res.status(401).json({error: true, message: "on a pas pus récupérer votre type"});
         if(typeUser.dataValues.name === "admin"){
-            next();
+            return next();
         }else {
             return res.status(401).json({error: true, error: "your permission are insufficient"});
         }

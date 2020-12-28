@@ -1,21 +1,21 @@
-const Type = require('./../models/type');
+const City = require('./../models/city');
 
 
 const {  validationResult} = require('express-validator');
 
-exports.getAllTypes = (req, res) => {
+exports.getAllCitys = (req, res) => {
     try {
-        Type.findAll()
-        .then((types) => {
-            res.status(200).json({error: false, types })
+        City.findAll()
+        .then((cities) => {
+            res.status(200).json({error: false, cities })
         })
-        .catch(err => res.status(401).json({ error: true, message: 'can not find type' }));
+        .catch(err => res.status(401).json({ error: true, message: 'can not find City' }));
     } catch (error) {
         res.status(500).json({ error: true, message: 'server problem' });
     }
 }
 
-exports.storeType = (req, res) => {
+exports.storeCity = (req, res) => {
     try {
         let resultError= validationResult(req).array();
 
@@ -25,40 +25,41 @@ exports.storeType = (req, res) => {
     
         let { name, active } = req.body;
     
-        Type.create({
+        City.create({
             name,
             active,
         })
-        .then((type) => {
-            res.status(201).json({ error: false, type });
+        .then((city) => {
+            res.status(201).json({ error: false, city });
         })
-        .catch((err) => res.status(400).json({ error: true, message: 'Please check the data for type' }))    
+        .catch((err) => res.status(400).json({ error: true, message: 'Please check the data for City' }))    
     } catch (error) {
         res.status(500).json({ error: true, message: 'server problem' });
     }
    
 }
 
-exports.updateType = (req, res) => {
+exports.updateCity = (req, res) => {
     try {
         let resultError= validationResult(req).array();
 
         if(resultError.length > 0){  
             return res.status(400).json({ error: true, message: resultError });
         }
-
+        if(!req.params.id) return res.status(400).json({ error: true, updatedCity:{}, message:"identifiant de la ville n'est pas était envoyé" })
         let { name, active } = req.body;
 
-        Type.update({
+        City.update({
             name,
             active
         }, {
             where: { id: req.params.id }
         })
         .then( async () => {
-            let updatedType = await Type.findByPk(req.params.id);
-
-            res.status(202).json({ error: false, updatedType })
+            let updatedCity = await City.findByPk(req.params.id);
+            console.log(updatedCity)
+            if(!updatedCity) return res.status(400).json({ error: true, updatedCity:{}, message:"la ville modifier est introuvabe" })
+            res.status(202).json({ error: false, updatedCity })
         })
         .catch((err) => res.status(400).json({ error: true, message: "bad request !" }))
     } catch (error) {
@@ -67,11 +68,11 @@ exports.updateType = (req, res) => {
   
 }
 
-exports.getOneType = async (req, res) => {
+exports.getOneCity = async (req, res) => {
     try {
-        Type.findByPk(req.params.id)
-       .then(type => res.status(200).json({error: false, type}))
-       .catch(err => res.status(404).json({ error: true, message: 'type not found' })) 
+        City.findByPk(req.params.id)
+       .then(city => res.status(200).json({error: false, city}))
+       .catch(err => res.status(404).json({ error: true, message: 'City not found' })) 
     } catch (error) {
         res.status(500).json({ error: true, message: 'server problem' });
     }

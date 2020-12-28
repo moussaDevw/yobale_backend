@@ -22,7 +22,7 @@ const haveAuthorisation = require('./../middleware/haveAuthorisation');
         body('tag2')
         .isString(),
         body('bgImage')
-        .isString(),
+        .isString().optional(),
         body('description')
         .isString()
         .optional(),
@@ -46,19 +46,25 @@ const haveAuthorisation = require('./../middleware/haveAuthorisation');
         }),
     ], ShopController.storeShop);
 
+    router.post('/upload-bg', ShopController.uploadBg);
+
     router.put('/:id',[
         body('name')
         .isString(),
-        body('tag')
+        body('tag').optional()
         .isString(),
-        body('tag2')
+        body('tag2').optional()
         .isString(),
-        body('bgImage')
+        body('bgImage').optional()
         .isString(),
-        body('description')
+        body('logo').optional()
+        .isString(),
+        body('description').optional()
         .isString()
         .optional(),
         body('categoryId').isInt().isLength({ min: 1}),
+        body('sousCategoryId').optional(),
+        body('cityId').isInt().isLength({ min: 1}),
         body('email')
         .isEmail()
         .trim(),

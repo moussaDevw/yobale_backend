@@ -27,7 +27,7 @@ const spice = connection.define('spice', {
     active: {
         type: Sequelize.BOOLEAN,
         allowNull: true,
-        defaultValue:false,
+        defaultValue: false,
     },
 });
 

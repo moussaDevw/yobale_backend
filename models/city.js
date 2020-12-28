@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
-const connection = require('./../config/database');
+const connection = require('../config/database');
 
-const status = connection.define('status', {
+const city = connection.define('city', {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -16,7 +16,8 @@ const status = connection.define('status', {
         type: Sequelize.BOOLEAN,
         allowNull: true,
         defaultValue: true,
-    }
+    },
+
 });
 
-module.exports = status;
+module.exports = city;
