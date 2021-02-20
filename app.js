@@ -265,48 +265,48 @@ io.on('connect', socket => {
 
   server.listen(process.env.PORT, () => console.log('Server ON ' + process.env.PORT))
 
-  if(false){
+//   if(false){
 
-    db.sync({force: true})
-          .then(result => {
-            Type.bulkCreate([
-                {
-                    name: "super admin",
-                    active: true,
-                },
-                {
-                    name: "admin",
-                    active: true,
-                },
-                {
-                    name: "client",
-                    active: true,
-                },
-                {
-                    name: "magasin / restaurant",
-                    active: true,
-                },
-                {
-                    name: "livreur",
-                    active: true,
-                },
-            ])
-            .then( async (Type) => {
-                const salt = await bcrypt.genSalt(10);
-                let hashedPassword = await bcrypt.hash("yobalapp.com", salt);
-                User.create({ 
-                    fullName : "admin admin", 
-                    email : "admin@admin.com", 
-                    phone: "+2213112111", 
-                    password: hashedPassword, 
-                    active: 1, 
-                    typeId: 1
-                })
-            })
-            .catch((err) => {})
+//     db.sync({force: true})
+//           .then(result => {
+//             Type.bulkCreate([
+//                 {
+//                     name: "super admin",
+//                     active: true,
+//                 },
+//                 {
+//                     name: "admin",
+//                     active: true,
+//                 },
+//                 {
+//                     name: "client",
+//                     active: true,
+//                 },
+//                 {
+//                     name: "magasin / restaurant",
+//                     active: true,
+//                 },
+//                 {
+//                     name: "livreur",
+//                     active: true,
+//                 },
+//             ])
+//             .then( async (Type) => {
+//                 const salt = await bcrypt.genSalt(10);
+//                 let hashedPassword = await bcrypt.hash("yobalapp.com", salt);
+//                 User.create({ 
+//                     fullName : "admin admin", 
+//                     email : "admin@admin.com", 
+//                     phone: "+2213112111", 
+//                     password: hashedPassword, 
+//                     active: 1, 
+//                     typeId: 1
+//                 })
+//             })
+//             .catch((err) => {})
 
-          })
-          .catch((err) => {
-            //   console.log('error: ', err)
-          })
-  }
+//           })
+//           .catch((err) => {
+//             //   console.log('error: ', err)
+//           })
+//   }

@@ -53,6 +53,7 @@ const haveAuthorisation = require('./../middleware/haveAuthorisation')
     ],verifAuth,haveAuthorisation.isLivreur, DeliveryManController.updateDeliveryMan);
 
     router.get('/:id', DeliveryManController.showOneDeliveryMan);
+    router.delete('/:id', verifAuth, haveAuthorisation.isAdmin, DeliveryManController.deleteElement);
 
     router.patch('/activate/:id',verifAuth, haveAuthorisation.isAdmin, DeliveryManController.validateDeliveryMan);
     router.patch('/inactivate/:id',verifAuth, haveAuthorisation.isAdmin, DeliveryManController.inactivateDeliveryMan);

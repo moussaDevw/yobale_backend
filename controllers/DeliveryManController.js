@@ -212,3 +212,32 @@ exports.inactivateDeliveryMan = (req, res) => {
     }
 }
 
+
+
+exports.deleteElement = async (req, res) => {
+    try {
+        let deletedElement = await DeliveryMan.destroy({where: {id: req.params.id}});
+   
+        return res.status(200).json({ error: false, deletedElement});
+
+    } catch (error) {
+        try{
+           if(error.name === "SequelizeForeignKeyConstraintError"){
+
+            let deletedElement = await DeliveryMan.update({
+                deleted: 1,
+            }, {
+                where: { id: req.params.id }
+            });
+            return res.status(200).json({ error: false, deletedElement});
+           }else {
+            return res.status(400).json({ error: false, message: "une erreur inconue est survenue"});
+           }
+        }catch(err) {
+            console.log(err)
+            return res.status(500).json({ error: true, message: 'server problem' })
+        }
+       
+    }
+          
+}
