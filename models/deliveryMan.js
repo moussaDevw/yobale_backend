@@ -46,6 +46,11 @@ const deliveryman = connection.define('delivery_man', {
         allowNull: true,
         defaultValue: false,
     },
+    deleted: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+        defaultValue: false,
+    },
 
 });
 

@@ -16,7 +16,12 @@ const status = connection.define('status', {
         type: Sequelize.BOOLEAN,
         allowNull: true,
         defaultValue: true,
-    }
+    },
+    deleted: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+        defaultValue: false,
+    },
 });
 
 module.exports = status;

@@ -5,7 +5,7 @@ const {  validationResult} = require('express-validator');
 
 exports.getAllCitys = (req, res) => {
     try {
-        City.findAll()
+        City.findAll( { where : { deleted: 0 }})
         .then((cities) => {
             res.status(200).json({error: false, cities })
         })
@@ -47,17 +47,18 @@ exports.updateCity = (req, res) => {
             return res.status(400).json({ error: true, message: resultError });
         }
         if(!req.params.id) return res.status(400).json({ error: true, updatedCity:{}, message:"identifiant de la ville n'est pas était envoyé" })
-        let { name, active } = req.body;
+        let { name, active, deleted } = req.body;
 
         City.update({
             name,
-            active
+            active,
+            deleted
         }, {
             where: { id: req.params.id }
         })
         .then( async () => {
             let updatedCity = await City.findByPk(req.params.id);
-            console.log(updatedCity)
+
             if(!updatedCity) return res.status(400).json({ error: true, updatedCity:{}, message:"la ville modifier est introuvabe" })
             res.status(202).json({ error: false, updatedCity })
         })
@@ -75,6 +76,33 @@ exports.getOneCity = async (req, res) => {
        .catch(err => res.status(404).json({ error: true, message: 'City not found' })) 
     } catch (error) {
         res.status(500).json({ error: true, message: 'server problem' });
+    }
+          
+}
+exports.deleteElement = async (req, res) => {
+    try {
+        let deletedElement = await City.destroy({where: {id: req.params.id}});
+   
+        return res.status(200).json({ error: false, deletedElement});
+
+    } catch (error) {
+        try{
+           if(error.name === "SequelizeForeignKeyConstraintError"){
+
+            let deletedElement = await City.update({
+                deleted: 1,
+            }, {
+                where: { id: req.params.id }
+            });
+            return res.status(200).json({ error: false, deletedElement});
+           }else {
+            return res.status(400).json({ error: false, message: "une erreur inconue est survenue"});
+           }
+        }catch(err) {
+            console.log(err)
+            res.status(500).json({ error: true, message: 'server problem' })
+        }
+       
     }
           
 }

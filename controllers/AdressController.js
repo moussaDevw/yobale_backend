@@ -5,7 +5,7 @@ const {  validationResult} = require('express-validator');
 
 exports.getAllAdress = (req, res) => {
     try {
-        Adress.findAll()
+        Adress.findAll({where: {deleted: 0}})
         .then((adresses) => {
             res.status(200).json({error: false, adresses })
         })
@@ -17,7 +17,7 @@ exports.getAllAdress = (req, res) => {
 
 exports.getAllUserAdress = (req, res) => {
     try {
-        Adress.findAll({where: { userId: req.params.id}})
+        Adress.findAll({where: { userId: req.params.id, deleted: 0}})
         .then((adresses) => {
             res.status(200).json({error: false, adresses })
         })

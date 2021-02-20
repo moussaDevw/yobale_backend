@@ -4,7 +4,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-const config = require('./config.json');
+const CONFIG = require('./config.js');
 const mysql = require('mysql2/promise');
 
 const dotenv = require('dotenv');
@@ -14,6 +14,9 @@ const db = require('./config/database')
 
 const fileUpload = require('express-fileupload');
 
+var bcrypt = require('bcryptjs');
+var jwt = require('jsonwebtoken');
+
 
 const http = require('http');
 const socketio = require('socket.io');
@@ -22,7 +25,7 @@ const socketio = require('socket.io');
 /****************     MODELS      *****************/
 
 const Adress = require(('./models/adress'));
-const Authorisation = require('./models/authorisation');
+// const Authorisation = require('./models/authorisation');
 const Category = require('./models/category');
 const Delivery = require('./models/delivery');
 
@@ -47,7 +50,7 @@ const adress = require('./routes/adress');
 const categories = require('./routes/category');
 const types = require('./routes/types');
 const cities = require('./routes/city');
-const authorisations = require('./routes/authorisation');
+// const authorisations = require('./routes/authorisation');
 const sign = require('./routes/auth')
 const deliveryMan = require('./routes/deliveryMan')
 const shop = require('./routes/shop')
@@ -89,7 +92,7 @@ const product = require('./routes/product')
     initialize();
     async function initialize() {
         // create db if it doesn't already exist
-        const { host, port, user, password, database } = config.database;
+        const { host, port, user, password, database } = CONFIG.database;
         const connection = await mysql.createConnection({ host, port, user, password });
         await connection.query(`CREATE DATABASE IF NOT EXISTS \`${database}\`;`);
     }
@@ -103,7 +106,7 @@ const product = require('./routes/product')
     app.use('/city', cities)
     app.use('/menu-shop', menu)
     app.use('/product', product)
-    app.use('/authorisation', authorisations)
+    // app.use('/authorisation', authorisations)
     app.use('/delivery-man', deliveryMan)
     app.use('/shop', shop)
     app.use(sign)
@@ -136,11 +139,11 @@ const product = require('./routes/product')
     //     },
     // });
 
-    Authorisation.belongsTo(Type, {
-        foreignKey: {
-            allowNull: false,
-        },
-    });
+    // Authorisation.belongsTo(Type, {
+    //     foreignKey: {
+    //         allowNull: false,
+    //     },
+    // });
 
 
     SousCategory.belongsTo(Category, {
@@ -256,52 +259,54 @@ const product = require('./routes/product')
 const io = socketio(server);
 
 io.on('connect', socket => {
-   console.log('connected', socket.id)
+//    console.log('connected', socket.id)
 
 });
 
-  server.listen(5000, () => console.log('Server ON ' + 5000))
-// db.sync()
-db.sync({force: true})
+  server.listen(process.env.PORT, () => console.log('Server ON ' + process.env.PORT))
+
+  if(false){
+
+    db.sync({force: true})
           .then(result => {
-            Type.create({
-                name: "superAdmin",
-                active: true,
+            Type.bulkCreate([
+                {
+                    name: "super admin",
+                    active: true,
+                },
+                {
+                    name: "admin",
+                    active: true,
+                },
+                {
+                    name: "client",
+                    active: true,
+                },
+                {
+                    name: "magasin / restaurant",
+                    active: true,
+                },
+                {
+                    name: "livreur",
+                    active: true,
+                },
+            ])
+            .then( async (Type) => {
+                const salt = await bcrypt.genSalt(10);
+                let hashedPassword = await bcrypt.hash("yobalapp.com", salt);
+                User.create({ 
+                    fullName : "admin admin", 
+                    email : "admin@admin.com", 
+                    phone: "+2213112111", 
+                    password: hashedPassword, 
+                    active: 1, 
+                    typeId: 1
+                })
             })
-            .then((Type) => {
-    console.log("admin type created")
-Authorisation.bulkCreate([{
-name: "authorisation",
-canGet: true,
-canPost: true,
-canPut: true,
-canPatch: true,
-canDelete: true,
-typeId: Type.id
-},
-{
-    name: "category",
-    canGet: true,
-    canPost: true,
-    canPut: true,
-    canPatch: true,
-    canDelete: true,
-    typeId: Type.id
-    },
-    {
-    name: "type",
-    canGet: true,
-    canPost: true,
-    canPut: true,
-    canPatch: true,
-    canDelete: true,
-    typeId: Type.id
-    },
-]);
-})
-            .catch((err) => {console.log("admin type created")})
+            .catch((err) => {})
 
           })
           .catch((err) => {
-              console.log('error: ', err)
+            //   console.log('error: ', err)
           })
+  }

@@ -21,7 +21,33 @@ exports.getAllShop = (req, res) => {
                 { model: City },
                 { model: Category },
                 { model: SousCategory },
+            ],
+            where : { deleted: 0 }
+
+        })
+        .then((shops) => {
+            res.status(200).json({error: false, shops })
+        })
+        .catch(err => res.status(402).json({ error: true, message: "nous n'avons pas pus récupérer les information  des magasins" }))
+
+    } catch (err) {
+        res.status(500).json({ error: true, message: 'server problem' })
+    }
+}
+
+exports.getShopCategorie = (req, res) => {
+    try {
+        Shop.findAll( {
+            include: [
+                { model: City },
+                { model: Category },
+                { model: SousCategory },
             ]
+        }, {
+            where: {
+                categorieId: req.param.categoryId,
+                deleted: 0,
+            }
         })
         .then((shops) => {
             res.status(200).json({error: false, shops })
@@ -35,7 +61,7 @@ exports.getAllShop = (req, res) => {
 
 exports.getAllActiveShop = (req, res) => {
     try {
-        Shop.findAll({where: {active: true}})
+        Shop.findAll({where: {active: true, deleted: 0}})
         .then((validateShop) => {
             res.status(200).json({error: false, validateShop })
         })
@@ -47,7 +73,7 @@ exports.getAllActiveShop = (req, res) => {
 
 exports.getAllInvalidateShop = (req, res) => {
     try {
-        Shop.findAll({where: {active: false}})
+        Shop.findAll({where: {active: false, deleted: 0}})
         .then((invalidateShop) => {
             res.status(200).json({error: false, invalidateShop })
         })
@@ -60,9 +86,9 @@ exports.getAllInvalidateShop = (req, res) => {
 exports.storeShop = (req, res) => {
     try {
         let resultError= validationResult(req).array();
-
+        // console.log(resultError)
         if(resultError.length > 0){  
-            return res.status(400).json({ error: true, message: resultError });
+            return res.status(403).json({ error: true, errorType: "validation", message: resultError });
         }   
         let { 
             name,
@@ -96,7 +122,9 @@ exports.storeShop = (req, res) => {
 
             res.status(201).json({ error: false, addedShop });
         })
-        .catch((err) => res.status(400).json({ error: true,err, message: "nous n'avons pas pus ajouter les information  du magasin" }));
+        .catch((err) => {
+            // console.log(err)
+            res.status(405).json({ error: true,err, message: "nous n'avons pas pus ajouter les information  du magasin" })});
     } catch (error) {
         res.status(500).json({ error: true, message: 'server problem' });
     }
@@ -179,7 +207,7 @@ exports.showOneShop = async (req, res) => {
 
 exports.validateShop = async (req, res) => {
     try {
-
+        console.log(req.params)
             let validatedShop = await Shop.findByPk(req.params.id);
             if(!validatedShop){
                 return res.status(403).json({error: true, message: "nous avons pas trouver ce shop"})
@@ -201,8 +229,8 @@ exports.validateShop = async (req, res) => {
                 // return res.status(300).json({error: true, data: "on peut pa hacher le mot de passe" });
             }
 
-            let typesUsers = await Type.findOne({where: { name : "shop"}});
-
+            let typesUsers = await Type.findOne({where: { name : "magasin / restaurant"}});
+            
             let shopAccount = await User.create({
                 name,
                 email : validatedShop.email, 
@@ -249,7 +277,7 @@ exports.validateShop = async (req, res) => {
 
             res.status(200).json({ error: false, validatedShop, shopAccount, activated: true })
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         res.status(500).json({ error: true, message: 'server problem' })
     }
 }
@@ -275,12 +303,7 @@ exports.inactivateShop = (req, res) => {
 
 exports.uploadBg = async (req, res) => {
     try {
-        const fileTypes = [
-            'jpeg',
-            'jpg',
-            'pdf',
-            'png'
-        ];
+     
         if (req.body.data === null || req.body.data === undefined) {
         return res.status(400).json({ msg: 'No file uploaded' });
         }
@@ -289,23 +312,33 @@ exports.uploadBg = async (req, res) => {
         let base64Image = file.split(';base64,').pop();
         
         const ext = file.substring(file.indexOf("/")+1, file.indexOf(";base64"));
-        const fileType = file.substring("data:".length,file.indexOf("/"));
+
         
         // const ext = base64Image.substring(base64Image.indexOf("/")+1, base64Image.indexOf(";base64"));
         
         let fileName = moment().format('YYYY-MM-DD-HH-mm:ss') + "." + ext
           if(req.body.fileType === "image"){
         
-            fs.writeFile(`public/shopimage/${fileName}`, base64Image, {encoding: 'base64'}, (err) => {
-              if (err) {
-                  console.log(err)
-                return res.status(500).json({ error: true, err});
-              }
-              return res.status(200).json({ realName: req.body.realName, fileName, filePath: `/uploads/images/${fileName}` });
+            fs.writeFile(`public/shopimage/${fileName}`, base64Image, {encoding: 'base64'}, async (err) => {
+                if (err) {
+                    // console.log(err)
+                    return res.status(500).json({ error: true, err});
+                }
+
+               /* supression de l'image existant sur le dossier */
+                try {
+                    fs.unlink(`public/${req.body.oldPicture}`, (err) => {
+                        // console.log(err)
+                    }) 
+                } catch (error) {
+                    // console.log(error)
+                }
+                
+                return res.status(200).json({ realName: req.body.realName, fileName, fileLink: `shopimage/${fileName}` });
            });
           }
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         res.status(500).json({ error: true, message: 'server problem' })
     }      
 }

@@ -15,6 +15,11 @@ const order_product = connection.define('order_product', {
         type: Sequelize.INTEGER,
         allowNull: false,
     },
+    deleted: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+        defaultValue: false,
+    },
     
 });
 

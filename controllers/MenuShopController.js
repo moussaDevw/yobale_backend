@@ -8,7 +8,8 @@ exports.getAllForShop = (req, res) => {
     try {
         MenuShop.findAll({
             where:{
-                shopId: req.params.id
+                shopId: req.params.id,
+                deleted:0
             },
             include:[
             {
@@ -20,7 +21,7 @@ exports.getAllForShop = (req, res) => {
             res.status(200).json({error: false, menuShop })
         })
         .catch(err => {
-            console.log(err)
+            // console.log(err)
             res.status(404).json({ 
             error: true, err, message: 'menu not found !' 
         })})

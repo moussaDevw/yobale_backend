@@ -26,7 +26,12 @@ const order = connection.define('order', {
     payed:{
         type: Sequelize.BOOLEAN,
         allowNull: false,
-    }
+    },
+    deleted: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+        defaultValue: false,
+    },
 });
 
 module.exports = order;

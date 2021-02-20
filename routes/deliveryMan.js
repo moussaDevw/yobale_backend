@@ -50,12 +50,12 @@ const haveAuthorisation = require('./../middleware/haveAuthorisation')
         .optional()
         .isLength({ min: 10})
       
-    ],verifAuth, DeliveryManController.updateDeliveryMan);
+    ],verifAuth,haveAuthorisation.isLivreur, DeliveryManController.updateDeliveryMan);
 
     router.get('/:id', DeliveryManController.showOneDeliveryMan);
 
-    router.patch('/activate/:id',verifAuth, haveAuthorisation.activateAccount, DeliveryManController.validateDeliveryMan);
-    router.patch('/inactivate/:id',verifAuth, haveAuthorisation.activateAccount, DeliveryManController.inactivateDeliveryMan);
+    router.patch('/activate/:id',verifAuth, haveAuthorisation.isAdmin, DeliveryManController.validateDeliveryMan);
+    router.patch('/inactivate/:id',verifAuth, haveAuthorisation.isAdmin, DeliveryManController.inactivateDeliveryMan);
 
 
 module.exports = router;

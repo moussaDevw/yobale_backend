@@ -5,7 +5,7 @@ const {  validationResult} = require('express-validator');
 
 exports.getAll = (req, res) => {
     try {
-        Product.findAll()
+        Product.findAll( { where : { deleted: 0 }})
         .then((product) => {
             res.status(200).json({error: false, product })
         })

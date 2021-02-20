@@ -19,7 +19,12 @@ const delevery = connection.define('delevery', {
         type: Sequelize.BOOLEAN,
         allowNull: true,
         defaultValue:false,
-    }
+    },
+    deleted: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+        defaultValue: false,
+    },
 
 });
 

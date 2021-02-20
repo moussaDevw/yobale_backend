@@ -20,7 +20,7 @@ exports.updateUser = (req, res) => {
 
 exports.getAllUsers = (req, res) => {
 
-    User.findAll({ include: [{ model: Type}] })
+    User.findAll({ include: [{ model: Type}], where : { deleted: 0 } })
     .then((users) => res.status(200).json({error: false, data: users }) )
     .catch(err => res.status(200).json({error: true, data: users }))
 

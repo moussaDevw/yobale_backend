@@ -2,6 +2,7 @@ const DeliveryMan = require('../models/deliveryman');
 const User = require('./../models/user');
 const City = require('./../models/city');
 const Delivery = require('./../models/delivery');
+const Type = require('./../models/type');
 
 var bcrypt = require('bcryptjs');
 
@@ -9,7 +10,7 @@ const {  validationResult} = require('express-validator');
 
 exports.getAllDeliveryMan = (req, res) => {
     try {
-        DeliveryMan.findAll()
+        DeliveryMan.findAll( { where : { deleted: 0 }})
         .then((deliveryMen) => {
             res.status(200).json({error: false, deliveryMen })
         })
@@ -22,7 +23,7 @@ exports.getAllDeliveryMan = (req, res) => {
 
 exports.getAllActiveDeliveryMan = (req, res) => {
     try {
-        DeliveryMan.findAll({where: {active: true}})
+        DeliveryMan.findAll({where: {active: true, deleted: 0}})
         .then((validateDeliveryMen) => {
             res.status(200).json({error: false, validateDeliveryMen })
         })
@@ -34,7 +35,7 @@ exports.getAllActiveDeliveryMan = (req, res) => {
 
 exports.getAllInvalidateDeliveryMan = (req, res) => {
     try {
-        DeliveryMan.findAll({where: {active: false}})
+        DeliveryMan.findAll({where: {active: false, deleted: 0}})
         .then((invalidateDeliveryMen) => {
             res.status(200).json({error: false, invalidateDeliveryMen })
         })
@@ -49,7 +50,7 @@ exports.storeDeliveryMan = (req, res) => {
         let resultError= validationResult(req).array();
 
         if(resultError.length > 0){  
-            return res.status(400).json({ error: true, validator:true, message: resultError });
+            return res.status(400).json({ error: true, validator:true, errorType: "validation" , message: resultError });
         }   
         let { allWeek, 
             allDay, 
@@ -83,7 +84,7 @@ exports.updateDeliveryMan = (req, res) => {
         let resultError= validationResult(req).array();
 
         if(resultError.length > 0){  
-            return res.status(400).json({ error: true, message: resultError });
+            return res.status(400).json({ error: true, errorType: "validation" , message: resultError });
         }   
 
         let { 
@@ -131,19 +132,19 @@ exports.showOneDeliveryMan = async (req, res) => {
 
         if(!deliveryMan) return res.status(400).json({ error: true, message: 'livreur non trouvé' }); 
         
-        let deliveries = await Delivery.findAll({where: { deliveryManId: req.params.id }});
+        let deliveries = await Delivery.findAll({where: { deliveryManId: req.params.id, deleted:0 }});
         deliveryMan.setDataValue('deliveries', deliveries );
         res.status(200).json({error: false, deliveryMan});    
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         res.status(500).json({ error: true, err: error, message: 'server problem' });
     }
 }
 
-exports.validateDeliveryMan = (req, res) => {
+exports.validateDeliveryMan = async (req, res) => {
     try {
-        DeliveryMan.update({active: true}, { where: { id: req.params.id } })
-        .then( async (result) => {
+        await DeliveryMan.update({active: true}, { where: { id: req.params.id } })
+        
             let validatedDeliveryMan = await DeliveryMan.findByPk(req.params.id);
 
             validatedDeliveryMan = validatedDeliveryMan.toJSON();
@@ -160,13 +161,15 @@ exports.validateDeliveryMan = (req, res) => {
 
                 let hashedPassword = await bcrypt.hash(password, salt);
 
+                let typesUsers = await Type.findOne({where: { name : "livreur"}});
+                
                 let deliveryManAccount = await User.create({
                     fullName,
                     email: validatedDeliveryMan.email,
                     phone: validatedDeliveryMan.phone,
                     password: hashedPassword,
                     active: 1,
-                    typeId: 2
+                    typeId: typesUsers.dataValues.id, // id type user in model type
                 });
 
                 /************  END creating user account *****************/
@@ -184,11 +187,12 @@ exports.validateDeliveryMan = (req, res) => {
            
 
           
-        })
-        .catch(err => {
-            res.status(400).json({ error: true,err:err, message: 'can not activate' });
-        })
+        
+        // .catch(err => {
+        //     res.status(400).json({ error: true,err:err, message: 'can not activate' });
+        // })
     } catch (error) {
+        // console.log(error)
         res.status(500).json({ error: true, message: 'server problem' })
     }
 }

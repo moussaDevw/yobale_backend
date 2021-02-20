@@ -9,6 +9,7 @@ const haveAuthorisation = require('./../middleware/haveAuthorisation');
 
 
     router.get('', ShopController.getAllShop);
+    router.get('/categorie/:categoryId', ShopController.getShopCategorie);
 
     router.get('/validated', ShopController.getAllActiveShop);
 
@@ -55,10 +56,8 @@ const haveAuthorisation = require('./../middleware/haveAuthorisation');
         .isString(),
         body('tag2').optional()
         .isString(),
-        body('bgImage').optional()
-        .isString(),
-        body('logo').optional()
-        .isString(),
+        body('bgImage').optional(),
+        body('logo').optional(),
         body('description').optional()
         .isString()
         .optional(),
@@ -70,12 +69,12 @@ const haveAuthorisation = require('./../middleware/haveAuthorisation');
         .trim(),
         body('phone')
         .isLength({ min: 10}),
-    ],verifAuth, ShopController.updateShop);
+    ],verifAuth, haveAuthorisation.isShop, ShopController.updateShop);
 
     router.get('/:id', ShopController.showOneShop);
 
-    router.patch('/activate/:id',verifAuth, haveAuthorisation.activateAccount, ShopController.validateShop);
+    router.patch('/activate/:id',verifAuth, haveAuthorisation.isAdmin, ShopController.validateShop);
 
-    router.patch('/inactivate/:id',verifAuth, haveAuthorisation.activateAccount, ShopController.inactivateShop);
+    router.patch('/inactivate/:id',verifAuth, haveAuthorisation.isAdmin, ShopController.inactivateShop);
 
 module.exports = router;

@@ -7,23 +7,17 @@ const haveAuthorisation = require('../middleware/haveAuthorisation')
 const verifAuth = require('../middleware/auth')
 
 
-router.get('', verifAuth, CityController.getAllCitys);
+router.get('',  CityController.getAllCitys);
 
-router.get('/:id', verifAuth, CityController.getOneCity);
+router.get('/:id', CityController.getOneCity);
+router.delete('/:id', verifAuth, haveAuthorisation.isAdmin,  CityController.deleteElement);
 
 router.post('', [
     body('name')
     .isString()
-    .custom( async (value) => {
-        return City.findOne({where:{name: value }}).then(isExiste =>{
-            if(isExiste){
-                return Promise.reject('name is already existe');
-            }
-        });
-    })
     .trim(),
     body('active').isBoolean().optional(),
-], verifAuth, haveAuthorisation.general, CityController.storeCity);
+], verifAuth, haveAuthorisation.isAdmin, CityController.storeCity);
 
 router.put('/:id', [
     body('name')
@@ -31,6 +25,6 @@ router.put('/:id', [
     .trim(),
     body('active').isBoolean(),
 
-], verifAuth, haveAuthorisation.general, CityController.updateCity);
+], verifAuth, haveAuthorisation.isAdmin, CityController.updateCity);
 
 module.exports = router;

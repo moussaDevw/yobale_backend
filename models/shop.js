@@ -23,25 +23,30 @@ const shop = connection.define('shop', {
     },
     tag:{
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
     },
     tag2:{
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
     },
     bgImage:{
         type: Sequelize.TEXT,
-        allowNull: false,
+        allowNull: true,
     },
     logo:{
         type: Sequelize.TEXT,
-        allowNull: false,
+        allowNull: true,
     },
     description: {
         type: Sequelize.TEXT,
         allowNull: true,
     },
     active: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+        defaultValue: false,
+    },
+    deleted: {
         type: Sequelize.BOOLEAN,
         allowNull: true,
         defaultValue: false,

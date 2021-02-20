@@ -28,6 +28,11 @@ const product = connection.define('product', {
         allowNull: true,
         defaultValue: false,
     },
+    deleted: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+        defaultValue: false,
+    },
    
 });
 

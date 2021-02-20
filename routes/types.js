@@ -24,7 +24,7 @@ router.post('', [
     .trim(),
     body('active').isBoolean().optional(),
 
-], verifAuth, haveAuthorisation.general, TypeController.storeType);
+], verifAuth, haveAuthorisation.isSuperAdmin, TypeController.storeType);
 
 router.put('/:id', [
     body('name')
@@ -32,6 +32,6 @@ router.put('/:id', [
     .trim(),
     body('active').isBoolean(),
 
-], verifAuth, haveAuthorisation.general, TypeController.updateType);
+], verifAuth, haveAuthorisation.isSuperAdmin, TypeController.updateType);
 
 module.exports = router;

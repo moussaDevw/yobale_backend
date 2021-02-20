@@ -10,12 +10,17 @@ const city = connection.define('city', {
     name: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
+        unique: false,
     },
     active: {
         type: Sequelize.BOOLEAN,
         allowNull: true,
         defaultValue: true,
+    },
+    deleted: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+        defaultValue: false,
     },
 
 });

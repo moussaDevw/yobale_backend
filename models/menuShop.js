@@ -20,6 +20,11 @@ const menu_shop = connection.define('menu_shop', {
         type: Sequelize.TEXT,
         allowNull: true,
     },
+    deleted: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+        defaultValue: false,
+    },
 });
 
 module.exports = menu_shop;

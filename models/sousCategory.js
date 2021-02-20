@@ -16,6 +16,11 @@ const sous_category = connection.define('sous_category', {
         allowNull: true,
         defaultValue: false,
     },
+    deleted: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+        defaultValue: false,
+    },
 });
 
 module.exports = sous_category;

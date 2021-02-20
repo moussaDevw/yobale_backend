@@ -5,7 +5,7 @@ const {  validationResult} = require('express-validator');
 
 exports.getAllAuthorisation = (req, res) => {
     try {
-        Authorisation.findAll()
+        Authorisation.findAll( { where : { deleted: 0 }})
         .then((authorisatons) => {
             res.status(200).json({error: false, authorisatons })
         })
@@ -71,7 +71,7 @@ exports.updateAuthorisation = (req, res) => {
             where: { id: req.params.id }
         })
         .then( async () => {
-            let updatedAuthorisation = await Authorisation.findByPk(req.params.id);
+            let updatedAuthorisation = await Authorisation.findByPk(req.params.id,  { where : { deleted: 0 }});
             res.status(202).json({ error: false, updatedAuthorisation});
     
         })
@@ -83,7 +83,7 @@ exports.updateAuthorisation = (req, res) => {
 
 exports.getOneAuthorisation = async (req, res) => {
     try {
-        Authorisation.findByPk(req.params.id)
+        Authorisation.findByPk(req.params.id,  { where : { deleted: 0 }})
         .then(authorisation => res.status(200).json({error: false, authorisation}))
         .catch(err => res.status(404).json({ error: true, message: 'something went wrong' }))    
     } catch (error) {

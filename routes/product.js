@@ -36,8 +36,8 @@ router.put('/:id', [
 
 router.get('/:id', ProductController.showOne);
 
-router.patch('/activate/:id', verifAuth, haveAuthorisation.general, ProductController.activate);
+router.patch('/activate/:id', verifAuth, haveAuthorisation.isShop, ProductController.activate);
 
-router.patch('/inactivate/:id', verifAuth, haveAuthorisation.general, ProductController.inactivate);
+router.patch('/inactivate/:id', verifAuth, haveAuthorisation.isShop, ProductController.inactivate);
 
 module.exports = router;

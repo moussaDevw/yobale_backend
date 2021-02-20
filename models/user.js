@@ -33,6 +33,11 @@ const user = connection.define('user', {
         type: Sequelize.BOOLEAN,
         allowNull: true,
     },
+    deleted: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+        defaultValue: false,
+    },
 
 })
 

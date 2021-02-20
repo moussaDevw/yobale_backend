@@ -11,6 +11,8 @@ const verifAuth = require('./../middleware/auth')
 
 router.get('', CategoryController.getAllCategories);
 
+router.post('/upload-icon', CategoryController.uploadIcon);
+
   router.post('', [
     body('name')
     .isString()
@@ -25,7 +27,7 @@ router.get('', CategoryController.getAllCategories);
     body('sousCategory').isArray().optional(),
     body('icon').isString().isLength({ min: 2}),
     body('active').isBoolean().optional(),
-  ], verifAuth, haveAuthorisation.general, CategoryController.storeCategory);
+  ], verifAuth, haveAuthorisation.isAdmin, CategoryController.storeCategory);
 
 router.put('/:id', [
   body('name')
@@ -34,7 +36,7 @@ router.put('/:id', [
   body('sousCategory').isArray().optional(),
   body('icon').isString().isLength({ min: 2}),
   body('active').isBoolean().optional(),
-], verifAuth, haveAuthorisation.general, CategoryController.updateCategory);
+], verifAuth, haveAuthorisation.isAdmin, CategoryController.updateCategory);
 
 router.put('/sous-category/:id', [
   body('name')
@@ -42,14 +44,16 @@ router.put('/sous-category/:id', [
   .isLength({ min: 2}),
   body('icon').isString().isLength({ min: 2}),
   body('active').isBoolean().optional(),
-], verifAuth, haveAuthorisation.general, CategoryController.updateSousCategory);
+], verifAuth, haveAuthorisation.isAdmin, CategoryController.updateSousCategory);
 
 router.get('/:id', CategoryController.showOneCategory);
+router.delete('/:id', verifAuth, haveAuthorisation.isAdmin, CategoryController.deleteElement);
+
 router.get('/sous-category/:id', CategoryController.showOneSousCategory);
 
 
-router.patch('/activate/:id', verifAuth, haveAuthorisation.general, CategoryController.activateCategory);
+router.patch('/activate/:id', verifAuth, haveAuthorisation.isAdmin, CategoryController.activateCategory);
 
-router.patch('/inactivate/:id', verifAuth, haveAuthorisation.general, CategoryController.inactivateCategory);
+router.patch('/inactivate/:id', verifAuth, haveAuthorisation.isAdmin, CategoryController.inactivateCategory);
 
 module.exports = router;
