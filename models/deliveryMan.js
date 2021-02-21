@@ -51,6 +51,11 @@ const deliveryman = connection.define('delivery_man', {
         allowNull: true,
         defaultValue: false,
     },
+    blocked: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+        defaultValue: false,
+    },
 
 });
 

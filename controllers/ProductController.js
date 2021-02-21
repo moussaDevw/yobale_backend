@@ -56,6 +56,7 @@ exports.update = (req, res) => {
             active, 
             content,
             price,
+            bgImage,
             menuShopId,
          } = req.body;
 
@@ -64,6 +65,7 @@ exports.update = (req, res) => {
             active, 
             content,
             price,
+            bgImage,
             menuShopId,
         }, {
             where: { id: req.params.id }
@@ -114,4 +116,33 @@ exports.inactivate = (req, res) => {
     } catch (error) {
         res.status(500).json({ error: true, message: 'server problem' })
     }
+}
+
+
+exports.deleteElement = async (req, res) => {
+    try {
+        let deletedElement = await Product.destroy({where: {id: req.params.id}});
+   
+        return res.status(200).json({ error: false, deletedElement});
+
+    } catch (error) {
+        try{
+           if(error.name === "SequelizeForeignKeyConstraintError"){
+
+            let deletedElement = await Product.update({
+                deleted: 1,
+            }, {
+                where: { id: req.params.id }
+            });
+            return res.status(200).json({ error: false, deletedElement});
+           }else {
+            return res.status(400).json({ error: false, message: "une erreur inconue est survenue"});
+           }
+        }catch(err) {
+            console.log(err)
+            return res.status(500).json({ error: true, message: 'server problem' })
+        }
+       
+    }
+          
 }

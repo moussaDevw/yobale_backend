@@ -35,6 +35,7 @@ router.put('/:id', [
 ], ProductController.update);
 
 router.get('/:id', ProductController.showOne);
+router.delete('/:id', verifAuth, haveAuthorisation.isShop, ProductController.deleteElement);
 
 router.patch('/activate/:id', verifAuth, haveAuthorisation.isShop, ProductController.activate);
 

@@ -94,6 +94,7 @@ const product = require('./routes/product')
         // create db if it doesn't already exist
         const { host, port, user, password, database } = CONFIG.database;
         const connection = await mysql.createConnection({ host, port, user, password });
+        // await connection.query(`DROP DATABASE IF EXISTS \`${database}\`;`);
         await connection.query(`CREATE DATABASE IF NOT EXISTS \`${database}\`;`);
     }
 
@@ -127,17 +128,27 @@ const product = require('./routes/product')
         },
     });
 
-    // User.belongsTo(Shop, {
-    //     foreignKey: {
-    //         allowNull: false,
-    //     },
-    // });
+    User.hasOne(Shop, {
+        foreignKey: {
+            allowNull: true,
+        },
+    });
+    Shop.belongsTo(User, {
+        foreignKey: {
+            allowNull: true,
+        },
+    });
 
-        // User.belongsTo(DeliveryMan, {
-    //     foreignKey: {
-    //         allowNull: false,
-    //     },
-    // });
+    Deliveryman.belongsTo(User, {
+        foreignKey: {
+            allowNull: true,
+        },
+    });
+    User.hasOne(Deliveryman, {
+        foreignKey: {
+            allowNull: true,
+        },
+    });
 
     // Authorisation.belongsTo(Type, {
     //     foreignKey: {
@@ -265,7 +276,7 @@ io.on('connect', socket => {
 
   server.listen(process.env.PORT, () => console.log('Server ON ' + process.env.PORT))
 
-//   if(false){
+//   if(true){
 
 //     db.sync({force: true})
 //           .then(result => {

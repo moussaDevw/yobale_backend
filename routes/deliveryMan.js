@@ -57,6 +57,7 @@ const haveAuthorisation = require('./../middleware/haveAuthorisation')
 
     router.patch('/activate/:id',verifAuth, haveAuthorisation.isAdmin, DeliveryManController.validateDeliveryMan);
     router.patch('/inactivate/:id',verifAuth, haveAuthorisation.isAdmin, DeliveryManController.inactivateDeliveryMan);
+    router.patch('/deblock/:id',verifAuth, haveAuthorisation.isAdmin, DeliveryManController.deblockDeliveryMan);
 
 
 module.exports = router;

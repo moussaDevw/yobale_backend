@@ -51,6 +51,11 @@ const shop = connection.define('shop', {
         allowNull: true,
         defaultValue: false,
     },
+    blocked: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+        defaultValue: false,
+    },
 
 });
 

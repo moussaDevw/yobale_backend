@@ -143,7 +143,6 @@ exports.showOneDeliveryMan = async (req, res) => {
 
 exports.validateDeliveryMan = async (req, res) => {
     try {
-        await DeliveryMan.update({active: true}, { where: { id: req.params.id } })
         
             let validatedDeliveryMan = await DeliveryMan.findByPk(req.params.id);
 
@@ -171,7 +170,7 @@ exports.validateDeliveryMan = async (req, res) => {
                     active: 1,
                     typeId: typesUsers.dataValues.id, // id type user in model type
                 });
-
+                await DeliveryMan.update({active: true, userId: deliveryManAccount.id}, { where: { id: req.params.id } })
                 /************  END creating user account *****************/
 
                   /*****   sending email with account details + (password) ********/
@@ -196,18 +195,21 @@ exports.validateDeliveryMan = async (req, res) => {
         res.status(500).json({ error: true, message: 'server problem' })
     }
 }
-exports.inactivateDeliveryMan = (req, res) => {
+exports.inactivateDeliveryMan = async (req, res) => {
+
     try {
-        DeliveryMan.update({active: false}, { where: { id: req.params.id } })
-        .then( async (result) => {
-            let validatedDeliveryMan = await DeliveryMan.findByPk(req.params.id);
-            /*****   sending email ********/
-            res.status(200).json({ error: false, validatedDeliveryMan, inactivate: true })
-        })
-        .catch(err => {
-            res.status(400).json({ error: true, message: 'can not activate' });
-        })
+        const result = await DeliveryMan.update({ blocked:true}, { where: { id: req.params.id } })
+        if (!result) return res.status(400).json({ error: true, message: 'On a pas pus désactivé cette utlisateur' });
+
+        const userDelivery = await DeliveryMan.findOne( { where: { id: req.params.id } })
+
+        let blockedUser = await User.update({  blocked: true }, {where: {id: userDelivery.userId}})
+        if (!blockedUser) return res.status(400).json({ error: true, message: 'On a pas pus désactivé cette utlisateur' });
+        /*****   sending email ********/
+        return res.status(200).json({ error: false, blockedUser, inactivate: true })
+      
     } catch (error) {
+        console.log(error)
         res.status(500).json({ error: true, message: 'server problem' })
     }
 }
@@ -241,3 +243,22 @@ exports.deleteElement = async (req, res) => {
     }
           
 }
+
+exports.deblockDeliveryMan = async (req, res) => {
+    try {
+        const result = await DeliveryMan.update({ blocked:false}, { where: { id: req.params.id } })
+        if (!result) return res.status(400).json({ error: true, message: 'On a pas pus désactivé cette utlisateur' });
+
+        const userShop = await DeliveryMan.findOne( { where: { id: req.params.id } })
+
+        let blockedUser = await User.update({  blocked: false }, {where: {id: userShop.userId}})
+        if (!blockedUser) return res.status(400).json({ error: true, message: 'On a pas pus désactivé cette utlisateur' });
+        /*****   sending email ********/
+        return res.status(200).json({ error: false, blockedUser, inactivate: true })
+      
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ error: true, message: 'server problem' })
+    }
+}
+

@@ -17,6 +17,7 @@ exports.isSuperAdmin= async (req, res, next) => {
 
 exports.isAdmin = async (req, res, next) => {
     try{
+        console.log(req.user)
         if(req.user.typeId === 1 || req.user.typeId === 2 ){
             return next()
         }

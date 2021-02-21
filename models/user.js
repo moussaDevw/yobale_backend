@@ -38,6 +38,11 @@ const user = connection.define('user', {
         allowNull: true,
         defaultValue: false,
     },
+    blocked: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+        defaultValue: false,
+    },
 
 })
 

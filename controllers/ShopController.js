@@ -207,8 +207,8 @@ exports.showOneShop = async (req, res) => {
 
 exports.validateShop = async (req, res) => {
     try {
-        console.log(req.params)
-            let validatedShop = await Shop.findByPk(req.params.id);
+
+        let validatedShop = await Shop.findByPk(req.params.id);
             if(!validatedShop){
                 return res.status(403).json({error: true, message: "nous avons pas trouver ce shop"})
             }else{
@@ -269,7 +269,7 @@ exports.validateShop = async (req, res) => {
             ****************************** */
            
             // console.log(error, data)
-            let isValidatedShop = await Shop.update({active: true}, { where: { id: req.params.id } });
+            let isValidatedShop = await Shop.update({active: true, userId: shopAccount.id}, { where: { id: req.params.id } });
             if (!isValidatedShop) return res.status(400).json({ error: true, err, message: 'Le compte du magasin est créer mais la modification du magasin est corrompu ' });
 
             // .catch((error) => console.error(error));
@@ -283,18 +283,39 @@ exports.validateShop = async (req, res) => {
 }
 
 
-exports.inactivateShop = (req, res) => {
+exports.inactivateShop = async (req, res) => {
+    
     try {
-        Shop.update({active: false}, { where: { id: req.params.id } })
-        .then( async () => {
-            let validatedShop = await Shop.findByPk(req.params.id);
-            /*****   sending email ********/
-            res.status(200).json({ error: false, validatedShop, inactivate: true })
-        })
-        .catch(err => {
-            res.status(400).json({ error: true, message: 'can not activate' });
-        })
+        const result = await Shop.update({ blocked:true}, { where: { id: req.params.id } })
+        if (!result) return res.status(400).json({ error: true, message: 'On a pas pus désactivé cette utlisateur' });
+
+        const userShop = await Shop.findOne( { where: { id: req.params.id } })
+
+        let blockedUser = await User.update({  blocked: true }, {where: {id: userShop.userId}})
+        if (!blockedUser) return res.status(400).json({ error: true, message: 'On a pas pus désactivé cette utlisateur' });
+        /*****   sending email ********/
+        return res.status(200).json({ error: false, blockedUser, inactivate: true })
+      
     } catch (error) {
+        console.log(error)
+        res.status(500).json({ error: true, message: 'server problem' })
+    }
+}
+exports.deblockShop = async (req, res) => {
+    
+    try {
+        const result = await Shop.update({ blocked:false}, { where: { id: req.params.id } })
+        if (!result) return res.status(400).json({ error: true, message: 'On a pas pus désactivé cette utlisateur' });
+
+        const userShop = await Shop.findOne( { where: { id: req.params.id } })
+
+        let blockedUser = await User.update({  blocked: false }, {where: {id: userShop.userId}})
+        if (!blockedUser) return res.status(400).json({ error: true, message: 'On a pas pus désactivé cette utlisateur' });
+        /*****   sending email ********/
+        return res.status(200).json({ error: false, blockedUser, inactivate: true })
+      
+    } catch (error) {
+        console.log(error)
         res.status(500).json({ error: true, message: 'server problem' })
     }
 }

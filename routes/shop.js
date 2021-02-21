@@ -72,10 +72,10 @@ const haveAuthorisation = require('./../middleware/haveAuthorisation');
     ],verifAuth, haveAuthorisation.isShop, ShopController.updateShop);
 
     router.get('/:id', ShopController.showOneShop);
+
     router.delete('/:id',verifAuth, haveAuthorisation.isAdmin, ShopController.deleteElement);
-
     router.patch('/activate/:id',verifAuth, haveAuthorisation.isAdmin, ShopController.validateShop);
-
     router.patch('/inactivate/:id',verifAuth, haveAuthorisation.isAdmin, ShopController.inactivateShop);
+    router.patch('/deblock/:id',verifAuth, haveAuthorisation.isAdmin, ShopController.deblockShop);
 
 module.exports = router;
