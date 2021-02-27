@@ -48,10 +48,12 @@ const adress = connection.define('adress', {
     latitudeDelta: {
         type: Sequelize.FLOAT,
         allowNull: true,
+        defaultValue:null,
     },
     longitudeDelta: {
         type: Sequelize.FLOAT,
         allowNull: true,
+        defaultValue:null,
     },
     active: {
         type: Sequelize.BOOLEAN,

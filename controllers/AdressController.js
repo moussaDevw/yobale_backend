@@ -17,7 +17,7 @@ exports.getAllAdress = (req, res) => {
 
 exports.getAllUserAdress = (req, res) => {
     try {
-        Adress.findAll({where: { userId: req.params.id, deleted: 0}})
+        Adress.findAll({where: { userId: req.user.id, deleted: 0}})
         .then((adresses) => {
             res.status(200).json({error: false, adresses })
         })
