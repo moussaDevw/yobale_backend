@@ -9,7 +9,7 @@ exports.getAllAdress = (req, res) => {
         .then((adresses) => {
             res.status(200).json({error: false, adresses })
         })
-        .catch(err => res.status(404).json({ error: true, message: 'can not get adresses' }))
+        .catch(err => res.status(404).json({ error: true, err, message: 'can not get adresses' }))
     } catch (error) {
         res.status(500).json({ error: true, message: 'server problem' })
     }

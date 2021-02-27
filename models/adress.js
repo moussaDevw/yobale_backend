@@ -58,6 +58,12 @@ const adress = connection.define('adress', {
         allowNull: true,
         defaultValue:false,
     },
+    deleted: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+        defaultValue:false,
+    },
+
 });
 
 module.exports = adress;
