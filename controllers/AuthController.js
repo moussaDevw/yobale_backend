@@ -1,5 +1,5 @@
 const User = require('../models/user')
-// const Type = require('./../models/type')
+const Type = require('./../models/type')
 
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
@@ -46,6 +46,7 @@ exports.sginIn = async (req, res) => {
             res.status(400).json({error: true, data: err });
         }) 
     } catch (error) {
+        console.log(error)
         res.status(500).json({ error: true, message: "server problem" });
     }
      

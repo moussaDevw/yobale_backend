@@ -45,7 +45,8 @@ exports.storeAdress = async (req, res) => {
             latitude, 
             longitude, 
             latitudeDelta, 
-            longitudeDeltaactive,
+            longitudeDelta,
+            active,
         } = req.body;
 
         Adress.create({
@@ -59,7 +60,8 @@ exports.storeAdress = async (req, res) => {
             latitude, 
             longitude, 
             latitudeDelta, 
-            longitudeDeltaactive,
+            longitudeDelta,
+            active,
             userId: req.user.id,
         })
         .then( (adress) => {

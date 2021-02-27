@@ -23,8 +23,8 @@ const verifAuth = require('./../middleware/auth')
         body('codePostal').optional().isInt(),
         body('latitude').isFloat(),
         body('longitude').isFloat(),
-        body('latitudeDelta').isFloat(),
-        body('longitudeDelta').isFloat(),
+        body('latitudeDelta').optional().isFloat(),
+        body('longitudeDelta').optional().isFloat(),
         body('active').isBoolean(),
     ], verifAuth, AdressController.storeAdress);
 
@@ -40,8 +40,8 @@ const verifAuth = require('./../middleware/auth')
         body('codePostal').optional().isInt(),
         body('latitude').isFloat(),
         body('longitude').isFloat(),
-        body('latitudeDelta').isFloat(),
-        body('longitudeDelta').isFloat(),
+        body('latitudeDelta').optional().isFloat(),
+        body('longitudeDelta').optional().isFloat(),
         body('active').isBoolean(),
     ], verifAuth, AdressController.updateAdress);
 

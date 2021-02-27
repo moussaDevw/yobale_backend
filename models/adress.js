@@ -47,17 +47,17 @@ const adress = connection.define('adress', {
     },
     latitudeDelta: {
         type: Sequelize.FLOAT,
-        allowNull: false,
+        allowNull: true,
     },
     longitudeDelta: {
         type: Sequelize.FLOAT,
-        allowNull: false,
+        allowNull: true,
     },
     active: {
         type: Sequelize.BOOLEAN,
-        allowNull: false,
+        allowNull: true,
         defaultValue:false,
-    }
+    },
 });
 
 module.exports = adress;

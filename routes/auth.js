@@ -26,7 +26,7 @@ router.post('/signup',[
             throw new Error('existe');
         }
     }),
-    body('typeId').isInt(),
+    // body('typeId').isInt(),
 ], AuthController.sginIn);
 
   router.post('/signin',[
