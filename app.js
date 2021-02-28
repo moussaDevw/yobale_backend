@@ -128,12 +128,12 @@ const product = require('./routes/product')
         },
     });
 
-    City.belongsTo(Adress, {
+    Adress.belongsTo(City, {
         foreignKey: {
             allowNull: true,
         },
     });
-    Adress.hasOne(City, {
+    City.hasOne(Adress, {
         foreignKey: {
             allowNull: true,
         },
