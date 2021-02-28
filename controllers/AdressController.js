@@ -1,6 +1,7 @@
 
 const Adress = require('./../models/adress');
 const {  validationResult} = require('express-validator');
+const { Op } = require("sequelize");
 
 
 exports.getAllAdress = (req, res) => {
@@ -47,7 +48,18 @@ exports.storeAdress = async (req, res) => {
             latitudeDelta, 
             longitudeDelta,
             active,
+            city,
+            country,
         } = req.body;
+        let parameters = [
+            { 'name': { [Op.like]: '%' + city + '%' } }
+        ]
+        let existingCity = await Adress.findOne({where: {
+            [Op.or]: parameters
+        },});
+        if(!existingCity){
+            return res.status(400).json({error: true, message: "Nous travaillons pas dans cette zone"});
+        }
 
         Adress.create({
             streetName, 
@@ -63,6 +75,7 @@ exports.storeAdress = async (req, res) => {
             longitudeDelta,
             active,
             userId: req.user.id,
+            cityId: existingCity.id
         })
         .then( (adress) => {
             res.status(201).json({ error: false, adress });
