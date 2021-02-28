@@ -56,9 +56,9 @@ exports.storeAdress = async (req, res) => {
             { 'name': { [Op.like]: '%' + city + '%' } }
         ]
         let existingCity = await City.findOne({where: {
-            name: city
+            [Op.or]: parameters
         },});
-        console.log(existingCity, city)
+        
         if(!existingCity){
             return res.status(400).json({error: true, message: "Nous travaillons pas dans cette zone"});
         }
