@@ -1,5 +1,6 @@
 
 const Adress = require('./../models/adress');
+const City = require('./../models/city');
 const {  validationResult} = require('express-validator');
 const { Op } = require("sequelize");
 
@@ -54,7 +55,7 @@ exports.storeAdress = async (req, res) => {
         let parameters = [
             { 'name': { [Op.like]: '%' + city + '%' } }
         ]
-        let existingCity = await Adress.findOne({where: {
+        let existingCity = await City.findOne({where: {
             [Op.or]: parameters
         },});
         if(!existingCity){
