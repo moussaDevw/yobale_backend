@@ -83,6 +83,7 @@ exports.storeAdress = async (req, res) => {
         .catch((err) => res.status(400).json({ error: true, errors: err, message: 'problem while adding adress' }))
            
     } catch (error) {
+        console.log(error)
         res.status(500).json({ error: true, message: 'server problem' })
     } 
 }
