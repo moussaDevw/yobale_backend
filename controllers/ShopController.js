@@ -4,6 +4,8 @@ const City = require('./../models/city');
 const Type = require('./../models/type');
 const Category = require('./../models/category');
 const SousCategory = require('./../models/sousCategory');
+const Adress = require('./../models/adress');
+const { Op } = require("sequelize");
 
 var bcrypt = require('bcryptjs');
 const mailBodyHtml =  require('./../mailContent/shopAccountCreate')
@@ -35,18 +37,19 @@ exports.getAllShop = (req, res) => {
     }
 }
 
-exports.getShopCategorie = (req, res) => {
+exports.getShopCategorie = async (req, res) => {
     try {
-        Shop.findAll( {
-            include: [
-                { model: City },
-                { model: Category },
-                { model: SousCategory },
-            ]
-        }, {
+
+        let adressUser = await Adress.findByPk(req.params.adressId)
+
+        let parameters = [
+            {'categoryId': req.params.categoryId},
+            {'cityId': adressUser.cityId},
+        ]
+        Shop.findAll(  {
             where: {
-                categorieId: req.param.categoryId,
-                deleted: 0,
+                categoryId: req.params.categoryId,
+                cityId: adressUser.cityId
             }
         })
         .then((shops) => {
