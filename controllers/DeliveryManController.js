@@ -14,7 +14,7 @@ exports.getAllDeliveryMan = (req, res) => {
         .then((deliveryMen) => {
             res.status(200).json({error: false, deliveryMen })
         })
-        .catch(err => res.status(402).json({ error: true, message: 'can not get delevery men' }))
+        .catch(err => res.status(400).json({ error: true, message: 'can not get delevery men' }))
 
     } catch (err) {
         res.status(500).json({ error: true, message: 'server problem' })
@@ -27,7 +27,7 @@ exports.getAllActiveDeliveryMan = (req, res) => {
         .then((validateDeliveryMen) => {
             res.status(200).json({error: false, validateDeliveryMen })
         })
-        .catch(err => res.status(402).json({ error: true, message: 'can not get delevery men' }))
+        .catch(err => res.status(400).json({ error: true, message: 'can not get delevery men' }))
     } catch (err) {
         res.status(500).json({ error: true, message: 'server problem' })
     }
@@ -39,7 +39,7 @@ exports.getAllInvalidateDeliveryMan = (req, res) => {
         .then((invalidateDeliveryMen) => {
             res.status(200).json({error: false, invalidateDeliveryMen })
         })
-        .catch(err => res.status(402).json({ error: true, message: 'can not get delevery men' }))
+        .catch(err => res.status(400).json({ error: true, message: 'can not get delevery men' }))
     } catch (error) {
         res.status(500).json({ error: true, message: 'server problem' })
     }

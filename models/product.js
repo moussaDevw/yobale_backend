@@ -11,7 +11,7 @@ const product = connection.define('product', {
         type: Sequelize.STRING,
         allowNull: false,
     },
-    content: {
+    description: {
         type: Sequelize.TEXT,
         allowNull: true,
     },
@@ -19,7 +19,7 @@ const product = connection.define('product', {
         type: Sequelize.FLOAT,
         allowNull: false,
     },
-    bgImage:{
+    imageUri:{
         type: Sequelize.TEXT,
         allowNull: false,
     },

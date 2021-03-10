@@ -30,7 +30,7 @@ exports.getAllShop = (req, res) => {
         .then((shops) => {
             res.status(200).json({error: false, shops })
         })
-        .catch(err => res.status(402).json({ error: true, message: "nous n'avons pas pus récupérer les information  des magasins" }))
+        .catch(err => res.status(400).json({ error: true, message: "nous n'avons pas pus récupérer les information  des magasins" }))
 
     } catch (err) {
         res.status(500).json({ error: true, message: 'server problem' })
@@ -55,7 +55,7 @@ exports.getShopCategorie = async (req, res) => {
         .then((shops) => {
             res.status(200).json({error: false, shops })
         })
-        .catch(err => res.status(402).json({ error: true, message: "nous n'avons pas pus récupérer les information  des magasins" }))
+        .catch(err => res.status(400).json({ error: true, message: "nous n'avons pas pus récupérer les information  des magasins" }))
 
     } catch (err) {
         res.status(500).json({ error: true, message: 'server problem' })
@@ -68,7 +68,7 @@ exports.getAllActiveShop = (req, res) => {
         .then((validateShop) => {
             res.status(200).json({error: false, validateShop })
         })
-        .catch(err => res.status(402).json({ error: true, message: "nous n'avons pas pus récupérer les information  des magasins" }))
+        .catch(err => res.status(400).json({ error: true, message: "nous n'avons pas pus récupérer les information  des magasins" }))
     } catch (err) {
         res.status(500).json({ error: true, message: 'server problem' })
     }
@@ -80,7 +80,7 @@ exports.getAllInvalidateShop = (req, res) => {
         .then((invalidateShop) => {
             res.status(200).json({error: false, invalidateShop })
         })
-        .catch(err => res.status(402).json({ error: true, message: "nous n'avons pas pus récupérer les information  des magasins" }))
+        .catch(err => res.status(400).json({ error: true, message: "nous n'avons pas pus récupérer les information  des magasins" }))
     } catch (error) {
         res.status(500).json({ error: true, message: 'server problem' })
     }
