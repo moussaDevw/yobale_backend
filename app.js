@@ -94,7 +94,7 @@ const product = require('./routes/product')
         // create db if it doesn't already exist
         const { host, port, user, password, database } = CONFIG.database;
         const connection = await mysql.createConnection({ host, port, user, password });
-        // await connection.query(`DROP DATABASE IF EXISTS \`${database}\`;`);
+        await connection.query(`DROP DATABASE IF EXISTS \`${database}\`;`);
         await connection.query(`CREATE DATABASE IF NOT EXISTS \`${database}\`;`);
     }
 
@@ -293,18 +293,18 @@ io.on('connect', socket => {
 });
 
   server.listen(process.env.PORT, () => console.log('Server ON ' + process.env.PORT))
-    db.sync().then(() => {
-        console.log("database connected");
-    })
-.catch((err) => {
-    console.log(err)
-})
+//     db.sync().then(() => {
+//         console.log("database connected");
+//     })
+// .catch((err) => {
+//     console.log(err)
+// })
 /* 
 ALTER TABLE orders
 ADD CONSTRAINT `orders_ibfk_2`
 FOREIGN KEY (`shopId`) REFERENCES `shops` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 */
-  if(false){
+  if(true){
 
     db.sync({force: true})
           .then(result => {
