@@ -22,12 +22,12 @@ exports.store = async (req, res) => {
         if(resultError.length > 0){  
             return res.status(400).json({ error: true, message: resultError });
         }
-    
+        console.log(req.body)
         let { 
             name, 
             active, 
-            content,
-            bgImage,
+            description,
+            imageUri,
             price,
             menuShopId,
         } = req.body;
@@ -35,15 +35,15 @@ exports.store = async (req, res) => {
         Product.create({
             name,
             active,
-            bgImage,
-            content,
+            imageUri,
+            description,
             price,
             menuShopId,
         })
         .then( (addedProduct) => {
             res.status(201).json({ error: false, addedProduct });
         })
-        .catch((err) => res.status(400).json({ error: true, err, message: 'Please check the data for Product' }))
+        .catch((err) =>{console.log(err); res.status(400).json({ error: true, err, message: 'Please check the data for Product' })})
     } catch (error) {
         res.status(500).json({ error: true, message: 'server problem' })
     }
@@ -56,7 +56,7 @@ exports.update = (req, res) => {
             active, 
             content,
             price,
-            bgImage,
+            imageUri,
             menuShopId,
          } = req.body;
 
@@ -65,7 +65,7 @@ exports.update = (req, res) => {
             active, 
             content,
             price,
-            bgImage,
+            imageUri,
             menuShopId,
         }, {
             where: { id: req.params.id }
