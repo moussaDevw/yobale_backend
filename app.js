@@ -27,7 +27,6 @@ const socketio = require('socket.io');
 const Adress = require(('./models/adress'));
 // const Authorisation = require('./models/authorisation');
 const Category = require('./models/category');
-const Delivery = require('./models/delivery');
 
 const MenuShope = require('./models/menuShop');
 const Order = require('./models/order');

@@ -43,5 +43,6 @@ router.post('/signup',[
     body('password').isLength({ min: 8}),
 ], AuthController.signUpAdmin);
 
+router.get('/', (req, res) => {res.json({source: "api yobal"})});
 
 module.exports = router;
