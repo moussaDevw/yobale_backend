@@ -286,7 +286,12 @@ io.on('connect', socket => {
 });
 
   server.listen(process.env.PORT, () => console.log('Server ON ' + process.env.PORT))
-
+  db.sync().then(() => {
+    console.log("database connected");
+})
+.catch((err) => {
+    console.log(err)
+})
 //   if(true){
 
 //     db.sync({force: true})
