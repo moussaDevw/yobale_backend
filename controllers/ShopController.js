@@ -121,8 +121,8 @@ exports.storeShop = (req, res) => {
             phone,
             cityId,
         })
-        .then((addedShop) => {
-
+        .then((addedShop) => { 
+            
             res.status(201).json({ error: false, addedShop });
         })
         .catch((err) => {

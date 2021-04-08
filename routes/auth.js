@@ -5,6 +5,7 @@ const User = require('./../models/user')
 const router = express.Router();
 
 const verifAuth = require('./../middleware/auth')
+const { sendMail, hiddenEmail } = require('./../util/emailSender')
 
 router.post('/signup',[
     body('email')
@@ -54,6 +55,30 @@ router.post('/signin',[
 
 router.get('/custmer/verif', verifAuth ,AuthController.verifAuth);
 
-router.get('/', (req, res) => {res.json({source: "api yobal"})});
+router.get('/', async (req, res) => {
+    try {
+        console.log('test mail')
+        
+        let message = {
+            from: 'contact@yobalapp.com',
+            to: "adnanerouhi@gmail.com",
+            subject: "Information créer",  
+            html: `<h1> bien reçu </h1>`,
+        };
+        
+         let response = await sendMail(message);
+         console.log(response)
+         if(!response) return res.json({message: "email problem", response});
+        let emailSent= true;
+        if(response.error){
+            emailSent = false;
+        }
+        return res.json({source: "api yobal"});
+    } catch (error) {
+        console.log(error)
+    }
+   
+
+});
 
 module.exports = router;

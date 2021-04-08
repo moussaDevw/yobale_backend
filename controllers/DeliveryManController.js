@@ -71,6 +71,8 @@ exports.storeDeliveryMan = (req, res) => {
             cityId,
         })
         .then((addedDeliveryMan) => {
+
+            
             res.status(201).json({ error: false, addedDeliveryMan });
         })
         .catch((err) => res.status(400).json({ error: true, err, validator:false,  message: 'can not added delevery' }))
