@@ -4,6 +4,8 @@ const {  body } = require('express-validator');
 const User = require('./../models/user')
 const router = express.Router();
 
+const verifAuth = require('./../middleware/auth')
+
 router.post('/signup',[
     body('email')
     .isEmail()
@@ -29,12 +31,12 @@ router.post('/signup',[
     // body('typeId').isInt(),
 ], AuthController.sginIn);
 
-  router.post('/signin',[
-    body('email')
-    .isEmail()
-    .trim(),
-    body('password').isLength({ min: 8}),
-], AuthController.signUp);
+    router.post('/signin',[
+        body('email')
+        .isEmail()
+        .trim(),
+        body('password').isLength({ min: 8}),
+    ], AuthController.signUp);
 
   router.post('/admin/signin',[
     body('email')
@@ -42,6 +44,15 @@ router.post('/signup',[
     .trim(),
     body('password').isLength({ min: 8}),
 ], AuthController.signUpAdmin);
+
+router.post('/signin',[
+    body('email')
+    .isEmail()
+    .trim(),
+    body('password').isLength({ min: 8}),
+], AuthController.signUp);
+
+router.get('/custmer/verif', verifAuth ,AuthController.verifAuth);
 
 router.get('/', (req, res) => {res.json({source: "api yobal"})});
 

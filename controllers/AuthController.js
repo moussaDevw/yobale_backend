@@ -125,3 +125,16 @@ exports.signUpAdmin = async (req, res) => {
         return res.status(500).json({ error: true, message: "server problem" });
     }
 }
+
+
+
+exports.verifAuth = async (req, res) => {
+    try {
+        
+        let user = await await User.findByPk(req.user.id)
+
+        return res.status(200).json({ error: false, isAuth: true, user }) 
+    } catch (error) {
+        return res.status(500).json({ error: true, message: "server problem" });
+    }
+}
