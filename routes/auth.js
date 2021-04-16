@@ -60,7 +60,7 @@ router.get('/', async (req, res) => {
         console.log('test mail')
         
         let message = {
-            from: 'contact@yobalapp.com',
+            from: 'no-replay@yobalapp.com',
             to: "adnanerouhi@gmail.com",
             subject: "Information créer",  
             html: `<h1> bien reçu </h1>`,

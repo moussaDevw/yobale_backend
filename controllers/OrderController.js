@@ -5,12 +5,21 @@ const OrderProduct = require('./../models/orderProduct');
 const Product = require('./../models/product');
 const Shop = require('./../models/shop');
 const Custmer = require('./../models/user');
+const Status = require('./../models/status');
+const DeliveryMan = require('./../models/deliveryman');
 
 const {  validationResult} = require('express-validator');
 
 exports.getAllElement = (req, res) => {
     try {
-        Order.findAll()
+        Order.findAll({
+            include:[
+                {model: Shop},
+                {model: Custmer},
+                {model: Status},
+                {model: DeliveryMan},
+            ]
+        })
         .then((orders) => {
             res.status(200).json({error: false, orders })
         })

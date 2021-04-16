@@ -3,25 +3,30 @@
     module.exports = ( shopAccount, password, transformedEmail ) => {
         if (!shopAccount || !password) return `<h1> hello world </h1>`
         let mail = {
-            header: `Bienvenu`,
-            title: `Votre compte de magasin / restaurant sous le  nom <strong> ${shopAccount.fullName} </strong>  est valider.`,
-            sousTitre: "Vous pouvez accéder à votre compte dès maintenant en utilisant l'adresse email renseignée lors de votre première inscription et ce mot de passe : ",
+            header: `Bonjour`,
+            title: `confirmation de votre compte de type store sous le nom ${shopAccount.fullName} chez livraison app`,
+            sousTitre: "Vous pouvez accéder à votre compte dés maintenant en utilisant ce mot de passe : ",
             labelMail: " Email :  ",
             hiddenEmail: transformedEmail,
-            labelPassword: "mot de passe :  ",
+            labelPassword: "mot de passe",
             password: password,
+            confirmAccount: "confirmer votre compte",
             withlink: "avec ce lien",
             question: "Si vous avez des questions, visitez notre page de contact - nous sommes toujours heureux de vous aider.",
             linkToContact: "https://yobalapp.com/contact",
             appLink: "",
             contact: "contactez nous",
-            conclusion: "YOBAL TEAM",
+            conclusion: "livraison app TEAM",
             moreHelp: "Nous sommes là pour vous aider",
             websiteLink: "https://yobalapp.com",
             websiteLinkLabel: "visiter notre site",
+            unsubscribe:"Si ces e-mails deviennent ennuyeux, n'hésitez pas à",
+            unsubscribeLink:"https://yobalapp.com/unsubscribe",
+            unsubscribeLinkLabel:"se désaboner",
         }
+/*         //                             // <label> ${mail.labelMail} </label> <p> ${mail.email} </p>
 
-     return `<html>
+ */        return `<html>
     
         <head>
         <title></title>
@@ -125,7 +130,7 @@
    
     <body style="background-color: #e1e1e1; margin: 0 !important; padding: 0 !important;">
         <!-- HIDDEN PREHEADER TEXT -->
-        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="padding: 15px">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
             <!-- LOGO -->
             <tr>
                 <td bgcolor="#1746e0" align="center">
@@ -141,7 +146,7 @@
                     <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                         <tr>
                             <td bgcolor="#ffffff" align="center" valign="top" style="padding: 40px 20px 20px 20px; border-radius: 4px 4px 0px 0px; color: #111111; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 48px; font-weight: 400; letter-spacing: 4px; line-height: 48px;">
-                                <h1 style="font-size: 48px; font-weight: 400; margin: 2;"> ${mail.header} </h1> <img src=" https://img.icons8.com/clouds/100/000000/handshake.png" width="125" height="120" style="display: block; border: 0px;" />
+                                <h1 style="font-size: 48px; font-weight: 400; margin: 2;">Welcome!</h1> <img src=" https://img.icons8.com/clouds/100/000000/handshake.png" width="125" height="120" style="display: block; border: 0px;" />
                             </td>
                         </tr>
                     </table>
@@ -159,8 +164,8 @@
                             <td bgcolor="#ffffff" align="left">
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tr>
-                                        <td align="center">
-                                            <p style="margin: 5px; color: #000; "> ${mail.sousTitre} </p>
+                                        <td align="left">
+                                            <p style="margin: 0; color: #000; "> ${mail.sousTitre} </p>
                                         </td>
                                     </tr>
                                     <tr>
@@ -171,7 +176,7 @@
                                                     <td align="left">
                                                         <label > ${mail.labelMail}  </label>
                                                     </td>
-                                                    <td align="center">
+                                                    <td align="left">
                                                         <span> ${mail.hiddenEmail} </span>
                                                     </td>
                                                 </tr>
@@ -179,14 +184,26 @@
                                                     <td align="left">
                                                         <label > ${mail.labelPassword}  </label>
                                                     </td>
-                                                    <td align="center">
+                                                    <td align="left">
                                                         <span > ${mail.password} </span>
                                                     </td>
                                                 </tr>
                                             </table>
                                         </td>
                                     </tr>
-                                    
+                                    <tr>
+                                        <td bgcolor="#ffffff" align="center" style="padding: 0px 30px 0px 30px;">
+                                            <table style="border="0" cellspacing="0" cellpadding="0">
+                                                <tr>
+                                                    <td align="center" bgcolor="#1746e0">
+                                                        <span style="font-size: 20px; cursor:pointer; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 25px; border-radius: 2px; border: 1px solid #1746e0; display: inline-block;">
+                                                            ${mail.withlink}
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
                                 </table>
                             </td>
                         </tr>
@@ -194,13 +211,13 @@
                         <tr>
                             <td bgcolor="#ffffff" align="center" style="padding: 0px 30px 20px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
                                 <p style="margin: 0;">${mail.question}</p>
-                                <a href="${mail.linkToContact}" style="font-size: 20px; cursor:pointer; font-family: Helvetica, Arial, sans-serif; color: #000000;  text-decoration: none; padding: 15px 25px; border-radius: 2px; border: 1px solid #1746e0; display: inline-block;">
+                                <a href="#" target=" ${mail.linkToContact}" style="font-size: 20px; cursor:pointer; font-family: Helvetica, Arial, sans-serif; color: #000000;  text-decoration: none; padding: 15px 25px; border-radius: 2px; border: 1px solid #1746e0; display: inline-block;">
                                     ${mail.contact}
                                 </a>
                             </td>
                         </tr>
                         <tr>
-                            <td align="center" bgcolor="#ffffff" align="left" style="padding: 0px 30px 40px 30px; border-radius: 0px 0px 4px 4px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
+                            <td bgcolor="#ffffff" align="left" style="padding: 0px 30px 40px 30px; border-radius: 0px 0px 4px 4px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
                                 <p style="margin: 0;"> ${mail.conclusion}  </p>
                             </td>
                         </tr>
@@ -208,18 +225,28 @@
                 </td>
             </tr>
             <tr>
-                <td bgcolor="#e1e1e1" align="center" style="padding: 30px 10px 0px 10px; margin: 0 15px;">
+                <td bgcolor="#e1e1e1" align="center" style="padding: 30px 10px 0px 10px;">
                     <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                         <tr>
-                            <td bgcolor="#ffffff" align="center" style="padding: 30px 30px 30px 30px; border-radius: 4px 4px 4px 4px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
+                            <td bgcolor="#FFECD1" align="center" style="padding: 30px 30px 30px 30px; border-radius: 4px 4px 4px 4px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
                                 <h2 style="font-size: 20px; font-weight: 400; color: #111111; margin: 0;">${mail.moreHelp}  </h2>
-                                <p style="margin: 0;"><a href=" ${mail.websiteLink} " target="_blank" style="color: #1746e0;"> Visiter notre site </a></p>
+                                <p style="margin: 0;"><a href=" ${mail.websiteLink} " target="_blank" style="color: #1746e0;"> ${mail.websiteLink} </a></p>
                             </td>
                         </tr>
                     </table>
                 </td>
             </tr>
-           
+            <tr>
+                <td bgcolor="#e1e1e1" align="center" style="padding: 0px 10px 0px 10px;">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+                        <tr>
+                            <td bgcolor="#e1e1e1" align="left" style="padding: 0px 30px 30px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 18px;"> <br>
+                                <p style="margin: 0;"> ${mail.unsubscribe} If these emails get annoying, please feel free to <a href="${mail.unsubscribeLink}" target="_blank" style="color: #111111; font-weight: 700;">${mail.unsubscribeLinkLabel}</a>.</p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
         </table>
     </body>    
 

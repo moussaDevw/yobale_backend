@@ -9,6 +9,7 @@ const {  validationResult} = require('express-validator');
 
 exports.sginIn = async (req, res) => {
     try {
+        console.log(req.body)
         let resultError= validationResult(req).array()
 
         if(resultError.length > 0){  

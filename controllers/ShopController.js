@@ -14,7 +14,7 @@ const fs = require('fs');
 
 const moment = require('moment')
 
-const { sendMail, hiddenEmail } = require('./../util/emailSender')
+const { sendMail, hiddenEmail, generatePassword } = require('./../util/emailSender')
 
 exports.getAllShop = (req, res) => {
     try {
@@ -219,9 +219,8 @@ exports.validateShop = async (req, res) => {
             }
 
             /************  creating user account *****************/
- 
-            let name = validatedShop.name;
-            let password= "generate_random_massword";
+
+            let password= generatePassword();
 
             const salt = await bcrypt.genSalt(10);
 
@@ -235,7 +234,7 @@ exports.validateShop = async (req, res) => {
             let typesUsers = await Type.findOne({where: { name : "magasin / restaurant"}});
             
             let shopAccount = await User.create({
-                name,
+                fullName: validatedShop.name,
                 email : validatedShop.email, 
                 phone: validatedShop.phone, 
                 password: hashedPassword, 
@@ -257,28 +256,28 @@ exports.validateShop = async (req, res) => {
             let message = {
                 from: process.env.GMAIL_USER_NAME,
                 to: shopAccount.email,
-                subject: "compte validée",  
+                subject: "Validation du compte YOBAL",  
                 html: messageBudy,
             };
-            /* ****************    A DECOMENTER
             
-             let {error, data} = sendMail(message);
-            let emailSent= true;
-            if(error){
-                emailSent = false;
-            }
-            
-            
-            ****************************** */
-           
+             let responseMail = await sendMail(message);
+             let emailSent= false;
+
+             if(!responseMail) {
+
+             }else {
+                emailSent = responseMail.sent;
+                
+             }
+                   
             // console.log(error, data)
             let isValidatedShop = await Shop.update({active: true, userId: shopAccount.id}, { where: { id: req.params.id } });
-            if (!isValidatedShop) return res.status(400).json({ error: true, err, message: 'Le compte du magasin est créer mais la modification du magasin est corrompu ' });
+            if (!isValidatedShop) return res.status(400).json({ error: true, emailSent: responseMail.sent, message: 'Le compte du magasin est créer mais la modification du magasin est corrompu ' });
 
             // .catch((error) => console.error(error));
             /*****   END sending email ********/
 
-            res.status(200).json({ error: false, validatedShop, shopAccount, activated: true })
+            res.status(200).json({ error: false, emailSent: responseMail.sent, validatedShop, shopAccount, activated: true })
     } catch (error) {
         // console.log(error)
         res.status(500).json({ error: true, message: 'server problem' })
