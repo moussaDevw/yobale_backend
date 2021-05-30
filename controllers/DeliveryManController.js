@@ -197,6 +197,7 @@ exports.validateDeliveryMan = async (req, res) => {
         res.status(500).json({ error: true, message: 'server problem' })
     }
 }
+
 exports.inactivateDeliveryMan = async (req, res) => {
 
     try {
