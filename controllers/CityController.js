@@ -79,6 +79,7 @@ exports.getOneCity = async (req, res) => {
     }
           
 }
+
 exports.deleteElement = async (req, res) => {
     try {
         let deletedElement = await City.destroy({where: {id: req.params.id}});

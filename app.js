@@ -27,7 +27,6 @@ const socketio = require('socket.io');
 const Adress = require(('./models/adress'));
 // const Authorisation = require('./models/authorisation');
 const Category = require('./models/category');
-const Delivery = require('./models/delivery');
 
 const MenuShope = require('./models/menuShop');
 const Order = require('./models/order');
@@ -50,6 +49,7 @@ const adress = require('./routes/adress');
 const categories = require('./routes/category');
 const types = require('./routes/types');
 const cities = require('./routes/city');
+const order = require('./routes/order');
 // const authorisations = require('./routes/authorisation');
 const sign = require('./routes/auth')
 const deliveryMan = require('./routes/deliveryMan')
@@ -107,6 +107,7 @@ const product = require('./routes/product')
     app.use('/city', cities)
     app.use('/menu-shop', menu)
     app.use('/product', product)
+    app.use('/order', order)
     // app.use('/authorisation', authorisations)
     app.use('/delivery-man', deliveryMan)
     app.use('/shop', shop)
@@ -160,13 +161,6 @@ const product = require('./routes/product')
             allowNull: true,
         },
     });
-
-    // Authorisation.belongsTo(Type, {
-    //     foreignKey: {
-    //         allowNull: false,
-    //     },
-    // });
-
 
     SousCategory.belongsTo(Category, {
         foreignKey: {
@@ -236,9 +230,47 @@ const product = require('./routes/product')
         },
     });
 
+    User.hasMany(Order, {
+        foreignKey: {
+            allowNull: false,
+        },
+    });
+    Order.belongsTo(Shop, {
+        foreignKey: {
+            allowNull: false,
+        },
+    });
+    Shop.hasMany(Order, {
+        foreignKey: {
+            allowNull: false,
+        },
+    });
+
     OrderProduct.belongsTo(Order, {
         foreignKey: {
             allowNull: false,
+        },
+    });
+    Order.hasMany(OrderProduct, {
+        foreignKey: {
+            allowNull: false,
+        },
+    });
+    Order.belongsTo(Adress, {
+        foreignKey: {
+            allowNull: false,
+        },
+    });
+
+    Order.belongsTo(Status, {
+        foreignKey: {
+            allowNull: false,
+        },
+    });
+
+    Order.belongsTo(Deliveryman, {
+        foreignKey: {
+            allowNull: true,
         },
     });
 
@@ -247,31 +279,6 @@ const product = require('./routes/product')
             allowNull: false,
         },
     });
-
-    Delivery.belongsTo(Order, {
-        foreignKey: {
-            allowNull: false,
-        },
-    });
-
-    Delivery.belongsTo(Deliveryman, {
-        foreignKey: {
-            allowNull: false,
-        },
-    });
-
-    Delivery.belongsTo(Status, {
-        foreignKey: {
-            allowNull: false,
-        },
-    });
-
-    Delivery.belongsTo(Adress, {
-        foreignKey: {
-            allowNull: false,
-        },
-    });
-
 
 
 
@@ -286,49 +293,78 @@ io.on('connect', socket => {
 });
 
   server.listen(process.env.PORT, () => console.log('Server ON ' + process.env.PORT))
+//     db.sync().then(() => {
+//         console.log("database connected");
+//     })
+// .catch((err) => {
+//     console.log(err)
+// })
+/* 
+ALTER TABLE orders
+ADD CONSTRAINT `orders_ibfk_2`
+FOREIGN KEY (`shopId`) REFERENCES `shops` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+*/
+  if(false){
 
-//   if(true){
+    db.sync({force: true})
+          .then(result => {
+            Type.bulkCreate([
+                {
+                    name: "super admin",
+                    active: true,
+                },
+                {
+                    name: "admin",
+                    active: true,
+                },
+                {
+                    name: "client",
+                    active: true,
+                },
+                {
+                    name: "magasin / restaurant",
+                    active: true,
+                },
+                {
+                    name: "livreur",
+                    active: true,
+                },
+            ])
+            .then( async (Type) => {
+                const salt = await bcrypt.genSalt(10);
+                let hashedPassword = await bcrypt.hash("yobalapp.com", salt);
+                User.create({ 
+                    fullName : "admin admin", 
+                    email : "admin@admin.com", 
+                    phone: "+2213112111", 
+                    password: hashedPassword, 
+                    active: 1, 
+                    typeId: 1
+                });
+                Status.bulkCreate([
+                    {
+                        name: "En attente de confirmation",
+                        active: true,
+                    },
+                    {
+                        name: "En cours de preparation",
+                        active: true,
+                    },
+                    {
+                        name: "En livraison",
+                        active: true,
+                    },
+                    {
+                        name: "Bien livrer",
+                        active: true,
+                    },
+        
+                ])
+            })
+            .catch((err) => {})
 
-//     db.sync({force: true})
-//           .then(result => {
-//             Type.bulkCreate([
-//                 {
-//                     name: "super admin",
-//                     active: true,
-//                 },
-//                 {
-//                     name: "admin",
-//                     active: true,
-//                 },
-//                 {
-//                     name: "client",
-//                     active: true,
-//                 },
-//                 {
-//                     name: "magasin / restaurant",
-//                     active: true,
-//                 },
-//                 {
-//                     name: "livreur",
-//                     active: true,
-//                 },
-//             ])
-//             .then( async (Type) => {
-//                 const salt = await bcrypt.genSalt(10);
-//                 let hashedPassword = await bcrypt.hash("yobalapp.com", salt);
-//                 User.create({ 
-//                     fullName : "admin admin", 
-//                     email : "admin@admin.com", 
-//                     phone: "+2213112111", 
-//                     password: hashedPassword, 
-//                     active: 1, 
-//                     typeId: 1
-//                 })
-//             })
-//             .catch((err) => {})
-
-//           })
-//           .catch((err) => {
-//             //   console.log('error: ', err)
-//           })
-//   }
+          })
+          .catch((err) => {
+            //   console.log('error: ', err)
+          })
+  }

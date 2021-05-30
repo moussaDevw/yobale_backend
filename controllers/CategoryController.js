@@ -53,11 +53,12 @@ exports.storeCategory = async (req, res) => {
 
 exports.updateCategory = (req, res) => {
     try {
-        let { name, active } = req.body;
+        let { name, active, icon } = req.body;
 
         Category.update({
-            name: name,
-            active
+            name,
+            active,
+            icon
         }, {
             where: { id: req.params.id }
         })

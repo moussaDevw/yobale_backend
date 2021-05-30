@@ -9,6 +9,7 @@ const {  validationResult} = require('express-validator');
 
 exports.sginIn = async (req, res) => {
     try {
+        console.log(req.body)
         let resultError= validationResult(req).array()
 
         if(resultError.length > 0){  
@@ -40,7 +41,15 @@ exports.sginIn = async (req, res) => {
             typeId: typesUsers.dataValues.id, // id type user in model type
         })
         .then(user => {
-            res.status(200).json({error: false, user });
+            var token = jwt.sign(
+                { 
+                id: user.id, 
+                typeId: user.typeId 
+                },
+                process.env.TOKEN_SECRET,
+            );
+
+            res.status(200).json({error: false, user, token });
         })
         .catch(err => {
             res.status(400).json({error: true, data: err });
@@ -94,7 +103,7 @@ exports.signUpAdmin = async (req, res) => {
         if( user.dataValues.typeId !== 1){
             return res.status(400).json({ error: true, message: "Vous n'avez pas l'autorisation d'accéder à la partie admin" });
         }
-        console.log(password, user.password)
+
         let validPassword = await bcrypt.compare(password, user.password);
 
         if(!validPassword){ 
@@ -114,6 +123,19 @@ exports.signUpAdmin = async (req, res) => {
         return res.status(200).header('auth-token', token).json({ error: false, token, user }) 
     } catch (error) {
         // console.log(error)
+        return res.status(500).json({ error: true, message: "server problem" });
+    }
+}
+
+
+
+exports.verifAuth = async (req, res) => {
+    try {
+        
+        let user = await await User.findByPk(req.user.id)
+
+        return res.status(200).json({ error: false, isAuth: true, user }) 
+    } catch (error) {
         return res.status(500).json({ error: true, message: "server problem" });
     }
 }

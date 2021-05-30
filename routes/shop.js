@@ -9,7 +9,7 @@ const haveAuthorisation = require('./../middleware/haveAuthorisation');
 
 
     router.get('', ShopController.getAllShop);
-    router.get('/categorie/:categoryId', ShopController.getShopCategorie);
+    router.get('/categorie/:categoryId/:adressId', ShopController.getShopCategorie);
 
     router.get('/validated', ShopController.getAllActiveShop);
 

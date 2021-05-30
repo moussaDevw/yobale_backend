@@ -1,9 +1,11 @@
 module.exports = {
-    PASSWORD: process.env.PASSWORD,
-    EMAIL: process.env.EMAIL,
-    MAIN_URL: process.env.MAIN_URL,
+  GMAIL_PASSWORD: process.env.GMAIL_PASSWORD,
+  GMAIL_USER_NAME: process.env.GMAIL_USER_NAME,
+  GMAIL_HOST: process.env.GMAIL_HOST,
     SERVICE: process.env.SERVICE,
     GMAIL_SERVICE_PORT: process.env.GMAIL_SERVICE_PORT,
+    GMAIL_SERVICE_SECURE: process.env.GMAIL_SERVICE_SECURE,
+    
     database: {
       host: process.env.HOST,
       port: process.env.PORT_DB,

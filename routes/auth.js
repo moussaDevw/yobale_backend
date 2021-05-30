@@ -4,6 +4,9 @@ const {  body } = require('express-validator');
 const User = require('./../models/user')
 const router = express.Router();
 
+const verifAuth = require('./../middleware/auth')
+const { sendMail, hiddenEmail } = require('./../util/emailSender')
+
 router.post('/signup',[
     body('email')
     .isEmail()
@@ -29,12 +32,12 @@ router.post('/signup',[
     // body('typeId').isInt(),
 ], AuthController.sginIn);
 
-  router.post('/signin',[
-    body('email')
-    .isEmail()
-    .trim(),
-    body('password').isLength({ min: 8}),
-], AuthController.signUp);
+    router.post('/signin',[
+        body('email')
+        .isEmail()
+        .trim(),
+        body('password').isLength({ min: 8}),
+    ], AuthController.signUp);
 
   router.post('/admin/signin',[
     body('email')
@@ -43,5 +46,39 @@ router.post('/signup',[
     body('password').isLength({ min: 8}),
 ], AuthController.signUpAdmin);
 
+router.post('/signin',[
+    body('email')
+    .isEmail()
+    .trim(),
+    body('password').isLength({ min: 8}),
+], AuthController.signUp);
+
+router.get('/custmer/verif', verifAuth ,AuthController.verifAuth);
+
+router.get('/', async (req, res) => {
+    try {
+        console.log('test mail')
+        
+        let message = {
+            from: 'no-replay@yobalapp.com',
+            to: "adnanerouhi@gmail.com",
+            subject: "Information créer",  
+            html: `<h1> bien reçu </h1>`,
+        };
+        
+         let response = await sendMail(message);
+         console.log(response)
+         if(!response) return res.json({message: "email problem", response});
+        let emailSent= true;
+        if(response.error){
+            emailSent = false;
+        }
+        return res.json({source: "api yobal"});
+    } catch (error) {
+        console.log(error)
+    }
+   
+
+});
 
 module.exports = router;

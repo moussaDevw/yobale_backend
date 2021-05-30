@@ -50,7 +50,6 @@ exports.storeAdress = async (req, res) => {
             longitudeDelta,
             active,
             city,
-            country,
         } = req.body;
         let parameters = [
             { 'name': { [Op.like]: '%' + city + '%' } }
@@ -58,7 +57,7 @@ exports.storeAdress = async (req, res) => {
         let existingCity = await City.findOne({where: {
             [Op.or]: parameters
         },});
-        
+
         if(!existingCity){
             return res.status(400).json({error: true, message: "Nous travaillons pas dans cette zone"});
         }

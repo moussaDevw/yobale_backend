@@ -4,6 +4,8 @@ const City = require('./../models/city');
 const Type = require('./../models/type');
 const Category = require('./../models/category');
 const SousCategory = require('./../models/sousCategory');
+const Adress = require('./../models/adress');
+const { Op } = require("sequelize");
 
 var bcrypt = require('bcryptjs');
 const mailBodyHtml =  require('./../mailContent/shopAccountCreate')
@@ -12,7 +14,7 @@ const fs = require('fs');
 
 const moment = require('moment')
 
-const { sendMail, hiddenEmail } = require('./../util/emailSender')
+const { sendMail, hiddenEmail, generatePassword } = require('./../util/emailSender')
 
 exports.getAllShop = (req, res) => {
     try {
@@ -28,31 +30,32 @@ exports.getAllShop = (req, res) => {
         .then((shops) => {
             res.status(200).json({error: false, shops })
         })
-        .catch(err => res.status(402).json({ error: true, message: "nous n'avons pas pus récupérer les information  des magasins" }))
+        .catch(err => res.status(400).json({ error: true, message: "nous n'avons pas pus récupérer les information  des magasins" }))
 
     } catch (err) {
         res.status(500).json({ error: true, message: 'server problem' })
     }
 }
 
-exports.getShopCategorie = (req, res) => {
+exports.getShopCategorie = async (req, res) => {
     try {
-        Shop.findAll( {
-            include: [
-                { model: City },
-                { model: Category },
-                { model: SousCategory },
-            ]
-        }, {
+
+        let adressUser = await Adress.findByPk(req.params.adressId)
+
+        let parameters = [
+            {'categoryId': req.params.categoryId},
+            {'cityId': adressUser.cityId},
+        ]
+        Shop.findAll(  {
             where: {
-                categorieId: req.param.categoryId,
-                deleted: 0,
+                categoryId: req.params.categoryId,
+                cityId: adressUser.cityId
             }
         })
         .then((shops) => {
             res.status(200).json({error: false, shops })
         })
-        .catch(err => res.status(402).json({ error: true, message: "nous n'avons pas pus récupérer les information  des magasins" }))
+        .catch(err => res.status(400).json({ error: true, message: "nous n'avons pas pus récupérer les information  des magasins" }))
 
     } catch (err) {
         res.status(500).json({ error: true, message: 'server problem' })
@@ -65,7 +68,7 @@ exports.getAllActiveShop = (req, res) => {
         .then((validateShop) => {
             res.status(200).json({error: false, validateShop })
         })
-        .catch(err => res.status(402).json({ error: true, message: "nous n'avons pas pus récupérer les information  des magasins" }))
+        .catch(err => res.status(400).json({ error: true, message: "nous n'avons pas pus récupérer les information  des magasins" }))
     } catch (err) {
         res.status(500).json({ error: true, message: 'server problem' })
     }
@@ -77,7 +80,7 @@ exports.getAllInvalidateShop = (req, res) => {
         .then((invalidateShop) => {
             res.status(200).json({error: false, invalidateShop })
         })
-        .catch(err => res.status(402).json({ error: true, message: "nous n'avons pas pus récupérer les information  des magasins" }))
+        .catch(err => res.status(400).json({ error: true, message: "nous n'avons pas pus récupérer les information  des magasins" }))
     } catch (error) {
         res.status(500).json({ error: true, message: 'server problem' })
     }
@@ -118,8 +121,8 @@ exports.storeShop = (req, res) => {
             phone,
             cityId,
         })
-        .then((addedShop) => {
-
+        .then((addedShop) => { 
+            
             res.status(201).json({ error: false, addedShop });
         })
         .catch((err) => {
@@ -216,9 +219,8 @@ exports.validateShop = async (req, res) => {
             }
 
             /************  creating user account *****************/
- 
-            let name = validatedShop.name;
-            let password= "generate_random_massword";
+
+            let password= generatePassword();
 
             const salt = await bcrypt.genSalt(10);
 
@@ -232,7 +234,7 @@ exports.validateShop = async (req, res) => {
             let typesUsers = await Type.findOne({where: { name : "magasin / restaurant"}});
             
             let shopAccount = await User.create({
-                name,
+                fullName: validatedShop.name,
                 email : validatedShop.email, 
                 phone: validatedShop.phone, 
                 password: hashedPassword, 
@@ -254,28 +256,28 @@ exports.validateShop = async (req, res) => {
             let message = {
                 from: process.env.GMAIL_USER_NAME,
                 to: shopAccount.email,
-                subject: "compte validée",  
+                subject: "Validation du compte YOBAL",  
                 html: messageBudy,
             };
-            /* ****************    A DECOMENTER
             
-             let {error, data} = sendMail(message);
-            let emailSent= true;
-            if(error){
-                emailSent = false;
-            }
-            
-            
-            ****************************** */
-           
+             let responseMail = await sendMail(message);
+             let emailSent= false;
+
+             if(!responseMail) {
+
+             }else {
+                emailSent = responseMail.sent;
+                
+             }
+                   
             // console.log(error, data)
             let isValidatedShop = await Shop.update({active: true, userId: shopAccount.id}, { where: { id: req.params.id } });
-            if (!isValidatedShop) return res.status(400).json({ error: true, err, message: 'Le compte du magasin est créer mais la modification du magasin est corrompu ' });
+            if (!isValidatedShop) return res.status(400).json({ error: true, emailSent: responseMail.sent, message: 'Le compte du magasin est créer mais la modification du magasin est corrompu ' });
 
             // .catch((error) => console.error(error));
             /*****   END sending email ********/
 
-            res.status(200).json({ error: false, validatedShop, shopAccount, activated: true })
+            res.status(200).json({ error: false, emailSent: responseMail.sent, validatedShop, shopAccount, activated: true })
     } catch (error) {
         // console.log(error)
         res.status(500).json({ error: true, message: 'server problem' })
