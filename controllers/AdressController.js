@@ -21,7 +21,7 @@ exports.getAllUserAdress = (req, res) => {
     try {
         Adress.findAll({where: { userId: req.user.id, deleted: 0}})
         .then((adresses) => {
-            res.status(200).json({error: false, adresses })
+            res.status(200).json({error: false, adresses: adresses.reverse() })
         })
         .catch(err => res.status(404).json({ error: true, message: 'can not get adresses' }))
     } catch (error) {
