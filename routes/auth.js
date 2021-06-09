@@ -46,6 +46,20 @@ router.post('/signup',[
     body('password').isLength({ min: 8}),
 ], AuthController.signUpAdmin);
 
+router.post('/livreur/signin',[
+    body('email')
+    .isEmail()
+    .trim(),
+    body('password').isLength({ min: 8}),
+], AuthController.signUpLivreur);
+
+router.post('/magasin/signin',[
+    body('email')
+    .isEmail()
+    .trim(),
+    body('password').isLength({ min: 8}),
+], AuthController.signUpRestaurant);
+
 router.post('/signin',[
     body('email')
     .isEmail()

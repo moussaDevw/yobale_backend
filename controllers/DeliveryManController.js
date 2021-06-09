@@ -221,6 +221,9 @@ exports.inactivateDeliveryMan = async (req, res) => {
 
 exports.deleteElement = async (req, res) => {
     try {
+        const userDelivery = await DeliveryMan.findOne( { where: { id: req.params.id } })
+        let deleteUser = await User.update({  deleted: true }, {where: {id: userDelivery.userId}})
+
         let deletedElement = await DeliveryMan.destroy({where: {id: req.params.id}});
    
         return res.status(200).json({ error: false, deletedElement});

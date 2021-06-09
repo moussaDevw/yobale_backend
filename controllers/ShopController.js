@@ -213,7 +213,7 @@ exports.validateShop = async (req, res) => {
 
         let validatedShop = await Shop.findByPk(req.params.id);
             if(!validatedShop){
-                return res.status(403).json({error: true, message: "nous avons pas trouver ce shop"})
+                return res.status(400).json({error: true, message: "nous avons pas trouver ce shop"})
             }else{
                 validatedShop = validatedShop.toJSON();
             }
@@ -244,7 +244,7 @@ exports.validateShop = async (req, res) => {
             let accountShopCreated = true;
             if(!shopAccount){
                 accountShopCreated = false;
-                return res.status(403).json({error: true, message: "Le compte de ce shop n'est pas créer. Une erreur inconue est survenue"})
+                return res.status(400).json({error: true, message: "Le compte de ce shop n'est pas créer. Une erreur inconue est survenue"})
                 // handing this problem
             }
             /*****   SENDING email with account details + (password) ********/
@@ -272,6 +272,7 @@ exports.validateShop = async (req, res) => {
                    
             // console.log(error, data)
             let isValidatedShop = await Shop.update({active: true, userId: shopAccount.id}, { where: { id: req.params.id } });
+
             if (!isValidatedShop) return res.status(400).json({ error: true, emailSent: responseMail.sent, message: 'Le compte du magasin est créer mais la modification du magasin est corrompu ' });
 
             // .catch((error) => console.error(error));
@@ -369,6 +370,9 @@ exports.uploadBg = async (req, res) => {
 
 exports.deleteElement = async (req, res) => {
     try {
+        const userShop = await Shop.findOne( { where: { id: req.params.id } })
+        let blockedUser = await User.update({  deleted: true }, {where: {id: userShop.userId}})
+
         let deletedElement = await Shop.destroy({where: {id: req.params.id}});
    
         return res.status(200).json({ error: false, deletedElement});
@@ -382,6 +386,7 @@ exports.deleteElement = async (req, res) => {
             }, {
                 where: { id: req.params.id }
             });
+
             return res.status(200).json({ error: false, deletedElement});
            }else {
             return res.status(400).json({ error: false, message: "une erreur inconue est survenue"});

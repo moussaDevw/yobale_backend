@@ -70,9 +70,22 @@ exports.signUp = async (req, res) => {
         if(!user){
             return res.status(400).json({ error: true, message: "email n'éxiste pas" });
         }
+
+        if( user.type.name !== "client"){
+            return res.status(400).json({ error: true, message: "Vous n'avez pas l'autorisation d'accéder à la partie client" });
+        }
+
         let validPassword = await bcrypt.compare(password, user.password);
         if(!validPassword){ 
             return res.status(400).json({ error: true, message: "mot de passe incorrect" });
+        }
+
+        if(user.deleted){
+            return res.status(400).json({ error: true, message: "Ce compte à était suprimer" });
+        }
+
+        if(user.blocked){
+            return res.status(400).json({ error: true, message: "Ce compte à était blocker par un admin vous ne pouvez pas accédez à votre compte pour le moment" });
         }
 
         var token = jwt.sign(
@@ -94,13 +107,13 @@ exports.signUp = async (req, res) => {
 exports.signUpAdmin = async (req, res) => {
     try {
         let {password, email}= req.body;
-        var user = await User.findOne({where:{email: email }});
+        var user = await User.findOne({ include: [{model: Type}] ,  where:{email: email }});
 
         if(!user){
             return res.status(400).json({ error: true, message: "email n'éxiste pas" });
         }
 
-        if( user.dataValues.typeId !== 1){
+        if( user.type.name !== "admin" || user.type.name !== "super admin"){
             return res.status(400).json({ error: true, message: "Vous n'avez pas l'autorisation d'accéder à la partie admin" });
         }
 
@@ -109,7 +122,19 @@ exports.signUpAdmin = async (req, res) => {
         if(!validPassword){ 
             return res.status(400).json({ error: true, message: "mot de passe incorrect" });
         }
+
+        if(user.deleted){
+            return res.status(400).json({ error: true, message: "Ce compte à était suprimer" });
+        }
         
+        if(user.deleted){
+            return res.status(400).json({ error: true, message: "Ce compte à était suprimer" });
+        }
+
+        if(user.blocked){
+            return res.status(400).json({ error: true, message: "Ce compte à était blocker par un admin vous ne pouvez pas accédez à votre compte pour le moment" });
+        }
+
         var token = jwt.sign(
             { 
             id: user.id, 
@@ -127,6 +152,87 @@ exports.signUpAdmin = async (req, res) => {
     }
 }
 
+
+
+exports.signUpRestaurant = async (req, res) => {
+    try {
+        let {password, email}= req.body;
+        var user = await User.findOne({where:{email: email }});
+
+        if(!user){
+            return res.status(400).json({ error: true, message: "email n'éxiste pas" });
+        }
+
+        if( user.type.name !== "magasin / restaurant"){
+            return res.status(400).json({ error: true, message: "Vous n'avez pas l'autorisation d'accéder à la partie des réstaurants et magasins" });
+        }
+
+        let validPassword = await bcrypt.compare(password, user.password);
+        if(!validPassword){ 
+            return res.status(400).json({ error: true, message: "mot de passe incorrect" });
+        }
+
+        if(user.deleted){
+            return res.status(400).json({ error: true, message: "Ce compte à était suprimer" });
+        }
+
+        if(user.blocked){
+            return res.status(400).json({ error: true, message: "Ce compte à était blocker par un admin vous ne pouvez pas accédez à votre compte pour le moment" });
+        }
+
+        var token = jwt.sign(
+            { 
+            id: user.id, 
+            typeId: user.typeId 
+            },
+            process.env.TOKEN_SECRET,
+        );
+
+
+        delete user.dataValues.password;
+        delete user._previousDataValues.password;
+
+        return res.status(200).header('auth-token', token).json({ error: false, token, user }) 
+    } catch (error) {
+        return res.status(500).json({ error: true, message: "server problem" });
+    }
+}
+
+
+
+exports.signUpLivreur = async (req, res) => {
+    try {
+        let {password, email}= req.body;
+        var user = await User.findOne({where:{email: email }});
+
+        if(!user){
+            return res.status(400).json({ error: true, message: "email n'éxiste pas" });
+        }
+
+        if( user.type.name !== "livreur"){
+            return res.status(400).json({ error: true, message: "Vous n'avez pas l'autorisation d'accéder à la partie des livreurs" });
+        }
+
+        let validPassword = await bcrypt.compare(password, user.password);
+        if(!validPassword){ 
+            return res.status(400).json({ error: true, message: "mot de passe incorrect" });
+        }
+
+        var token = jwt.sign(
+            { 
+            id: user.id, 
+            typeId: user.typeId 
+            },
+            process.env.TOKEN_SECRET,
+        );
+        delete user.dataValues.password;
+        delete user._previousDataValues.password;
+
+        return res.status(200).header('auth-token', token).json({ error: false, token, user }) 
+    } catch (error) {
+        return res.status(500).json({ error: true, message: "server problem" });
+    }
+}
 
 
 exports.verifAuth = async (req, res) => {
