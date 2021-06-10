@@ -65,7 +65,7 @@ exports.sginIn = async (req, res) => {
 exports.signUp = async (req, res) => {
     try {
         let {password, email}= req.body;
-        var user = await User.findOne({where:{email: email }});
+        var user = await User.findOne({include: [{model: Type}] ,where:{email: email }});
 
         if(!user){
             return res.status(400).json({ error: true, message: "email n'éxiste pas" });
@@ -159,7 +159,7 @@ exports.signUpAdmin = async (req, res) => {
 exports.signUpRestaurant = async (req, res) => {
     try {
         let {password, email}= req.body;
-        var user = await User.findOne({where:{email: email }});
+        var user = await User.findOne({include: [{model: Type}] ,where:{email: email }});
 
         if(!user){
             return res.status(400).json({ error: true, message: "email n'éxiste pas" });
@@ -206,7 +206,7 @@ exports.signUpRestaurant = async (req, res) => {
 exports.signUpLivreur = async (req, res) => {
     try {
         let {password, email}= req.body;
-        var user = await User.findOne({where:{email: email }});
+        var user = await User.findOne({include: [{model: Type}] ,where:{email: email }});
 
         if(!user){
             return res.status(400).json({ error: true, message: "email n'éxiste pas" });
