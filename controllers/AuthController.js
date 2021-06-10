@@ -115,7 +115,7 @@ exports.signUpAdmin = async (req, res) => {
             return res.status(400).json({ error: true, message: "email n'éxiste pas" });
         }
 
-        if( user.type.name !== "admin" || user.type.name !== "super admin"){
+        if( user.type.name !== "admin" && user.type.name !== "super admin"){
             return res.status(400).json({ error: true, message: "Vous n'avez pas l'autorisation d'accéder à la partie admin" });
         }
 
