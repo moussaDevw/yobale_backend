@@ -100,6 +100,8 @@ exports.signUp = async (req, res) => {
 
         return res.status(200).header('auth-token', token).json({ error: false, token, user }) 
     } catch (error) {
+        console.log(error)
+
         return res.status(500).json({ error: true, error, message: "Something went wrong" });
     }
 }
@@ -147,7 +149,7 @@ exports.signUpAdmin = async (req, res) => {
 
         return res.status(200).header('auth-token', token).json({ error: false, token, user }) 
     } catch (error) {
-        // console.log(error)
+        console.log(error)
         return res.status(500).json({ error: true,error, message: "Something went wrong" });
     }
 }
@@ -194,6 +196,7 @@ exports.signUpRestaurant = async (req, res) => {
 
         return res.status(200).header('auth-token', token).json({ error: false, token, user }) 
     } catch (error) {
+        console.log(error)
         return res.status(500).json({ error: true, error, message: "Something went wrong" });
     }
 }
@@ -230,6 +233,8 @@ exports.signUpLivreur = async (req, res) => {
 
         return res.status(200).header('auth-token', token).json({ error: false, token, user }) 
     } catch (error) {
+        console.log(error)
+
         return res.status(500).json({ error: true, error, message: "Something went wrong" });
     }
 }
