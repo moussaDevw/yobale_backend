@@ -3,6 +3,7 @@ const connection = require('../config/database');
 
 const deliveryman = connection.define('delivery_man', {
     id: {
+        
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
