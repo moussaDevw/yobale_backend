@@ -33,7 +33,7 @@ exports.getAllShop = (req, res) => {
         .catch(err => res.status(400).json({ error: true, message: "nous n'avons pas pus récupérer les information  des magasins" }))
 
     } catch (err) {
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }
 }
 
@@ -58,7 +58,7 @@ exports.getShopCategorie = async (req, res) => {
         .catch(err => res.status(400).json({ error: true, message: "nous n'avons pas pus récupérer les information  des magasins" }))
 
     } catch (err) {
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }
 }
 
@@ -70,7 +70,7 @@ exports.getAllActiveShop = (req, res) => {
         })
         .catch(err => res.status(400).json({ error: true, message: "nous n'avons pas pus récupérer les information  des magasins" }))
     } catch (err) {
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }
 }
 
@@ -82,7 +82,7 @@ exports.getAllInvalidateShop = (req, res) => {
         })
         .catch(err => res.status(400).json({ error: true, message: "nous n'avons pas pus récupérer les information  des magasins" }))
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }
 }
 
@@ -129,7 +129,7 @@ exports.storeShop = (req, res) => {
             // console.log(err)
             res.status(405).json({ error: true,err, message: "nous n'avons pas pus ajouter les information  du magasin" })});
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' });
+        res.status(500).json({ error: true, message: 'Something went wrong' });
     }
 }
 
@@ -183,7 +183,7 @@ exports.updateShop = (req, res) => {
         })
         .catch((err) => res.status(400).json({ error: true, message: "une erreur est survenue lors de la mise à jours des information du magasin" }));
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' });
+        res.status(500).json({ error: true, message: 'Something went wrong' });
     }
 }
 
@@ -204,7 +204,7 @@ exports.showOneShop = async (req, res) => {
             res.status(400).json({ error: true, message: 'can not get delevery man' });
         });
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' });
+        res.status(500).json({ error: true, message: 'Something went wrong' });
     }
 }
 
@@ -281,7 +281,7 @@ exports.validateShop = async (req, res) => {
             res.status(200).json({ error: false, emailSent: responseMail.sent, validatedShop, shopAccount, activated: true })
     } catch (error) {
         // console.log(error)
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }
 }
 
@@ -301,7 +301,7 @@ exports.inactivateShop = async (req, res) => {
       
     } catch (error) {
         console.log(error)
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }
 }
 exports.deblockShop = async (req, res) => {
@@ -319,7 +319,7 @@ exports.deblockShop = async (req, res) => {
       
     } catch (error) {
         console.log(error)
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }
 }
 
@@ -363,7 +363,7 @@ exports.uploadBg = async (req, res) => {
           }
     } catch (error) {
         // console.log(error)
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }      
 }
 
@@ -393,7 +393,7 @@ exports.deleteElement = async (req, res) => {
            }
         }catch(err) {
             console.log(err)
-            return res.status(500).json({ error: true, message: 'server problem' })
+            return res.status(500).json({ error: true, message: 'Something went wrong' })
         }
        
     }

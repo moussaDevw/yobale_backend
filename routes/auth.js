@@ -71,22 +71,22 @@ router.get('/custmer/verif', verifAuth ,AuthController.verifAuth);
 
 router.get('/', async (req, res) => {
     try {
-        console.log('test mail')
+        // console.log('test mail')
         
-        let message = {
-            from: 'no-replay@yobalapp.com',
-            to: "adnanerouhi@gmail.com",
-            subject: "Information créer",  
-            html: `<h1> bien reçu </h1>`,
-        };
+        // let message = {
+        //     from: 'no-replay@yobalapp.com',
+        //     to: "adnanerouhi@gmail.com",
+        //     subject: "Information créer",  
+        //     html: `<h1> bien reçu </h1>`,
+        // };
         
-         let response = await sendMail(message);
-         console.log(response)
-         if(!response) return res.json({message: "email problem", response});
-        let emailSent= true;
-        if(response.error){
-            emailSent = false;
-        }
+        //  let response = await sendMail(message);
+        //  console.log(response)
+        //  if(!response) return res.json({message: "email problem", response});
+        // let emailSent= true;
+        // if(response.error){
+        //     emailSent = false;
+        // }
         return res.json({source: "api yobal"});
     } catch (error) {
         console.log(error)

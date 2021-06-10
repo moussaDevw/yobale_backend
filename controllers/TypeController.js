@@ -11,7 +11,7 @@ exports.getAllTypes = (req, res) => {
         })
         .catch(err => res.status(401).json({ error: true, message: 'can not find type' }));
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' });
+        res.status(500).json({ error: true, message: 'Something went wrong' });
     }
 }
 
@@ -34,7 +34,7 @@ exports.storeType = (req, res) => {
         })
         .catch((err) => res.status(400).json({ error: true, message: 'Please check the data for type' }))    
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' });
+        res.status(500).json({ error: true, message: 'Something went wrong' });
     }
    
 }
@@ -62,7 +62,7 @@ exports.updateType = (req, res) => {
         })
         .catch((err) => res.status(400).json({ error: true, message: "bad request !" }))
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' });
+        res.status(500).json({ error: true, message: 'Something went wrong' });
     }
   
 }
@@ -73,7 +73,7 @@ exports.getOneType = async (req, res) => {
        .then(type => res.status(200).json({error: false, type}))
        .catch(err => res.status(404).json({ error: true, message: 'type not found' })) 
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' });
+        res.status(500).json({ error: true, message: 'Something went wrong' });
     }
           
 }

@@ -26,7 +26,7 @@ exports.getAllForShop = (req, res) => {
             error: true, err, message: 'menu not found !' 
         })})
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }
 }
 
@@ -56,7 +56,7 @@ exports.store = async (req, res) => {
         })
         .catch((err) => res.status(400).json({ error: true, err, message: 'Please check the data for Menu' }))
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }
 }
 
@@ -83,7 +83,7 @@ exports.update = (req, res) => {
         })
         .catch((err) => res.status(400).json({ error: true, message: "bad request !" }))
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }
    
 }
@@ -93,7 +93,7 @@ exports.showOne = async (req, res) => {
         let menuShop = await MenuShop.findByPk(req.params.id);
         res.status(200).json({error: false, menuShop})
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }      
 }
 
@@ -107,7 +107,7 @@ exports.activate = (req, res) => {
         .catch(err => res.status(400).json({ error: true, message: 'can not activate this Menu' }))
         
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }
 }
 
@@ -121,6 +121,6 @@ exports.inactivate = (req, res) => {
         .catch(err => res.status(400).json({ error: true, message: 'can not desactivate this Menu' }))
         
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }
 }

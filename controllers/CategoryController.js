@@ -15,7 +15,7 @@ exports.getAllCategories = async (req, res) => {
         res.status(200).json({error: false, categories })
     } catch (error) {
         // console.log(error)
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }
 }
 
@@ -47,7 +47,7 @@ exports.storeCategory = async (req, res) => {
         })
         .catch((err) => res.status(400).json({ error: true, err, message: 'Please check the data for category' }))
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }
 }
 
@@ -75,7 +75,7 @@ exports.updateCategory = (req, res) => {
         })
         .catch((err) => res.status(400).json({ error: true, message: "bad request !" }))
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }
 }
 
@@ -96,7 +96,7 @@ exports.updateSousCategory = (req, res) => {
         })
         .catch((err) => res.status(400).json({ error: true, message: "bad request !" }))
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }
 }
 
@@ -113,7 +113,7 @@ exports.showOneCategory = async (req, res) => {
 
         res.status(200).json({error: false, category})
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }      
 }
 
@@ -123,7 +123,7 @@ exports.showOneSousCategory = async (req, res) => {
 
         res.status(200).json({error: false, sousCategory})
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }      
 }
 
@@ -137,7 +137,7 @@ exports.activateCategory = (req, res) => {
         .catch(err => res.status(400).json({ error: true, message: 'can not activate this category' }))
         
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }
 }
 exports.inactivateCategory = (req, res) => {
@@ -150,7 +150,7 @@ exports.inactivateCategory = (req, res) => {
         .catch(err => res.status(400).json({ error: true, message: 'can not desactivate this category' }))
         
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }
 }
 
@@ -190,7 +190,7 @@ exports.uploadIcon = async (req, res) => {
           }
     } catch (error) {
         // console.log(error)
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }      
 }
 
@@ -216,7 +216,7 @@ exports.deleteElement = async (req, res) => {
            }
         }catch(err) {
             // console.log(err)
-            res.status(500).json({ error: true, message: 'server problem' })
+            res.status(500).json({ error: true, message: 'Something went wrong' })
         }
        
     }

@@ -29,15 +29,17 @@ exports.getAllElement = (req, res) => {
             error: true, err, message: 'orders not found !' 
         })})
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }
 }
 
-exports.getAllShopElement = (req, res) => {
+exports.getAllShopElement = async (req, res) => {
     try {
+
+        let thisShop = await Shop.findOne({where: { userId: req.user.id }})
         Order.findAll({
             where:{
-                shopId: req.user.id,
+                shopId: thisShop.id,
                 deleted:0
             },
            
@@ -51,7 +53,7 @@ exports.getAllShopElement = (req, res) => {
             error: true, err, message: 'orders not found !' 
         })})
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }
 }
 
@@ -82,7 +84,7 @@ exports.getAllCustmerElement =async (req, res) => {
         //    })
     } catch (error) {
         console.log(error)
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }
 }
 
@@ -136,7 +138,7 @@ exports.store = async (req, res) => {
  
     } catch (error) {
         console.log(error)
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }
 }
 
@@ -165,7 +167,7 @@ exports.updateElement = async (req, res) => {
         return res.status(202).json({ error: false, updatedMenu });
       
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }
    
 }
@@ -175,6 +177,6 @@ exports.showOneElement = async (req, res) => {
         let order = await Order.findByPk(req.params.id);
         res.status(200).json({error: false, order})
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }      
 }

@@ -11,7 +11,7 @@ exports.getAllAuthorisation = (req, res) => {
         })
         .catch(err => res.status(400).json({ error: true, message: 'can not get authorisation' }))
     } catch (error) {
-        res.status(500).json({ error: true, message: "server problem" });
+        res.status(500).json({ error: true, message: "Something went wrong" });
     }
 }
 
@@ -45,7 +45,7 @@ exports.storeAuthorisation = (req, res) => {
         .catch((err) => res.status(400).json({ error: true, message: 'Please check the data for type' }))
     
     } catch (error) {
-        res.status(500).json({ error: true, message: "server problem" });
+        res.status(500).json({ error: true, message: "Something went wrong" });
     }
     
 }
@@ -77,7 +77,7 @@ exports.updateAuthorisation = (req, res) => {
         })
         .catch(() => res.status(400).json({ error: true, message: "something went wrong" }))
     } catch (error) {
-        res.status(500).json({ error: true, message: "server problem" })
+        res.status(500).json({ error: true, message: "Something went wrong" })
     }
 }
 
@@ -87,7 +87,7 @@ exports.getOneAuthorisation = async (req, res) => {
         .then(authorisation => res.status(200).json({error: false, authorisation}))
         .catch(err => res.status(404).json({ error: true, message: 'something went wrong' }))    
     } catch (error) {
-        res.status(500).json({ error: true, message: "server problem" })
+        res.status(500).json({ error: true, message: "Something went wrong" })
     }
 }
 

@@ -11,7 +11,7 @@ exports.getAll = (req, res) => {
         })
         .catch(err => res.status(404).json({ error: true, message: 'product not found !' }))
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }
 }
 
@@ -45,7 +45,7 @@ exports.store = async (req, res) => {
         })
         .catch((err) =>{console.log(err); res.status(400).json({ error: true, err, message: 'Please check the data for Product' })})
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }
 }
 
@@ -76,7 +76,7 @@ exports.update = (req, res) => {
         })
         .catch((err) => res.status(400).json({ error: true, message: "bad request !" }))
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }
    
 }
@@ -86,7 +86,7 @@ exports.showOne = async (req, res) => {
         let product = await Product.findByPk(req.params.id);
         res.status(200).json({error: false, product})
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }      
 }
 
@@ -100,7 +100,7 @@ exports.activate = (req, res) => {
         .catch(err => res.status(400).json({ error: true, message: 'can not activate this Product' }))
         
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }
 }
 
@@ -114,7 +114,7 @@ exports.inactivate = (req, res) => {
         .catch(err => res.status(400).json({ error: true, message: 'can not desactivate this Product' }))
         
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }
 }
 
@@ -140,7 +140,7 @@ exports.deleteElement = async (req, res) => {
            }
         }catch(err) {
             console.log(err)
-            return res.status(500).json({ error: true, message: 'server problem' })
+            return res.status(500).json({ error: true, message: 'Something went wrong' })
         }
        
     }

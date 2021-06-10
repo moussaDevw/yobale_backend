@@ -13,7 +13,7 @@ exports.getAllAdress = (req, res) => {
         })
         .catch(err => res.status(404).json({ error: true, err, message: 'can not get adresses' }))
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }
 }
 
@@ -25,7 +25,7 @@ exports.getAllUserAdress = (req, res) => {
         })
         .catch(err => res.status(404).json({ error: true, message: 'can not get adresses' }))
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }
 }
 
@@ -85,7 +85,7 @@ exports.storeAdress = async (req, res) => {
            
     } catch (error) {
         console.log(error)
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     } 
 }
 
@@ -130,7 +130,7 @@ exports.updateAdress = (req, res) => {
         })
         .catch((err) => res.status(400).json({ error: true, message: "bad request !" }));
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' });
+        res.status(500).json({ error: true, message: 'Something went wrong' });
     }
 }
 
@@ -139,6 +139,6 @@ exports.showOneAdress = async (req, res) => {
         let category = await Adress.findByPk(req.params.id);
         res.status(200).json({error: false, category});
     } catch (error) {
-        return res.status(500).json({ error: true, message: 'server problem' });
+        return res.status(500).json({ error: true, message: 'Something went wrong' });
     }
 }

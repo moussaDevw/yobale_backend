@@ -17,7 +17,7 @@ exports.getAllDeliveryMan = (req, res) => {
         .catch(err => res.status(400).json({ error: true, message: 'can not get delevery men' }))
 
     } catch (err) {
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }
 }
 
@@ -29,7 +29,7 @@ exports.getAllActiveDeliveryMan = (req, res) => {
         })
         .catch(err => res.status(400).json({ error: true, message: 'can not get delevery men' }))
     } catch (err) {
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }
 }
 
@@ -41,7 +41,7 @@ exports.getAllInvalidateDeliveryMan = (req, res) => {
         })
         .catch(err => res.status(400).json({ error: true, message: 'can not get delevery men' }))
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }
 }
 
@@ -77,7 +77,7 @@ exports.storeDeliveryMan = (req, res) => {
         })
         .catch((err) => res.status(400).json({ error: true, err, validator:false,  message: 'can not added delevery' }))
     } catch (error) {
-        res.status(500).json({ error: true, validator:false, message: 'server problem' })  
+        res.status(500).json({ error: true, validator:false, message: 'Something went wrong' })  
     }
 }
 
@@ -120,7 +120,7 @@ exports.updateDeliveryMan = (req, res) => {
         })
         .catch((err) => res.status(400).json({ error: true, message: "can not update delevery man" }))
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' });
+        res.status(500).json({ error: true, message: 'Something went wrong' });
     }
 }
 
@@ -139,7 +139,7 @@ exports.showOneDeliveryMan = async (req, res) => {
         res.status(200).json({error: false, deliveryMan});    
     } catch (error) {
         // console.log(error)
-        res.status(500).json({ error: true, err: error, message: 'server problem' });
+        res.status(500).json({ error: true, err: error, message: 'Something went wrong' });
     }
 }
 
@@ -194,7 +194,7 @@ exports.validateDeliveryMan = async (req, res) => {
         // })
     } catch (error) {
         // console.log(error)
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }
 }
 
@@ -213,7 +213,7 @@ exports.inactivateDeliveryMan = async (req, res) => {
       
     } catch (error) {
         console.log(error)
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }
 }
 
@@ -243,7 +243,7 @@ exports.deleteElement = async (req, res) => {
            }
         }catch(err) {
             console.log(err)
-            return res.status(500).json({ error: true, message: 'server problem' })
+            return res.status(500).json({ error: true, message: 'Something went wrong' })
         }
        
     }
@@ -264,7 +264,7 @@ exports.deblockDeliveryMan = async (req, res) => {
       
     } catch (error) {
         console.log(error)
-        res.status(500).json({ error: true, message: 'server problem' })
+        res.status(500).json({ error: true, message: 'Something went wrong' })
     }
 }
 

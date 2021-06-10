@@ -11,7 +11,7 @@ exports.getAllCitys = (req, res) => {
         })
         .catch(err => res.status(401).json({ error: true, message: 'can not find City' }));
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' });
+        res.status(500).json({ error: true, message: 'Something went wrong' });
     }
 }
 
@@ -34,7 +34,7 @@ exports.storeCity = (req, res) => {
         })
         .catch((err) => res.status(400).json({ error: true, message: 'Please check the data for City' }))    
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' });
+        res.status(500).json({ error: true, message: 'Something went wrong' });
     }
    
 }
@@ -64,7 +64,7 @@ exports.updateCity = (req, res) => {
         })
         .catch((err) => res.status(400).json({ error: true, message: "bad request !" }))
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' });
+        res.status(500).json({ error: true, message: 'Something went wrong' });
     }
   
 }
@@ -75,7 +75,7 @@ exports.getOneCity = async (req, res) => {
        .then(city => res.status(200).json({error: false, city}))
        .catch(err => res.status(404).json({ error: true, message: 'City not found' })) 
     } catch (error) {
-        res.status(500).json({ error: true, message: 'server problem' });
+        res.status(500).json({ error: true, message: 'Something went wrong' });
     }
           
 }
@@ -101,7 +101,7 @@ exports.deleteElement = async (req, res) => {
            }
         }catch(err) {
             console.log(err)
-            res.status(500).json({ error: true, message: 'server problem' })
+            res.status(500).json({ error: true, message: 'Something went wrong' })
         }
        
     }
