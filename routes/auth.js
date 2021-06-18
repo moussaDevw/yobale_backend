@@ -5,7 +5,6 @@ const User = require('./../models/user')
 const router = express.Router();
 
 const verifAuth = require('./../middleware/auth')
-const { sendMail, hiddenEmail } = require('./../util/emailSender')
 
 router.post('/signup',[
     body('email')

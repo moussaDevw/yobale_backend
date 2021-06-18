@@ -280,7 +280,7 @@ exports.validateShop = async (req, res) => {
 
             res.status(200).json({ error: false, emailSent: responseMail.sent, validatedShop, shopAccount, activated: true })
     } catch (error) {
-        // console.log(error)
+        console.log(error)
         res.status(500).json({ error: true, message: 'Something went wrong' })
     }
 }

@@ -92,10 +92,14 @@ const product = require('./routes/product')
     initialize();
     async function initialize() {
         // create db if it doesn't already exist
-        const { host, port, user, password, database } = CONFIG.database;
-        const connection = await mysql.createConnection({ host, port, user, password });
-        // await connection.query(`DROP DATABASE IF EXISTS \`${database}\`;`);
-        await connection.query(`CREATE DATABASE IF NOT EXISTS \`${database}\`;`);
+        try {
+            const { host, port, user, password, database } = CONFIG.database;
+            const connection = await mysql.createConnection({ host, port, user, password });
+            // await connection.query(`DROP DATABASE IF EXISTS \`${database}\`;`);
+            await connection.query(`CREATE DATABASE IF NOT EXISTS \`${database}\`;`);
+        } catch (error) {
+           console.log(error) 
+        }
     }
 
 /****************     USE ROUTES      *****************/
