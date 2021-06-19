@@ -61,14 +61,15 @@ exports.getOneShopElement = async (req, res) => {
     try {
 
         let thisShop = await Shop.findOne({where: { userId: req.user.id }})
-        Order.findAll({
+        Order.findOne({
             include: [
                 {model: OrderProduct, include: [{model: Product}]},
                 {model: Status},
             ],
             where:{
                 shopId: thisShop.id,
-                deleted:0
+                deleted:0,
+                id: req.params.id
             },
            
         })
