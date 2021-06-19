@@ -57,6 +57,34 @@ exports.getAllShopElement = async (req, res) => {
     }
 }
 
+exports.getOneShopElement = async (req, res) => {
+    try {
+
+        let thisShop = await Shop.findOne({where: { userId: req.user.id }})
+        Order.findAll({
+            include: [
+                {model: OrderProduct, include: [{model: Product}]},
+                {model: Status},
+            ],
+            where:{
+                shopId: thisShop.id,
+                deleted:0
+            },
+           
+        })
+        .then((orders) => {
+            res.status(200).json({error: false, orders })
+        })
+        .catch(err => {
+            // console.log(err)
+            res.status(404).json({ 
+            error: true, err, message: 'orders not found !' 
+        })})
+    } catch (error) {
+        res.status(500).json({ error: true, message: 'Something went wrong' })
+    }
+}
+
 
 exports.getAllCustmerElement =async (req, res) => {
     try {

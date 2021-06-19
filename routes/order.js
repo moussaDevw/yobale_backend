@@ -10,9 +10,10 @@ const verifAuth = require('./../middleware/auth')
 
 router.get('/', OrderController.getAllElement);
 router.get('/shop',verifAuth, haveAuthorisation.isShop ,  OrderController.getAllShopElement);
+router.get('/shop/:id',verifAuth, haveAuthorisation.isShop ,  OrderController.getOneShopElement);
 router.get('/custmer',verifAuth, OrderController.getAllCustmerElement);
 
-  router.post('',verifAuth,haveAuthorisation.isCustmer ,OrderController.store);
+router.post('',verifAuth,haveAuthorisation.isCustmer ,OrderController.store);
 
 router.put('/:id',verifAuth, OrderController.updateElement);
 
