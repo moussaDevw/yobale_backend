@@ -232,53 +232,56 @@ exports.validateShop = async (req, res) => {
             }
 
             let typesUsers = await Type.findOne({where: { name : "magasin / restaurant"}});
-            
-            let shopAccount = await User.create({
-                fullName: validatedShop.name,
-                email : validatedShop.email, 
-                phone: validatedShop.phone, 
-                password: hashedPassword, 
-                active: 1,
-                typeId: typesUsers.dataValues.id, // id type user in model type
-            });
-            let accountShopCreated = true;
-            if(!shopAccount){
-                accountShopCreated = false;
-                return res.status(400).json({error: true, message: "Le compte de ce shop n'est pas créer. Une erreur inconue est survenue"})
-                // handing this problem
-            }
-            /*****   SENDING email with account details + (password) ********/
-           
-            let transformedEmail = hiddenEmail(shopAccount.email);
+            let shopAccount = {};
 
-            let messageBudy= mailBodyHtml(shopAccount, password, transformedEmail);
+            try {
 
-            let message = {
-                from: process.env.GMAIL_USER_NAME,
-                to: shopAccount.email,
-                subject: "Validation du compte YOBAL",  
-                html: messageBudy,
-            };
-            
-             let responseMail = await sendMail(message);
-             let emailSent= false;
+                shopAccount = await User.create({
+                    fullName: validatedShop.name,
+                    email : validatedShop.email, 
+                    phone: validatedShop.phone, 
+                    password: hashedPassword, 
+                    active: 1,
+                    typeId: typesUsers.dataValues.id, // id type user in model type
+                });
 
-             if(!responseMail) {
-
-             }else {
-                emailSent = responseMail.sent;
                 
-             }
-                   
-            // console.log(error, data)
-            let isValidatedShop = await Shop.update({active: true, userId: shopAccount.id}, { where: { id: req.params.id } });
+            } catch (handlerr) {
+                console.log(handlerr.name)
+                if(handlerr.name === "SequelizeUniqueConstraintError") {
+                     await User.update({
+                        password: hashedPassword, 
+                        active: 1,
+                    }, {where: {email: validatedShop.email }});
+                }
+                shopAccount = await  User.findOne({where: { email : validatedShop.email  }});
+                // return res.status(400).json({ error: true, handlerr, message: "Compte utilisateur n'est pas créer" })
+            }
 
-            if (!isValidatedShop) return res.status(400).json({ error: true, emailSent: responseMail.sent, message: 'Le compte du magasin est créer mais la modification du magasin est corrompu ' });
-
-            // .catch((error) => console.error(error));
-            /*****   END sending email ********/
-
-            res.status(200).json({ error: false, emailSent: responseMail.sent, validatedShop, shopAccount, activated: true })
+                /*****   SENDING email with account details + (password) ********/
+               
+                let transformedEmail = hiddenEmail(shopAccount.email);
+    
+                let messageBudy= mailBodyHtml(shopAccount, password, transformedEmail);
+    
+                let message = {
+                    from: process.env.GMAIL_USER_NAME,
+                    to: shopAccount.email,
+                    subject: "Validation du compte YOBAL",  
+                    html: messageBudy,
+                };
+                
+                 let responseMail = await sendMail(message);
+               
+                let isValidatedShop = await Shop.update({active: true, userId: shopAccount.id}, { where: { id: req.params.id } });
+    
+                if (!isValidatedShop) return res.status(400).json({ error: true, emailSent: responseMail.sent, message: 'Le compte du magasin est créer mais la modification du magasin est corrompu ' });
+    
+                // .catch((error) => console.error(error));
+                /*****   END sending email ********/
+    
+                return res.status(200).json({ error: false, emailSent: responseMail.sent, validatedShop, shopAccount, activated: true })
+           
     } catch (error) {
         console.log(error)
         res.status(500).json({ error: true, message: 'Something went wrong' })

@@ -4,6 +4,7 @@ const {  body } = require('express-validator');
 
 const router = express.Router();
 const Shop = require('./../models/shop');
+const User = require('./../models/user');
 const verifAuth = require('./../middleware/auth');
 const haveAuthorisation = require('./../middleware/haveAuthorisation');
 
@@ -33,8 +34,14 @@ const haveAuthorisation = require('./../middleware/haveAuthorisation');
         .custom( async (value) => {
             const existingPhone = await Shop.findOne({where:{email: value }})
             if(existingPhone){
-                throw new Error('existe');
+                throw new Error('email existe');
             }
+
+            const existingMail = await User.findOne({where:{email: value }})
+            if(existingMail){
+                throw new Error('email existe');
+            }
+
         })
         .trim(),
         body('phone')
