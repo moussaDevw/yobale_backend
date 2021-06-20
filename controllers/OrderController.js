@@ -7,6 +7,7 @@ const Shop = require('./../models/shop');
 const Custmer = require('./../models/user');
 const Status = require('./../models/status');
 const DeliveryMan = require('./../models/deliveryman');
+const Adress = require('./../models/adress');
 
 const {  validationResult} = require('express-validator');
 
@@ -42,7 +43,9 @@ exports.getAllShopElement = async (req, res) => {
                 shopId: thisShop.id,
                 deleted:0
             },
-           
+            include: [
+                {model: Adress}
+            ]
         })
         .then((orders) => {
             res.status(200).json({error: false, orders })
