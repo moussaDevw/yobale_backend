@@ -362,6 +362,11 @@ FOREIGN KEY (`shopId`) REFERENCES `shops` (`id`) ON DELETE NO ACTION ON UPDATE C
                         name: "Bien livrer",
                         active: true,
                     },
+                    {
+                        name: "Annuler",
+                        active: true,
+                    },
+
         
                 ])
             })

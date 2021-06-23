@@ -212,3 +212,66 @@ exports.showOneElement = async (req, res) => {
         res.status(500).json({ error: true, message: 'Something went wrong' })
     }      
 }
+
+
+exports.confirmOrder = async (req, res) => {
+    try {
+
+        let thisShop = await Shop.findOne({where: { userId: req.user.id }})
+        Order.update(
+            {
+                statusId: 2,
+            },
+            {
+            where:{
+                shopId: thisShop.id,
+                deleted:0,
+                id: req.params.id
+            },
+           
+        })
+        .then((order) => {
+            return res.status(200).json({error: false, order })
+            // res.status(200).json({error: false, order })
+        })
+        .catch(err => {
+            // console.log(err)
+            res.status(404).json({ 
+            error: true, err, message: 'orders not found !' 
+        })})
+    } catch (error) {
+        res.status(500).json({ error: true, message: 'Something went wrong' })
+    }
+}
+
+
+exports.cancelOrder = async (req, res) => {
+    try {
+
+        let thisShop = await Shop.findOne({where: { userId: req.user.id }})
+        Order.update(
+            {
+                statusId: 5,
+            },
+            {
+            where:{
+                shopId: thisShop.id,
+                deleted:0,
+                id: req.params.id
+            },
+           
+        })
+        .then((order) => {
+            return res.status(200).json({error: false, order })
+            // res.status(200).json({error: false, order })
+        })
+        .catch(err => {
+            // console.log(err)
+            res.status(404).json({ 
+            error: true, err, message: 'orders not found !' 
+        })})
+    } catch (error) {
+        res.status(500).json({ error: true, message: 'Something went wrong' })
+    }
+}
+

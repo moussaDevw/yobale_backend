@@ -18,5 +18,7 @@ router.post('',verifAuth,haveAuthorisation.isCustmer ,OrderController.store);
 router.put('/:id',verifAuth, OrderController.updateElement);
 
 router.get('/:id',verifAuth, OrderController.showOneElement);
+router.post('/confirm/:id',verifAuth, OrderController.confirmOrder);
+router.post('/cancel/:id',verifAuth, OrderController.cancelOrder);
 
 module.exports = router;
