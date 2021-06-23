@@ -44,7 +44,8 @@ exports.getAllShopElement = async (req, res) => {
                 deleted:0
             },
             include: [
-                {model: Adress}
+                {model: Adress},
+                {model: Status},
             ]
         })
         .then((orders) => {
@@ -98,9 +99,11 @@ exports.getAllCustmerElement =async (req, res) => {
                 deleted:0
             },
             include : [
-                {
-                    model: OrderProduct,
-                }
+                {model: OrderProduct, include: [{model: Product}]},
+                {model: Status},
+                // {
+                //     model: OrderProduct,
+                // }
             ]
         })
         if(!orders) return  res.status(404).json({ 
