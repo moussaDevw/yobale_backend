@@ -177,10 +177,10 @@
                                                 </tr>
                                                 <tr>
                                                     <td align="left">
-                                                        <label > ${mail.labelPassword}  </label>
+                                                        <label > ${mail.labelPassword} :  </label>
                                                     </td>
                                                     <td align="center">
-                                                        <span > ${mail.password} </span>
+                                                        <span style="margin-left: 10px;"> ${mail.password} </span>
                                                     </td>
                                                 </tr>
                                             </table>

@@ -16,7 +16,7 @@
             linkToContact: "https://yobalapp.com/contact",
             appLink: "",
             contact: "contactez nous",
-            conclusion: "livraison app TEAM",
+            conclusion: "YOBAL TEAM",
             moreHelp: "Nous sommes là pour vous aider",
             websiteLink: "https://yobalapp.com",
             websiteLinkLabel: "visiter notre site",
@@ -182,7 +182,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td align="left">
-                                                        <label > ${mail.labelPassword}  </label>
+                                                        <label > ${mail.labelPassword} :  </label>
                                                     </td>
                                                     <td align="left">
                                                         <span > ${mail.password} </span>
