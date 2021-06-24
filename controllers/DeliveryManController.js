@@ -137,8 +137,8 @@ exports.showOneDeliveryMan = async (req, res) => {
 
         if(!deliveryMan) return res.status(400).json({ error: true, message: 'livreur non trouvé' }); 
         
-        let deliveries = await Delivery.findAll({where: { deliveryManId: req.params.id, deleted:0 }});
-        deliveryMan.setDataValue('deliveries', deliveries );
+        // let deliveries = await Delivery.findAll({where: { deliveryManId: req.params.id, deleted:0 }});
+        // deliveryMan.setDataValue('deliveries', deliveries );
         res.status(200).json({error: false, deliveryMan});    
     } catch (error) {
         // console.log(error)
