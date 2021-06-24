@@ -1,10 +1,10 @@
 
 
-    module.exports = ( shopAccount, password, transformedEmail ) => {
-        if (!shopAccount || !password) return `<h1> hello world </h1>`
+    module.exports = ( validatedDeliveryMan, password, transformedEmail ) => {
+        if (!validatedDeliveryMan || !password) return `<h1> hello world </h1>`
         let mail = {
             header: `Bonjour`,
-            title: `confirmation de votre compte de type store sous le nom ${shopAccount.fullName} chez livraison app`,
+            title: `confirmation de votre compte de type livreur sous le nom ${validatedDeliveryMan.fullName} chez livraison app`,
             sousTitre: "Vous pouvez accéder à votre compte dés maintenant en utilisant ce mot de passe : ",
             labelMail: " Email :  ",
             hiddenEmail: transformedEmail,
@@ -21,8 +21,6 @@
             websiteLink: "https://yobalapp.com",
             websiteLinkLabel: "visiter notre site",
             unsubscribe:"Si ces e-mails deviennent ennuyeux, n'hésitez pas à",
-            unsubscribeLink:"https://yobalapp.com/unsubscribe",
-            unsubscribeLinkLabel:"se désaboner",
         }
 /*         //                             // <label> ${mail.labelMail} </label> <p> ${mail.email} </p>
 
@@ -231,17 +229,6 @@
                             <td bgcolor="#FFECD1" align="center" style="padding: 30px 30px 30px 30px; border-radius: 4px 4px 4px 4px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
                                 <h2 style="font-size: 20px; font-weight: 400; color: #111111; margin: 0;">${mail.moreHelp}  </h2>
                                 <p style="margin: 0;"><a href=" ${mail.websiteLink} " target="_blank" style="color: #1746e0;"> ${mail.websiteLink} </a></p>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-            <tr>
-                <td bgcolor="#e1e1e1" align="center" style="padding: 0px 10px 0px 10px;">
-                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
-                        <tr>
-                            <td bgcolor="#e1e1e1" align="left" style="padding: 0px 30px 30px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 18px;"> <br>
-                                <p style="margin: 0;"> ${mail.unsubscribe} If these emails get annoying, please feel free to <a href="${mail.unsubscribeLink}" target="_blank" style="color: #111111; font-weight: 700;">${mail.unsubscribeLinkLabel}</a>.</p>
                             </td>
                         </tr>
                     </table>

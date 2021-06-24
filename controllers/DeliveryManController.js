@@ -4,6 +4,9 @@ const City = require('./../models/city');
 const Delivery = require('./../models/delivery');
 const Type = require('./../models/type');
 
+const mailBodyHtml =  require('./../mailContent/deliverymanAccountCreate')
+const { sendMail, hiddenEmail, generatePassword } = require('./../util/emailSender')
+
 var bcrypt = require('bcryptjs');
 
 const {  validationResult} = require('express-validator');
@@ -156,7 +159,7 @@ exports.validateDeliveryMan = async (req, res) => {
                 /************ START creating user account *****************/
                 
                 let fullName = validatedDeliveryMan.name;
-                let password= "generate_random_password";
+                let password= generatePassword();
 
                 const salt = await bcrypt.genSalt(10);
 
@@ -177,6 +180,18 @@ exports.validateDeliveryMan = async (req, res) => {
 
                   /*****   sending email with account details + (password) ********/
 
+                  let transformedEmail = hiddenEmail(validatedDeliveryMan.email);
+    
+                let messageBudy= mailBodyHtml(validatedDeliveryMan, password, transformedEmail);
+    
+                let message = {
+                    from: process.env.GMAIL_USER_NAME,
+                    to: validatedDeliveryMan.email,
+                    subject: "Validation du compte YOBAL",  
+                    html: messageBudy,
+                };
+                
+                 let responseMail = await sendMail(message);
 
                 res.status(200).json({ error: false, deliveryManAccount, validatedDeliveryMan, activated: true })
 
