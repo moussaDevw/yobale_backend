@@ -68,6 +68,7 @@ router.post('/signin',[
 
 router.get('/custmer/verif', verifAuth ,AuthController.verifAuth);
 router.get('/verif/shop', verifAuth ,AuthController.verifAuthShop);
+router.get('/verif/shop', verifAuth ,AuthController.verifAuthShop);
 
 router.get('/', async (req, res) => {
     try {
