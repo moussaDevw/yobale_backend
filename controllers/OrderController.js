@@ -278,3 +278,56 @@ exports.cancelOrder = async (req, res) => {
     }
 }
 
+
+
+exports.getAllReadyElement =async (req, res) => {
+    try {
+        let orders= await Order.findAll({
+            where:{
+                userId: req.user.id,
+                deleted:0,
+                statusId: 2
+            },
+            include : [
+                {model: Status},
+            ]
+        })
+        if(!orders) return  res.status(400).json({ 
+            error: true, err, message: 'order not found !' 
+        })
+        return res.status(200).json({error: false, orders })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ error: true, message: 'Something went wrong' })
+    }
+}
+
+
+exports.ConfirmLivreur = async (req, res) => {
+    try {
+
+        let thisLivreur = await DeliveryMan.findOne({where: { userId: req.user.id }})
+        Order.update(
+            {
+                statusId: 3,
+            },
+            {
+            where:{
+                id: req.params.id,
+                deliveryManId: thisLivreur.id
+            },
+           
+        })
+        .then((order) => {
+            return res.status(200).json({error: false, order })
+            // res.status(200).json({error: false, order })
+        })
+        .catch(err => {
+            // console.log(err)
+            res.status(404).json({ 
+            error: true, err, message: 'orders not found !' 
+        })})
+    } catch (error) {
+        res.status(500).json({ error: true, message: 'Something went wrong' })
+    }
+}

@@ -197,7 +197,7 @@ exports.validateDeliveryMan = async (req, res) => {
 
             }
             else {
-                return res.status(200).json({ error: false, haveAlreadyAccont: false, deliveryManAccount: checkExistingUser, validatedDeliveryMan, activated: true })
+                return res.status(200).json({ error: false, haveAlreadyAccont: true, deliveryManAccount: checkExistingUser, validatedDeliveryMan, activated: true })
 
             }
            
