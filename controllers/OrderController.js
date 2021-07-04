@@ -284,7 +284,6 @@ exports.getAllReadyElement =async (req, res) => {
     try {
         let orders= await Order.findAll({
             where:{
-                userId: req.user.id,
                 deleted:0,
                 statusId: 2
             },
