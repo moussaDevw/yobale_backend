@@ -193,11 +193,11 @@ exports.validateDeliveryMan = async (req, res) => {
                 
                  let responseMail = await sendMail(message);
 
-                res.status(200).json({ error: false, deliveryManAccount, validatedDeliveryMan, activated: true })
+                return res.status(200).json({ error: false, deliveryManAccount, validatedDeliveryMan, activated: true, responseMail })
 
             }
             else {
-                res.status(200).json({ error: false, haveAlreadyAccont: false, deliveryManAccount: checkExistingUser, validatedDeliveryMan, activated: true })
+                return res.status(200).json({ error: false, haveAlreadyAccont: false, deliveryManAccount: checkExistingUser, validatedDeliveryMan, activated: true })
 
             }
            
@@ -208,8 +208,8 @@ exports.validateDeliveryMan = async (req, res) => {
         //     res.status(400).json({ error: true,err:err, message: 'can not activate' });
         // })
     } catch (error) {
-        // console.log(error)
-        res.status(500).json({ error: true, message: 'Something went wrong' })
+        console.log(error)
+        return res.status(500).json({ error: true, message: 'Something went wrong' })
     }
 }
 
