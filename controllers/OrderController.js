@@ -289,6 +289,8 @@ exports.getAllReadyElement =async (req, res) => {
             },
             include : [
                 {model: Status},
+                {model: Shop},
+                {model: Adress}
             ]
         })
         if(!orders) return  res.status(400).json({ 
