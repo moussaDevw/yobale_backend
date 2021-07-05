@@ -11,6 +11,7 @@ const verifAuth = require('./../middleware/auth')
 router.get('/', OrderController.getAllElement);
 router.get('/shop',verifAuth, haveAuthorisation.isShop ,  OrderController.getAllShopElement);
 router.get('/shop/:id',verifAuth, haveAuthorisation.isShop ,  OrderController.getOneShopElement);
+router.get('/livreur/:id',verifAuth, haveAuthorisation.isShop ,  OrderController.getOneLivreurElement);
 router.get('/custmer',verifAuth, OrderController.getAllCustmerElement);
 router.get('/preparer',verifAuth, OrderController.getAllReadyElement);
 

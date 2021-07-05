@@ -332,3 +332,32 @@ exports.ConfirmLivreur = async (req, res) => {
         res.status(500).json({ error: true, message: 'Something went wrong' })
     }
 }
+
+
+exports.getOneLivreurElement = async (req, res) => {
+    try {
+        Order.findOne({
+            include: [
+                {model: OrderProduct, include: [{model: Product}]},
+                {model: Status},
+                {model: Adress},
+                {model: Shop},
+            ],
+            where:{
+                deleted:0,
+                id: req.params.id
+            },
+           
+        })
+        .then((orders) => {
+            res.status(200).json({error: false, orders })
+        })
+        .catch(err => {
+            // console.log(err)
+            res.status(404).json({ 
+            error: true, err, message: 'orders not found !' 
+        })})
+    } catch (error) {
+        res.status(500).json({ error: true, message: 'Something went wrong' })
+    }
+}
