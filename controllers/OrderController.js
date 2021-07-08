@@ -307,7 +307,10 @@ exports.getAllReadyElement =async (req, res) => {
 exports.ConfirmLivreur = async (req, res) => {
     try {
 
-        let thisLivreur = await DeliveryMan.findOne({where: { userId: req.user.id }})
+        let thisLivreur = await DeliveryMan.findOne({where: { userId: req.user.id }});
+        let thisOrder = await Order.findOne({where: { id: req.params.id }});
+        if(thisOrder.status === 3) return res.status(400).json({taken: true})
+
         Order.update(
             {
                 statusId: 3,
