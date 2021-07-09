@@ -211,6 +211,8 @@ exports.validateDeliveryMan = async (req, res) => {
                 
                 let deliveryManAccount = await User.update({
                     password: hashedPassword,
+                }, {
+                    where:{ email : validatedDeliveryMan.email}
                 });
                 await DeliveryMan.update({active: true, userId: deliveryManAccount.id}, { where: { id: req.params.id } })
 
