@@ -314,16 +314,17 @@ exports.ConfirmLivreur = async (req, res) => {
         Order.update(
             {
                 statusId: 3,
+                deliveryManId: thisLivreur.id
             },
             {
             where:{
                 id: req.params.id,
-                deliveryManId: thisLivreur.id
             },
            
         })
-        .then((order) => {
-            return res.status(200).json({error: false, order })
+        .then( async () => {
+            let confirmedOrder = await Order.findOne({where: { id: req.params.id }});
+            return res.status(200).json({error: false, confirmedOrder })
             // res.status(200).json({error: false, order })
         })
         .catch(err => {
