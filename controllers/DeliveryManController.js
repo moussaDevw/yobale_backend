@@ -197,7 +197,39 @@ exports.validateDeliveryMan = async (req, res) => {
 
             }
             else {
-                return res.status(200).json({ error: false, haveAlreadyAccont: true, deliveryManAccount: checkExistingUser, validatedDeliveryMan, activated: true })
+
+
+                  
+                let fullName = validatedDeliveryMan.name;
+                let password= generatePassword();
+
+                const salt = await bcrypt.genSalt(10);
+
+                let hashedPassword = await bcrypt.hash(password, salt);
+
+                let typesUsers = await Type.findOne({where: { name : "livreur"}});
+                
+                let deliveryManAccount = await update.create({
+                    password: hashedPassword,
+                });
+                await DeliveryMan.update({active: true, userId: deliveryManAccount.id}, { where: { id: req.params.id } })
+
+                  /*****   sending email with account details + (password) ********/
+
+                  let transformedEmail = hiddenEmail(validatedDeliveryMan.email);
+    
+                let messageBudy= mailBodyHtml(validatedDeliveryMan, password, transformedEmail);
+    
+                let message = {
+                    from: process.env.GMAIL_USER_NAME,
+                    to: validatedDeliveryMan.email,
+                    subject: "Validation du compte YOBAL",  
+                    html: messageBudy,
+                };
+                
+                 let responseMail = await sendMail(message);
+
+                return res.status(200).json({ error: false, haveAlreadyAccont: true, deliveryManAccount: checkExistingUser, responseMail, validatedDeliveryMan, activated: true })
 
             }
            
