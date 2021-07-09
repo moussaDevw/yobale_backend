@@ -209,7 +209,7 @@ exports.validateDeliveryMan = async (req, res) => {
 
                 let typesUsers = await Type.findOne({where: { name : "livreur"}});
                 
-                let deliveryManAccount = await update.create({
+                let deliveryManAccount = await User.update({
                     password: hashedPassword,
                 });
                 await DeliveryMan.update({active: true, userId: deliveryManAccount.id}, { where: { id: req.params.id } })
