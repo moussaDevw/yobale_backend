@@ -22,6 +22,11 @@ const city = connection.define('city', {
         allowNull: true,
         defaultValue: false,
     },
+    deleivery_price:{
+        type: Sequelize.FLOAT,
+        allowNull: false,
+        defaultValue: 0,
+    },
 
 });
 
