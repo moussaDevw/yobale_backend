@@ -55,6 +55,7 @@ const sign = require('./routes/auth')
 const deliveryMan = require('./routes/deliveryMan')
 const shop = require('./routes/shop')
 const menu = require('./routes/menu')
+const user = require('./routes/users')
 const product = require('./routes/product')
 
 
@@ -115,6 +116,7 @@ const product = require('./routes/product')
     // app.use('/authorisation', authorisations)
     app.use('/delivery-man', deliveryMan)
     app.use('/shop', shop)
+    app.use('/user', user)
     app.use(sign)
 
 
@@ -130,6 +132,11 @@ const product = require('./routes/product')
     Adress.belongsTo(User, {
         foreignKey: {
             allowNull: false,
+        },
+    });
+    User.hasMany(Adress, {
+        foreignKey: {
+            allowNull: true,
         },
     });
 

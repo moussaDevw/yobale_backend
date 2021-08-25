@@ -23,11 +23,12 @@ exports.storeCity = (req, res) => {
             return res.status(400).json({ error: true, message: resultError });
         }
     
-        let { name, active } = req.body;
+        let { name, active, deleivery_price } = req.body;
     
         City.create({
             name,
             active,
+            deleivery_price,
         })
         .then((city) => {
             res.status(201).json({ error: false, city });
@@ -47,12 +48,13 @@ exports.updateCity = (req, res) => {
             return res.status(400).json({ error: true, message: resultError });
         }
         if(!req.params.id) return res.status(400).json({ error: true, updatedCity:{}, message:"identifiant de la ville n'est pas était envoyé" })
-        let { name, active, deleted } = req.body;
+        let { name, active, deleted,deleivery_price } = req.body;
 
         City.update({
             name,
             active,
-            deleted
+            deleted,
+            deleivery_price,
         }, {
             where: { id: req.params.id }
         })

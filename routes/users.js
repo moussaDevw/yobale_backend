@@ -4,10 +4,11 @@ const UserController = require('./../controllers/UserController');
 const {  body } = require('express-validator');
 
 router.get('', UserController.getAllUsers)
-router.get(':id', UserController.getOneUser)
+router.get('/custmers', UserController.getAllCustmers)
+router.get('/:id', UserController.getOneUser)
 router.post('', UserController.addUser)
-router.put(':id', UserController.updateUser)
-router.delete(':id', UserController.deleteUser)
-router.patch(':id', UserController.editUser)
+router.put('/:id', UserController.updateUser)
+router.delete('/:id', UserController.deleteUser)
+router.patch('/:id', UserController.editUser)
 
 module.exports = router;
