@@ -29,6 +29,18 @@ exports.getAllUserAdress = (req, res) => {
     }
 }
 
+exports.getAllUserAdressCity = (req, res) => {
+    try {
+        Adress.findAll({where: { userId: req.user.id, deleted: 0}, include: [{model: City}]})
+        .then((adresses) => {
+            res.status(200).json({error: false, adresses: adresses.reverse() })
+        })
+        .catch(err => res.status(404).json({ error: true, message: 'can not get adresses' }))
+    } catch (error) {
+        res.status(500).json({ error: true, message: 'Something went wrong' })
+    }
+}
+
 exports.storeAdress = async (req, res) => {
     try {
         let resultError= validationResult(req).array();

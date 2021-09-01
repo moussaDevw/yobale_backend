@@ -45,7 +45,7 @@ const haveAuthorisation = require('./../middleware/haveAuthorisation');
         })
         .trim(),
         body('phone')
-        .isLength({ min: 10})
+        .isLength({ min: 3})
         .custom(async (value) => {
         const existingPhone = await Shop.findOne({where:{phone: value }})
         if(existingPhone){

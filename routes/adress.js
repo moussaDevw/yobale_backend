@@ -9,7 +9,7 @@ const verifAuth = require('./../middleware/auth')
 
     router.get('', AdressController.getAllAdress);
 
-    router.get('/user',verifAuth, AdressController.getAllUserAdress);
+    router.get('/user',verifAuth, AdressController.getAllUserAdressCity);
 
     router.post('',[
         body('streetName')

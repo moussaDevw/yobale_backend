@@ -21,7 +21,7 @@ router.post('/signup',[
     body('image').isString().optional(),
     body('phone')
     .optional()
-    .isLength({ min: 10})
+    .isLength({ min: 3})
     .custom(async (value) => {
         const existingPhone = await User.findOne({where:{phone: value }})
         if(existingPhone){

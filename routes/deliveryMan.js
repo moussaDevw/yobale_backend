@@ -28,7 +28,7 @@ const haveAuthorisation = require('./../middleware/haveAuthorisation')
         })
         .trim(),
         body('phone')
-        .isLength({ min: 10})
+        .isLength({ min: 3})
         .custom(async (value) => {
         const existingPhone = await DeliveryMan.findOne({where:{phone: value }})
         if(existingPhone){
@@ -48,7 +48,7 @@ const haveAuthorisation = require('./../middleware/haveAuthorisation')
         .trim(),
         body('phone')
         .optional()
-        .isLength({ min: 10})
+        .isLength({ min: 3})
       
     ],verifAuth,haveAuthorisation.isLivreur, DeliveryManController.updateDeliveryMan);
 
