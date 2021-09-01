@@ -31,7 +31,7 @@ exports.getAllUserAdress = (req, res) => {
 
 exports.getAllUserAdressCity = (req, res) => {
     try {
-        Adress.findAll({where: { userId: req.user.id, deleted: 0}, include: [{model: City}]})
+        Adress.findAll({where: { userId: req.user.id, deleted: 0}, include: [{model: City, require:false}]})
         .then((adresses) => {
             res.status(200).json({error: false, adresses: adresses.reverse() })
         })
