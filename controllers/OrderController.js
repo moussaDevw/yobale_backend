@@ -8,7 +8,7 @@ const Custmer = require('./../models/user');
 const Status = require('./../models/status');
 const DeliveryMan = require('./../models/deliveryman');
 const Adress = require('./../models/adress');
-const Users = require('./../models/users');
+const Users = require('./../models/user');
 
 const {  validationResult} = require('express-validator');
 
