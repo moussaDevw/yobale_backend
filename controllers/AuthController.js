@@ -221,6 +221,7 @@ exports.signUpLivreur = async (req, res) => {
             return res.status(400).json({ error: true, message: "mot de passe incorrect" });
         }
 
+        
         var token = jwt.sign(
             { 
             id: user.id, 
@@ -230,6 +231,15 @@ exports.signUpLivreur = async (req, res) => {
         );
         delete user.dataValues.password;
         delete user._previousDataValues.password;
+
+
+        if(user.deleted){
+            return res.status(400).json({ error: true, message: "Ce compte à était suprimer" });
+        }
+        
+        if(user.blocked){
+            return res.status(400).json({ error: true, message: "Ce compte à était blocker par un admin vous ne pouvez pas accédez à votre compte pour le moment" });
+        }
 
         return res.status(200).header('auth-token', token).json({ error: false, token, user }) 
     } catch (error) {
