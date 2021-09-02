@@ -8,6 +8,7 @@ const Custmer = require('./../models/user');
 const Status = require('./../models/status');
 const DeliveryMan = require('./../models/deliveryman');
 const Adress = require('./../models/adress');
+const Users = require('./../models/users');
 
 const {  validationResult} = require('express-validator');
 
@@ -346,6 +347,7 @@ exports.getOneLivreurElement = async (req, res) => {
                 {model: Status},
                 {model: Adress},
                 {model: Shop},
+                {model: Users},
             ],
             where:{
                 deleted:0,
