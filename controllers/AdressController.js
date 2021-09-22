@@ -71,30 +71,53 @@ exports.storeAdress = async (req, res) => {
         },});
 
         if(!existingCity){
-            return res.status(400).json({error: true, message: "Nous travaillons pas dans cette zone"});
+            // return res.status(400).json({error: true, message: "Nous travaillons pas dans cette zone"});
+            Adress.create({
+                streetName, 
+                buildingNumber, 
+                sector, 
+                nameCompany, 
+                floor, 
+                housseNumber, 
+                codePostal, 
+                latitude, 
+                longitude, 
+                latitudeDelta, 
+                longitudeDelta,
+                active,
+                userId: req.user.id,
+                cityId: null
+            })
+            .then( (adress) => {
+                res.status(201).json({ error: false, adress });
+            })
+            .catch((err) => res.status(400).json({ error: true, errors: err, message: 'problem while adding adress' }))
+               
+        }else{
+            Adress.create({
+                streetName, 
+                buildingNumber, 
+                sector, 
+                nameCompany, 
+                floor, 
+                housseNumber, 
+                codePostal, 
+                latitude, 
+                longitude, 
+                latitudeDelta, 
+                longitudeDelta,
+                active,
+                userId: req.user.id,
+                cityId: existingCity.id
+            })
+            .then( (adress) => {
+                res.status(201).json({ error: false, adress });
+            })
+            .catch((err) => res.status(400).json({ error: true, errors: err, message: 'problem while adding adress' }))
+               
         }
 
-        Adress.create({
-            streetName, 
-            buildingNumber, 
-            sector, 
-            nameCompany, 
-            floor, 
-            housseNumber, 
-            codePostal, 
-            latitude, 
-            longitude, 
-            latitudeDelta, 
-            longitudeDelta,
-            active,
-            userId: req.user.id,
-            cityId: existingCity.id
-        })
-        .then( (adress) => {
-            res.status(201).json({ error: false, adress });
-        })
-        .catch((err) => res.status(400).json({ error: true, errors: err, message: 'problem while adding adress' }))
-           
+       
     } catch (error) {
         console.log(error)
         res.status(500).json({ error: true, message: 'Something went wrong' })
