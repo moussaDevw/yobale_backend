@@ -12,15 +12,15 @@ const verifAuth = require('./../middleware/auth')
     router.get('/user',verifAuth, AdressController.getAllUserAdressCity);
 
     router.post('',[
-        body('streetName')
-        .isString()
-        .isLength({ min: 2}),
+        // body('streetName')
+        // .isString()
+        // .isLength({ min: 2}),
         body('buildingNumber').isInt().isLength({ min: 1}),
-        body('sector').optional().isString(),
-        body('nameCompany').optional().isString(),
-        body('floor').optional().isInt(),
-        body('housseNumber').optional().isInt(),
-        body('codePostal').optional().isInt(),
+        // body('sector').optional().isString(),
+        // body('nameCompany').optional().isString(),
+        // body('floor').optional().isInt(),
+        // body('housseNumber').optional().isInt(),
+        // body('codePostal').optional().isInt(),
         body('latitude').isFloat(),
         body('longitude').isFloat(),
         body('latitudeDelta').optional().isFloat(),
@@ -29,15 +29,15 @@ const verifAuth = require('./../middleware/auth')
     ], verifAuth, AdressController.storeAdress);
 
     router.put('/:id',[
-        body('streetName')
-        .isString()
-        .isLength({ min: 2}),
+        // body('streetName')
+        // .isString()
+        // .isLength({ min: 2}),
         body('buildingNumber').isInt().isLength({ min: 1}),
-        body('sector').optional().isString(),
-        body('nameCompany').optional().isString(),
-        body('floor').optional().isInt(),
-        body('housseNumber').optional().isInt(),
-        body('codePostal').optional().isInt(),
+        // body('sector').optional().isString(),
+        // body('nameCompany').optional().isString(),
+        // body('floor').optional().isInt(),
+        // body('housseNumber').optional().isInt(),
+        // body('codePostal').optional().isInt(),
         body('latitude').isFloat(),
         body('longitude').isFloat(),
         body('latitudeDelta').optional().isFloat(),

@@ -9,7 +9,7 @@ const adress = connection.define('adress', {
     },
     streetName: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
     },
     buildingNumber: {
         type: Sequelize.INTEGER,
