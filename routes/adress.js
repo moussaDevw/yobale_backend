@@ -15,7 +15,7 @@ const verifAuth = require('./../middleware/auth')
         // body('streetName')
         // .isString()
         // .isLength({ min: 2}),
-        body('buildingNumber').isInt().isLength({ min: 1}),
+        body('buildingNumber').isInt().optional(),
         // body('sector').optional().isString(),
         // body('nameCompany').optional().isString(),
         // body('floor').optional().isInt(),
@@ -32,7 +32,7 @@ const verifAuth = require('./../middleware/auth')
         // body('streetName')
         // .isString()
         // .isLength({ min: 2}),
-        body('buildingNumber').isInt().isLength({ min: 1}),
+        body('buildingNumber').optional(),
         // body('sector').optional().isString(),
         // body('nameCompany').optional().isString(),
         // body('floor').optional().isInt(),
