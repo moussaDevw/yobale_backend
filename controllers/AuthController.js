@@ -61,6 +61,60 @@ exports.sginIn = async (req, res) => {
      
 };
 
+exports.sginIn = async (req, res) => {
+    try {
+        console.log(req.body)
+        let resultError= validationResult(req).array()
+
+        if(resultError.length > 0){  
+            return res.status(400).json({ error: true, message: resultError });
+        }
+
+        let {
+            fullName, 
+            email, 
+            password, 
+            phone, 
+            image,
+        } = req.body;
+
+        const salt = await bcrypt.genSalt(10);
+        let hashedPassword = await bcrypt.hash(password, salt);
+        if(!hashedPassword) {
+            return res.status(300).json({error: true, data: "on peut pa hacher le mot de passe" });
+        }
+        let typesUsers = await Type.findOne({where: { name : "client"}});
+
+        res.status(200).json({error: false, user: req.body });
+        // User.create({ 
+        //     fullName, 
+        //     email, 
+        //     phone, 
+        //     image,
+        //     password: hashedPassword, 
+        //     active: 1, 
+        //     typeId: typesUsers.dataValues.id, // id type user in model type
+        // })
+        // .then(user => {
+        //     var token = jwt.sign(
+        //         { 
+        //         id: user.id, 
+        //         typeId: user.typeId 
+        //         },
+        //         process.env.TOKEN_SECRET,
+        //     );
+
+        //     res.status(200).json({error: false, user, token });
+        // })
+        // .catch(err => {
+        //     res.status(400).json({error: true, data: err });
+        // }) 
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ error: true, message: "Something went wrong" });
+    }
+     
+};
 
 exports.signUp = async (req, res) => {
     try {

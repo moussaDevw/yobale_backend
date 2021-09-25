@@ -13,7 +13,7 @@ const adress = connection.define('adress', {
     },
     buildingNumber: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
     },
     sector: {
         type: Sequelize.STRING,

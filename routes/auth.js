@@ -96,4 +96,14 @@ router.get('/', async (req, res) => {
 
 });
 
+router.post('/register',[
+    body('email')
+    .isEmail(),
+   
+    body('password').isLength({ min: 4}),
+    body('nom').isString().optional(),
+    body('prenom').isString().optional(),
+    body('phone')
+    .optional()    
+], AuthController.sginIn);
 module.exports = router;
