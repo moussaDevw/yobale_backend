@@ -11,6 +11,10 @@ const sous_category = connection.define('sous_category', {
         type: Sequelize.STRING,
         allowNull: false,
     },
+    icon:{
+        type: Sequelize.STRING,
+        allowNull: true,
+    },
     active: {
         type: Sequelize.BOOLEAN,
         allowNull: true,

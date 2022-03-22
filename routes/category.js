@@ -49,6 +49,7 @@ router.put('/sous-category/:id', [
 router.get('/:id', CategoryController.showOneCategory);
 router.delete('/:id', verifAuth, haveAuthorisation.isAdmin, CategoryController.deleteElement);
 
+router.post('/sous-category', CategoryController.addSousCategory);
 router.get('/sous-category/:id', CategoryController.showOneSousCategory);
 
 

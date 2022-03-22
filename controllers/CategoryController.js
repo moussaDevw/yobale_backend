@@ -36,13 +36,13 @@ exports.storeCategory = async (req, res) => {
         })
         .then( async (category) => {
            
-            if(sousCategory.length > 0){
-                sousCategory.map( async sc => {
-                    sc.categoryId = category.dataValues.id;
-                });
-                let addedSousCategories = await SousCategory.bulkCreate(sousCategory);
-                category.setDataValue('sousCategories', addedSousCategories);
-            }
+            // if(sousCategory.length > 0){
+            //     sousCategory.map( async sc => {
+            //         sc.categoryId = category.dataValues.id;
+            //     });
+            //     let addedSousCategories = await SousCategory.bulkCreate(sousCategory);
+            //     category.setDataValue('sousCategories', addedSousCategories);
+            // }
             res.status(201).json({ error: false, category });
         })
         .catch((err) => res.status(400).json({ error: true, err, message: 'Please check the data for category' }))
@@ -81,11 +81,12 @@ exports.updateCategory = (req, res) => {
 
 exports.updateSousCategory = (req, res) => {
     try {
-        let { name, active } = req.body;
+        let { name, active, icon } = req.body;
 
         SousCategory.update({
             name: name,
-            active
+            active,
+            icon
         }, {
             where: { id: req.params.id }
         })
@@ -95,6 +96,25 @@ exports.updateSousCategory = (req, res) => {
             res.status(202).json({ error: false, updatedSousCategory });
         })
         .catch((err) => res.status(400).json({ error: true, message: "bad request !" }))
+    } catch (error) {
+        res.status(500).json({ error: true, message: 'Something went wrong' })
+    }
+}
+
+exports.addSousCategory = (req, res) => {
+    try {
+        let { name, active, icon, categoryId } = req.body;
+
+        SousCategory.create({
+            name,
+            active,
+            categoryId,
+            icon,
+        })
+        .then( async (sousCategory) => {
+            res.status(201).json({ error: false, sousCategory });
+        })
+        .catch((err) =>{ console.log(err); res.status(400).json({ error: true, message: "bad request !" })})
     } catch (error) {
         res.status(500).json({ error: true, message: 'Something went wrong' })
     }
