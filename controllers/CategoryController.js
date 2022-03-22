@@ -146,6 +146,15 @@ exports.showOneSousCategory = async (req, res) => {
         res.status(500).json({ error: true, message: 'Something went wrong' })
     }      
 }
+exports.allSCOfCat = async (req, res) => {
+    try {
+        let sousCategory = await SousCategory.findAll({where: {categoryId: req.params.id}});
+
+        res.status(200).json({error: false, sousCategory})
+    } catch (error) {
+        res.status(500).json({ error: true, message: 'Something went wrong' })
+    }      
+}
 
 exports.activateCategory = (req, res) => {
     try {

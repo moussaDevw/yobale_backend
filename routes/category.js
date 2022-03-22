@@ -10,6 +10,7 @@ const verifAuth = require('./../middleware/auth')
 
 
 router.get('', CategoryController.getAllCategories);
+router.get('/one/sous-category/:id', CategoryController.allSCOfCat);
 
 router.post('/upload-icon', CategoryController.uploadIcon);
 

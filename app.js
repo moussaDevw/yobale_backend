@@ -191,6 +191,12 @@ const product = require('./routes/product')
         }, 
     });
 
+    Category.hasMany(Shop, {
+        foreignKey: {
+            allowNull: true,
+        }, 
+    });
+
     Deliveryman.belongsTo(City, {
         foreignKey: {
             allowNull: false,
@@ -209,7 +215,11 @@ const product = require('./routes/product')
             allowNull: true,
         },
     });
-
+    SousCategory.hasMany(Shop, {
+        foreignKey: {
+            allowNull: true,
+        }, 
+    });
 
     MenuShope.belongsTo(Shop, {
         foreignKey: {
