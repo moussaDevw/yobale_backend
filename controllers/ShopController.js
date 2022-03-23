@@ -74,6 +74,31 @@ exports.getShopCategorie = async (req, res) => {
     }
 }
 
+exports.getShopSousCategorie = async (req, res) => {
+    try {
+
+        let adressUser = await Adress.findByPk(req.params.adressId)
+
+        let cityId = adressUser ?  adressUser.cityId : 0
+
+        Shop.findAll(  {
+            where: {
+                sousCategoryId: req.params.categoryId,
+                cityId: cityId
+            }
+        })
+
+        .then((shops) => {
+            res.status(200).json({error: false, shops })
+        })
+        .catch(err => res.status(400).json({ error: true, err, message: "Aucun magasin trouver dans cette catégorie dans cette ville" }))
+
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({ error: true, message: 'Something went wrong' })
+    }
+}
+
 exports.getAllActiveShop = (req, res) => {
     try {
         Shop.findAll({where: {active: true, deleted: 0}})
