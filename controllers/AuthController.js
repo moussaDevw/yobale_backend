@@ -22,6 +22,7 @@ exports.sginIn = async (req, res) => {
             password, 
             phone, 
             image,
+            token,
         } = req.body;
 
         const salt = await bcrypt.genSalt(10);
@@ -38,6 +39,7 @@ exports.sginIn = async (req, res) => {
             image,
             password: hashedPassword, 
             active: 1, 
+            token,
             typeId: typesUsers.dataValues.id, // id type user in model type
         })
         .then(user => {
@@ -253,9 +255,20 @@ exports.signUpLivreur = async (req, res) => {
 exports.verifAuth = async (req, res) => {
     try {
         
-        let user = await await User.findByPk(req.user.id)
+        let user = await User.findByPk(req.user.id)
 
         return res.status(200).json({ error: false, isAuth: true, user }) 
+    } catch (error) {
+        return res.status(500).json({ error: true, message: "Something went wrong" });
+    }
+}
+exports.updateToken = async (req, res) => {
+    try {
+        let {token, email} = req.body;
+        
+    let user = await User.update({token: token}, {where: {email: email}})
+
+        return res.status(200).json({ error: false, user }) 
     } catch (error) {
         return res.status(500).json({ error: true, message: "Something went wrong" });
     }
@@ -263,7 +276,7 @@ exports.verifAuth = async (req, res) => {
 exports.verifAuthShop = async (req, res) => {
     try {
         
-        let user = await await User.findByPk(req.user.id)
+        let user = await User.findByPk(req.user.id)
 
         return res.status(200).json({ error: false, isAuth: true, user }) 
     } catch (error) {
@@ -274,7 +287,7 @@ exports.verifAuthShop = async (req, res) => {
 exports.verifAuthLivreur = async (req, res) => {
     try {
         
-        let user = await await User.findByPk(req.user.id)
+        let user = await User.findByPk(req.user.id)
 
         return res.status(200).json({ error: false, isAuth: true, user }) 
     } catch (error) {

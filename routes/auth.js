@@ -38,6 +38,13 @@ router.post('/signup',[
         body('password').isLength({ min: 8}),
     ], AuthController.signUp);
 
+    router.put('/token',[
+        body('email')
+        .isEmail()
+        .trim(),
+        body('token').isString(),
+    ], AuthController.updateToken);
+
   router.post('/admin/signin',[
     body('email')
     .isEmail()

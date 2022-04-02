@@ -29,6 +29,11 @@ const user = connection.define('user', {
         allowNull: true,
         unique:true,
     },
+    token: {
+        type: Sequelize.STRING,
+        allowNull: true,
+        unique:true,
+    },
     active: {
         type: Sequelize.BOOLEAN,
         allowNull: true,
