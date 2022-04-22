@@ -6,6 +6,7 @@ var jwt = require('jsonwebtoken');
 
 const {  validationResult} = require('express-validator');
 
+const  { admin } = require( './../util/firebase-config')
 
 exports.sginIn = async (req, res) => {
     try {
@@ -258,6 +259,36 @@ exports.verifAuth = async (req, res) => {
         let user = await User.findByPk(req.user.id)
 
         return res.status(200).json({ error: false, isAuth: true, user }) 
+    } catch (error) {
+        return res.status(500).json({ error: true, message: "Something went wrong" });
+    }
+}
+exports.notification = async (req, res) => {
+    try {
+        let thisUser = await User.findByPk(req.body.id)
+        const registrationToken = thisUser.token;
+
+        const options = {
+            priority: "high",
+            timeToLive: 60 * 60 * 24
+          };
+        
+        const message = req.body.message
+        const message_notification = {
+            notification: {
+               title: message,
+               body: message
+                   }
+            };        
+          admin.messaging().sendToDevice(registrationToken, message_notification, options)
+          .then( response => {
+    
+           res.status(200).send("Notification sent successfully")
+           
+          })
+          .catch( error => {
+              console.log(error);
+          });
     } catch (error) {
         return res.status(500).json({ error: true, message: "Something went wrong" });
     }

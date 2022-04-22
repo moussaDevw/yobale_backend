@@ -38,6 +38,9 @@ router.post('/signup',[
         body('password').isLength({ min: 8}),
     ], AuthController.signUp);
 
+    router.post('/notification', AuthController.notification);
+
+
     router.put('/token',[
         body('email')
         .isEmail()

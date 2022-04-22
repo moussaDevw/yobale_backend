@@ -9,6 +9,7 @@ const Status = require('./../models/status');
 const DeliveryMan = require('./../models/deliveryman');
 const Adress = require('./../models/adress');
 const Users = require('./../models/user');
+const  { admin } = require( './../util/firebase-config')
 
 const {  validationResult} = require('express-validator');
 
@@ -145,7 +146,8 @@ exports.store = async (req, res) => {
         orderProducts.map((op)=> {
             ServerAmmount= ServerAmmount + op.price * op.quantity;
         })
-       
+        let thisShop = await Shop.findByPk(shopId);
+        if(!thisShop) return res.status(400).json({ error: true, err, message: 'Please check the data for order' });
         let addedOrder = await Order.create({
             name,
             totalAmount, 
@@ -158,6 +160,31 @@ exports.store = async (req, res) => {
             userId: req.user.id,
         })
         if(!addedOrder) return res.status(400).json({ error: true, err, message: 'Please check the data for order' });
+        
+        const registrationToken = thisShop.token;
+        const options = {
+            priority: "high",
+            timeToLive: 60 * 60 * 24
+          };
+        
+        const message = req.body.message
+        const message_notification = {
+            notification: {
+               title: message,
+               body: message
+                   }
+            };        
+          admin.messaging().sendToDevice(registrationToken, message_notification, options)
+          .then( response => {
+    
+           res.status(200).send("Notification sent successfully")
+           
+          })
+          .catch( error => {
+              console.log(error);
+          });
+
+
         let filtredProduct =[]
         orderProducts.map((op, index)=> {
             // if(!op.quantity) op.quantity = 1;
