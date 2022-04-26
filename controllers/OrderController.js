@@ -1,5 +1,6 @@
 
 const Order = require('./../models/order');
+const User = require('./../models/user');
 
 const OrderProduct = require('./../models/orderProduct');
 const Product = require('./../models/product');
@@ -167,17 +168,17 @@ exports.store = async (req, res) => {
             timeToLive: 60 * 60 * 24
           };
         
-        const message = req.body.message
+        const message = "Vous avez une nouvelle commande pour " + orderProducts.length + " produits."
         const message_notification = {
             notification: {
-               title: message,
+               title: "Nouvelle commande",
                body: message
-                   }
+            }
             };        
           admin.messaging().sendToDevice(registrationToken, message_notification, options)
           .then( response => {
     
-           res.status(200).send("Notification sent successfully")
+            //    res.status(200).send("Notification sent successfully")
            
           })
           .catch( error => {
@@ -196,7 +197,7 @@ exports.store = async (req, res) => {
 
         let addedOrderProduct = await OrderProduct.bulkCreate(filtredProduct)
 
-        if(!addedOrderProduct) return res.status(400).json({ error: true, err, message: 'On a pas pus enregistrer roduit de cette commande' });
+        if(!addedOrderProduct) return res.status(400).json({ error: true, err, message: 'On a pas pus enregistrer les produits de cette commande' });
         return res.status(201).json({ error: false, addedOrder });
  
     } catch (error) {
@@ -227,6 +228,8 @@ exports.updateElement = async (req, res) => {
         if(!updatedElement) return res.status(400).json({ error: true, message: "bad request !" })
 
         let updatedMenu = await Order.findByPk(req.params.id);
+
+        
         return res.status(202).json({ error: false, updatedMenu });
       
     } catch (error) {
@@ -261,7 +264,34 @@ exports.confirmOrder = async (req, res) => {
             },
            
         })
-        .then((order) => {
+        .then( async (order) => {
+            let thisOrder = await Order.findByPk(req.params.id);
+            let thisClient = await User.findOne({where: { userId: thisOrder.userId }})
+
+            const registrationToken = thisClient.token;
+            const options = {
+                priority: "high",
+                timeToLive: 60 * 60 * 24
+              };
+            
+            const message = "Votre commande numéro " + thisOrder.id + " à étail valider par le magasin."
+            const message_notification = {
+                notification: {
+                   title: "Commande validée",
+                   body: message
+                }
+                };        
+              admin.messaging().sendToDevice(registrationToken, message_notification, options)
+              .then( response => {
+        
+                //    res.status(200).send("Notification sent successfully")
+               
+              })
+              .catch( error => {
+                  console.log(error);
+              });
+    
+    
             return res.status(200).json({error: false, order })
             // res.status(200).json({error: false, order })
         })
@@ -293,6 +323,33 @@ exports.cancelOrder = async (req, res) => {
            
         })
         .then((order) => {
+
+            let thisOrder = await Order.findByPk(req.params.id);
+            let thisClient = await User.findOne({where: { userId: thisOrder.userId }})
+
+            const registrationToken = thisClient.token;
+            const options = {
+                priority: "high",
+                timeToLive: 60 * 60 * 24
+              };
+            
+            const message = "Votre commande numéro " + thisOrder.id + " à étail valider par le magasin."
+            const message_notification = {
+                notification: {
+                   title: "Commande validée",
+                   body: message
+                }
+                };        
+              admin.messaging().sendToDevice(registrationToken, message_notification, options)
+              .then( response => {
+        
+                //    res.status(200).send("Notification sent successfully")
+               
+              })
+              .catch( error => {
+                  console.log(error);
+              });
+    
             return res.status(200).json({error: false, order })
             // res.status(200).json({error: false, order })
         })
@@ -352,6 +409,32 @@ exports.ConfirmLivreur = async (req, res) => {
         })
         .then( async () => {
             let confirmedOrder = await Order.findOne({where: { id: req.params.id }});
+
+            // let thisOrder = await Order.findByPk(req.params.id);
+            let thisClient = await User.findOne({where: { userId: confirmedOrder.userId }})
+
+            const registrationToken = thisClient.token;
+            const options = {
+                priority: "high",
+                timeToLive: 60 * 60 * 24
+              };
+            
+            const message = "Un livreur est affécté à la commande " + confirmedOrder.id
+            const message_notification = {
+                notification: {
+                   title: "Commande validée",
+                   body: message
+                }
+                };        
+              admin.messaging().sendToDevice(registrationToken, message_notification, options)
+              .then( response => {
+        
+                //    res.status(200).send("Notification sent successfully")
+               
+              })
+              .catch( error => {
+                  console.log(error);
+              });
             return res.status(200).json({error: false, confirmedOrder })
             // res.status(200).json({error: false, order })
         })

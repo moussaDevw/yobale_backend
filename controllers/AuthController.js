@@ -10,7 +10,6 @@ const  { admin } = require( './../util/firebase-config')
 
 exports.sginIn = async (req, res) => {
     try {
-        console.log(req.body)
         let resultError= validationResult(req).array()
 
         if(resultError.length > 0){  
