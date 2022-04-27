@@ -148,7 +148,8 @@ exports.store = async (req, res) => {
             ServerAmmount= ServerAmmount + op.price * op.quantity;
         })
         let thisShop = await Shop.findByPk(shopId);
-        if(!thisShop) return res.status(400).json({ error: true, err, message: 'Please check the data for order' });
+        let thisShopUser = await User.findByPk(thisShop.userId);
+        if(!thisShop) return res.status(400).json({ error: true, message: 'Please check the data for order' });
         let addedOrder = await Order.create({
             name,
             totalAmount, 
@@ -161,29 +162,7 @@ exports.store = async (req, res) => {
             userId: req.user.id,
         })
         if(!addedOrder) return res.status(400).json({ error: true, err, message: 'Please check the data for order' });
-        console.log(thisShop.token)
-        const registrationToken = thisShop.token;
-        const options = {
-            priority: "high",
-            timeToLive: 60 * 60 * 24
-          };
         
-        const message = "Vous avez une nouvelle commande pour " + orderProducts.length + " produits."
-        const message_notification = {
-            notification: {
-               title: "Nouvelle commande",
-               body: message
-            }
-            };        
-          admin.messaging().sendToDevice(registrationToken, message_notification, options)
-          .then( response => {
-    
-            //    res.status(200).send("Notification sent successfully")
-           
-          })
-          .catch( error => {
-              console.log(error);
-          });
 
 
         let filtredProduct =[]
@@ -197,7 +176,35 @@ exports.store = async (req, res) => {
 
         let addedOrderProduct = await OrderProduct.bulkCreate(filtredProduct)
 
-        if(!addedOrderProduct) return res.status(400).json({ error: true, err, message: 'On a pas pus enregistrer les produits de cette commande' });
+        if(!addedOrderProduct) return res.status(400).json({ error: true, message: 'On a pas pus enregistrer les produits de cette commande' });
+        const registrationToken = thisShopUser.token;
+        const options = {
+            priority: "high",
+            timeToLive: 60 * 60 * 24
+          };
+        
+        const message = "Vous avez une nouvelle commande pour " + orderProducts.length + " produits."
+        const message_notification = {
+            notification: {
+               title: "Nouvelle commande",
+               body: message
+            }
+            };        
+            try {
+                admin.messaging().sendToDevice(registrationToken, message_notification, options)
+                .then( response => {
+          
+                  //    res.status(200).send("Notification sent successfully")
+                 
+                })
+                .catch( error => {
+                    console.log(error);
+                });
+            } catch (error) {
+                
+            }
+        
+            
         return res.status(201).json({ error: false, addedOrder });
  
     } catch (error) {
