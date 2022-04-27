@@ -37,12 +37,6 @@ const haveAuthorisation = require('./../middleware/haveAuthorisation');
             if(existingPhone){
                 throw new Error('email existe');
             }
-
-            const existingMail = await User.findOne({where:{email: value }})
-            if(existingMail){
-                throw new Error('email existe');
-            }
-
         })
         .trim(),
         body('phone')
