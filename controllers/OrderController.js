@@ -161,7 +161,7 @@ exports.store = async (req, res) => {
             userId: req.user.id,
         })
         if(!addedOrder) return res.status(400).json({ error: true, err, message: 'Please check the data for order' });
-        
+        console.log(thisShop.token)
         const registrationToken = thisShop.token;
         const options = {
             priority: "high",
