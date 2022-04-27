@@ -322,7 +322,7 @@ exports.cancelOrder = async (req, res) => {
             },
            
         })
-        .then((order) => {
+        .then( async (order) => {
 
             let thisOrder = await Order.findByPk(req.params.id);
             let thisClient = await User.findOne({where: { userId: thisOrder.userId }})
