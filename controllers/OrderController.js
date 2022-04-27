@@ -240,7 +240,8 @@ exports.updateElement = async (req, res) => {
 
 exports.showOneElement = async (req, res) => {
     try {
-        let order = await Order.findByPk(req.params.id);
+        let order = await Order.findByPk(req.params.id, {include: [{model: Adress},
+            {model: Status}, {model: User}, {model: Shop}]});
         res.status(200).json({error: false, order})
     } catch (error) {
         res.status(500).json({ error: true, message: 'Something went wrong' })
