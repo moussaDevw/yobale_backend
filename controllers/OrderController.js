@@ -274,7 +274,7 @@ exports.confirmOrder = async (req, res) => {
         })
         .then( async (order) => {
             let thisOrder = await Order.findByPk(req.params.id);
-            let thisClient = await User.findOne({where: { userId: thisOrder.userId }})
+            let thisClient = await User.findByPk(thisOrder.userId)
 
             const registrationToken = thisClient.token;
             const options = {
