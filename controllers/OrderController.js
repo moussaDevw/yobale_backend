@@ -291,7 +291,7 @@ exports.confirmOrder = async (req, res) => {
                 };        
               admin.messaging().sendToDevice(registrationToken, message_notification, options)
               .then( response => {
-        
+                console.log(response)
                 //    res.status(200).send("Notification sent successfully")
                
               })
@@ -333,7 +333,7 @@ exports.cancelOrder = async (req, res) => {
         .then( async (order) => {
 
             let thisOrder = await Order.findByPk(req.params.id);
-            let thisClient = await User.findOne({where: { userId: thisOrder.userId }})
+            let thisClient = await User.findByPk(thisOrder.userId )
 
             const registrationToken = thisClient.token;
             const options = {
@@ -350,7 +350,7 @@ exports.cancelOrder = async (req, res) => {
                 };        
               admin.messaging().sendToDevice(registrationToken, message_notification, options)
               .then( response => {
-        
+                console.log(response)
                 //    res.status(200).send("Notification sent successfully")
                
               })
