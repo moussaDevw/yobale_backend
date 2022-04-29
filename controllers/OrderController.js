@@ -341,7 +341,7 @@ exports.cancelOrder = async (req, res) => {
                 timeToLive: 60 * 60 * 24
               };
             
-            const message = "Votre commande numéro " + thisOrder.id + " à étail valider par le magasin."
+            const message = "Votre commande numéro " + thisOrder.id + " à étail annuler par le magasin."
             const message_notification = {
                 notification: {
                    title: "Commande validée",
@@ -419,7 +419,7 @@ exports.ConfirmLivreur = async (req, res) => {
             let confirmedOrder = await Order.findOne({where: { id: req.params.id }});
 
             // let thisOrder = await Order.findByPk(req.params.id);
-            let thisClient = await User.findOne({where: { userId: confirmedOrder.userId }})
+            let thisClient = await User.findByPk(confirmedOrder.userId)
 
             const registrationToken = thisClient.token;
             const options = {
