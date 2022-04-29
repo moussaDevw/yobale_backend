@@ -304,7 +304,7 @@ exports.confirmOrder = async (req, res) => {
             // res.status(200).json({error: false, order })
         })
         .catch(err => {
-            // console.log(err)
+            console.log(err)
             res.status(404).json({ 
             error: true, err, message: 'orders not found !' 
         })})
