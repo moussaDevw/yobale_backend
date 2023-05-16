@@ -105,7 +105,6 @@ const product = require('./routes/product')
 
 /****************     USE ROUTES      *****************/
 
-
     app.use('/adress', adress)
     app.use('/category', categories)
     app.use('/type', types)
@@ -325,7 +324,7 @@ ALTER TABLE orders
 ADD CONSTRAINT `orders_ibfk_2`
 FOREIGN KEY (`shopId`) REFERENCES `shops` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 */
-  if(false){
+  if(true){
 
     db.sync({force: true})
           .then(result => {

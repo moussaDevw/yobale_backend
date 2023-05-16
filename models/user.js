@@ -48,7 +48,6 @@ const user = connection.define('user', {
         allowNull: true,
         defaultValue: false,
     },
-
 })
 
 module.exports = user;
